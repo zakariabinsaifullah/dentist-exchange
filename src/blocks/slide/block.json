@@ -1,0 +1,43 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "dnte/slide",
+    "version": "1.0.0",
+    "title": "Slide",
+    "category": "dnte",
+    "description": "Slide child block for carousel.",
+    "example": {},
+    "parent": ["dnte/carousel"],
+    "supports": {
+        "html": false,
+        "align": ["wide", "full"],
+        "color": {
+            "text": false,
+            "background": true,
+            "gradients": true
+        },
+        "background": {
+            "backgroundImage": true,
+            "backgroundSize": true
+        },
+        "spacing": {
+            "margin": false,
+            "padding": true,
+            "__experimentalDefaultControls": {
+                "padding": false
+            }
+        },
+        "__experimentalBorder": {
+            "__experimentalSkipSerialization": false,
+            "color": true,
+            "radius": true,
+            "style": true,
+            "width": true
+        },
+        "shadow": {
+            "__experimentalSkipSerialization": true
+        }
+    },
+    "textdomain": "dentist-exchange",
+    "editorScript": ["file:./index.js"]
+}

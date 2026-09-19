@@ -1,0 +1,18 @@
+.wp-block-dnte-social-share {
+	// Give the SSR preview a minimum height while loading.
+	.components-server-side-render__loading {
+		min-height: 40px;
+	}
+
+	&.justify-center {
+		justify-content: center;
+	}
+
+	&.justify-left {
+		justify-content: flex-start;
+	}
+
+	&.justify-right {
+		justify-content: flex-end;
+	}
+}

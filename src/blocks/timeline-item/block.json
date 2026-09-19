@@ -1,0 +1,20 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "dnte/timeline-item",
+    "version": "2.0.0",
+    "title": "Timeline Item",
+    "category": "dnte",
+    "parent": ["dnte/timeline"],
+    "icon": "star-filled",
+    "description": "Individual item for the timeline block.",
+    "example": {},
+    "supports": {
+        "anchor": true,
+        "html": false
+    },
+    "attributes": {},
+    "textdomain": "dentist-exchange",
+    "editorScript": "file:./index.js",
+    "style": "file:./style-index.css"
+}

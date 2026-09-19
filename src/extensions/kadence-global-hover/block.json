@@ -1,0 +1,8 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "dnte/kadence-global-hover-extension",
+    "title": "Kadence Column Global Hover Effect Extension",
+    "editorScript": "file:./index.js",
+    "style": "file:./style-index.css"
+}

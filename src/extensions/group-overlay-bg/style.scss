@@ -1,0 +1,19 @@
+.dnte-overlay-bg {
+	position: relative;
+
+	// Overlay sits behind block content via z-index layering.
+	&::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		pointer-events: none;
+		background: var(--dnte-overlay-bg);
+	}
+
+	// Lift all direct children above the ::after overlay.
+	> * {
+		position: relative;
+		z-index: 1;
+	}
+}

@@ -1,0 +1,221 @@
+:where(figure) {
+    margin: 0 !important;
+}
+
+.wp-block-group {
+    overflow: clip;
+}
+
+.wp-block-buttons.is-style-full-width {
+    width: 100% !important;
+}
+
+.is-style-post-typo.wp-block-post-content h2 {
+    font-size: var(--wp--preset--font-size--dnte-heading-three);
+}
+
+.wp-block-post-title a {
+    font-weight: 400;
+}
+
+.wp-block-post-excerpt__more-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    color: #538988;
+}
+
+/* Arrow icon matching the theme's arrow SVG (white stroke). */
+.wp-block-post-excerpt__more-link::after {
+    content: '';
+    width: 11px;
+    height: 11px;
+    flex-shrink: 0;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTMiIHZpZXdCb3g9IjAgMCAxNCAxMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTguMjUgMC4yODEyNUwxMy43NSA1LjUzMTI1QzEzLjkwNjIgNS42ODc1IDE0IDUuODc1IDE0IDYuMDkzNzVDMTQgNi4yODEyNSAxMy45MDYyIDYuNDY4NzUgMTMuNzUgNi42MjVMOC4yNSAxMS44NzVDNy45Njg3NSAxMi4xNTYyIDcuNDY4NzUgMTIuMTU2MiA3LjE4NzUgMTEuODQzOEM2LjkwNjI1IDExLjU2MjUgNi45MDYyNSAxMS4wNjI1IDcuMjE4NzUgMTAuNzgxMkwxMS4zNzUgNi44NDM3NUgwLjc1QzAuMzEyNSA2Ljg0Mzc1IDAgNi41IDAgNi4wOTM3NUMwIDUuNjU2MjUgMC4zMTI1IDUuMzQzNzUgMC43NSA1LjM0Mzc1SDExLjM3NUw3LjIxODc1IDEuMzc1QzYuOTA2MjUgMS4wOTM3NSA2LjkwNjI1IDAuNTkzNzUgNy4xODc1IDAuMzEyNUM3LjQ2ODc1IDAgNy45Mzc1IDAgOC4yNSAwLjI4MTI1WiIgZmlsbD0iIzUzODk4OCIvPgo8L3N2Zz4K');
+    background-repeat: no-repeat;
+    background-size: contain;
+    transition: transform 0.2s ease;
+}
+
+.wp-block-post-excerpt__more-link:hover::after {
+    transform: translateX(2px);
+}
+
+header.wp-block-kadence-rowlayout {
+    position: relative;
+}
+
+header.wp-block-kadence-rowlayout::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background: linear-gradient(180deg, rgba(6, 24, 57, 0.7) 50%, rgba(6, 24, 57, 0) 77.94%);
+    content: '';
+    z-index: -1;
+}
+
+.has-glass-effect {
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
+    /* Frost 100 + Refraction 38 + Dispersion 100 */
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(24px) saturate(1.2);
+    -webkit-backdrop-filter: blur(24px) saturate(1.2);
+}
+
+.has-glass-effect::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    /* Light 79° sheen */
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.175) 0%, rgba(255, 255, 255, 0.04) 35%, rgba(255, 255, 255, 0) 60%);
+}
+
+.dnte-icon-pos .kt-svg-icon-link {
+    flex-direction: row-reverse !important;
+    gap: 12px;
+}
+
+.wp-block-button.is-style-link .wp-block-button__link {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+.has-featured-image-bg:before {
+    background: linear-gradient(172.74deg, rgba(34, 34, 34, 0) -35.15%, #191919 81.33%);
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+@media screen and (max-width: 767px) {
+    .is-style-wrap-mobile {
+        flex-wrap: wrap !important;
+    }
+}
+
+/* Kadence Codes */
+.wp-block-kadence-listitem + .wp-block-kadence-listitem {
+    border-top: 1px solid #e8e9ec;
+    padding-top: 16px !important;
+    margin-top: 16px !important;
+}
+
+.kb-table-container {
+    border-radius: 20px;
+}
+
+.kb-table p {
+    margin: 0 !important;
+}
+
+/*
+ * Button styles
+ *
+ * Loaded in both the editor and the front end via `enqueue_block_assets`, so
+ * the two stay identical. Block style variation CSS (`is-style-alternative`,
+ * `is-style-link`) is not emitted from theme.json at all, so those variations
+ * are defined here rather than there.
+ *
+ * The only hover state is `styles.elements.button[":hover"]` in theme.json,
+ * which sets the text colour to #000000. Do not add hover rules here without
+ * checking theme.json, or the two will disagree.
+ */
+
+/*
+ * Alternative — identical to the default button except for its fill and text
+ * colour. Padding, radius, and typography are inherited from
+ * `styles.elements.button` in theme.json.
+ *
+ * theme.json declares this variation under
+ * `styles.blocks.core/button.variations.alternative`, but block style variation
+ * CSS is not emitted from theme.json (verified against WP 7.0), so it is
+ * restated here. Keep the two in sync.
+ */
+.wp-block-button.is-style-alternative .wp-block-button__link {
+    background-color: var(--wp--preset--color--dnte-neptune);
+    color: #000000;
+}
+
+/* Overrides the default button's hover, which would otherwise keep the text black. */
+.wp-block-button.is-style-alternative .wp-block-button__link:hover {
+    color: var(--wp--preset--color--dnte-white);
+}
+
+/*
+ * Outline — registered by core, not by the theme. Core ships its own CSS for
+ * this variation (`border: 2px solid`, `color: currentColor`) wrapped in
+ * `:root :where(...)`, so these plain class selectors outrank it.
+ *
+ * Intended for dark sections: the fill is transparent and the text is white.
+ */
+.wp-block-button.is-style-outline .wp-block-button__link {
+    background-color: transparent;
+    background-image: none;
+    border: 1px solid var(--wp--preset--color--dnte-white);
+    color: var(--wp--preset--color--dnte-white);
+}
+
+.wp-block-button.is-style-outline .wp-block-button__link:hover {
+    border-color: #000000;
+    color: #000000;
+}
+
+/*
+ * Link — must not pick up the default button's white fill. Same reason as
+ * Alternative above: the variation's `background: transparent` in theme.json
+ * is not emitted, so it is restated here.
+ *
+ * The trailing arrow is painted as a mask filled with `currentColor` rather
+ * than a coloured background-image, so it inherits the link colour and follows
+ * it on hover without needing a second copy of the icon.
+ */
+.wp-block-button.is-style-link .wp-block-button__link {
+    background-color: transparent;
+    background-image: none;
+    color: #538988;
+}
+
+.wp-block-button.is-style-link .wp-block-button__link::after {
+    content: '';
+    width: 14px;
+    height: 13px;
+    flex-shrink: 0;
+    background-color: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='13' viewBox='0 0 14 13' fill='none'%3E%3Cpath d='m13.75 6.625-5.5 5.25c-.312.281-.781.281-1.062-.031s-.282-.781.03-1.063l4.157-3.969H.75a.72.72 0 0 1-.75-.75.74.74 0 0 1 .75-.75h10.625L7.219 1.376A.746.746 0 0 1 7.187.313.746.746 0 0 1 8.25.28l5.5 5.25c.156.157.25.344.25.532a.78.78 0 0 1-.25.562' fill='%23000'/%3E%3C/svg%3E")
+        no-repeat center / contain;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='13' viewBox='0 0 14 13' fill='none'%3E%3Cpath d='m13.75 6.625-5.5 5.25c-.312.281-.781.281-1.062-.031s-.282-.781.03-1.063l4.157-3.969H.75a.72.72 0 0 1-.75-.75.74.74 0 0 1 .75-.75h10.625L7.219 1.376A.746.746 0 0 1 7.187.313.746.746 0 0 1 8.25.28l5.5 5.25c.156.157.25.344.25.532a.78.78 0 0 1-.25.562' fill='%23000'/%3E%3C/svg%3E")
+        no-repeat center / contain;
+}
+
+.wp-block-button.is-style-link .wp-block-button__link:hover {
+    color: var(--wp--preset--color--dnte-wine-berry);
+}
+
+/* Kadence Table */
+th.kb-table-data {
+    border-bottom: 2px solid #551C25;
+}
+
+th.kb-table-data p {
+	color: #551C25 !important;
+}
+
+@media (max-width: 600px) {
+    .kb-table {
+        table-layout: auto !important;
+        min-width: 600px !important;
+    }
+}

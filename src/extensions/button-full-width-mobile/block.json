@@ -1,0 +1,8 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "dnte/button-full-width-mobile-extension",
+    "title": "Button Full Width Mobile Extension",
+    "editorScript": "file:./index.js",
+    "style": "file:./style-index.css"
+}

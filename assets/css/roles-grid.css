@@ -1,0 +1,205 @@
+/**
+ * Opening Roles Grid — [opening_roles]
+ *
+ * Colours come from the theme's palette presets where one exists, each with a
+ * literal fallback. The match pill's green has no palette equivalent, so it is
+ * defined here as a pair of custom properties for easy overriding.
+ */
+
+.hrg-grid,
+.hrg-empty {
+    --hrg-font: var(--wp--preset--font-family--roboto, Roboto, sans-serif);
+    --hrg-match-bg: #d9f7e4;
+    --hrg-match-text: #16a34a;
+}
+
+/*
+ * theme.json styles `p` and `a` directly — `:root :where(p)` and
+ * `a:where(:not(.wp-element-button))` both set FreightText — and a rule that
+ * matches an element always beats an inherited value. Naming the elements
+ * under .hrg-grid outranks both, so every part of a card is Roboto.
+ */
+.hrg-grid,
+.hrg-grid p,
+.hrg-grid a,
+.hrg-grid h1,
+.hrg-grid h2,
+.hrg-grid h3,
+.hrg-grid h4,
+.hrg-grid h5,
+.hrg-grid h6,
+.hrg-grid span,
+.hrg-grid time,
+.hrg-empty {
+    font-family: var(--hrg-font);
+}
+
+.hrg-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--hrg-columns, 2), minmax(0, 1fr));
+    gap: 24px;
+}
+
+.hrg-card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+    border: 1px solid var(--wp--preset--color--dnte-neutral-lightest, #f2f2f2);
+    border-radius: 16px;
+    background: var(--wp--preset--color--dnte-white, #ffffff);
+    box-shadow: 0px 4px 20px rgba(195, 195, 195, 0.25);
+}
+
+.hrg-card__row {
+    display: flex;
+    align-items: center;
+}
+
+/* --- Row 1: title, company, match, apply --------------------------------- */
+
+.hrg-card__row--head {
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.hrg-card__identity {
+    min-width: 0;
+}
+
+.hrg-card__title-line {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.hrg-card__title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.2;
+    color: #000000;
+}
+
+.hrg-card__match {
+    padding: 5px 10px;
+    border-radius: 6px;
+    background: var(--hrg-match-bg);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.2;
+    white-space: nowrap;
+    color: var(--hrg-match-text);
+}
+
+/* Under 90% — the colours are swapped by redeclaring the two properties. */
+.hrg-card__match--low {
+    --hrg-match-bg: #ffe9dd;
+    --hrg-match-text: #fc6a15;
+}
+
+.hrg-card__company {
+    margin: 6px 0 0;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: #58585e;
+}
+
+.hrg-card__apply {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    gap: 8px;
+    padding: 11px 18px;
+    border-radius: 8px;
+    background: var(--wp--preset--color--dnte-wine-berry, #551c25);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--wp--preset--color--dnte-white, #ffffff);
+    text-decoration: none;
+    transition: background 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hrg-card__apply:hover,
+.hrg-card__apply:focus-visible {
+    background: var(--wp--preset--color--dnte-wine-berry-dark, #44161d);
+    color: var(--wp--preset--color--dnte-white, #ffffff);
+}
+
+/* --- Row 2: location, posted date, nature -------------------------------- */
+
+.hrg-card__row--meta {
+    flex-wrap: wrap;
+    gap: 12px 20px;
+}
+
+/* Location and posted date share this treatment. */
+.hrg-card__meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: #717182;
+}
+
+.hrg-icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+.hrg-card__apply .hrg-icon {
+    width: 16px;
+    height: 16px;
+}
+
+.hrg-card__nature {
+    padding: 8px 14px;
+    border: 1px solid var(--wp--preset--color--dnte-neutral-lighter, #d9dada);
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+    color: var(--wp--preset--color--dnte-neutral-darkest, #070a0a);
+}
+
+/* --- Row 3: salary and job type ------------------------------------------ */
+
+.hrg-card__terms {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: #58585e;
+}
+
+.hrg-empty {
+    margin: 0;
+    color: var(--wp--preset--color--dnte-neutral, #838484);
+}
+
+/* --- Responsive ---------------------------------------------------------- */
+
+@media (max-width: 900px) {
+    .hrg-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    /* Stack the apply button under the title rather than squeezing both. */
+    .hrg-card__row--head {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .hrg-card__apply {
+        justify-content: center;
+    }
+}

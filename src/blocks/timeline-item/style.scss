@@ -1,0 +1,108 @@
+.wp-block-dnte-timeline-item {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    text-align: left;
+    position: relative;
+
+    /**
+     * Rail gap is set once on the parent timeline and inherited here. It cascades
+     * down: a breakpoint without its own gap falls back to the next larger one.
+     */
+    gap: var(--micon-gap, var(--ticon-gap, var(--dicon-gap, 40px)));
+
+    /**
+     * Item gap is now the item's bottom padding, cascading down from the
+     * largest breakpoint that has its own value.
+     */
+    padding-bottom: var(--mitem-gap, var(--titem-gap, var(--ditem-gap, 50px)));
+
+    /* The rail: one hairline per item, running from its dot into the next one. */
+    &::before {
+        content: '';
+        position: absolute;
+        top: calc(var(--tl-dot-offset, 6px) + var(--tl-dot-size, 12px) / 2);
+        /* Overshoots into the next item's dot, so line and dots read as one stroke. */
+        bottom: calc(var(--tl-dot-offset, 6px) * -1);
+        left: calc(var(--tl-dot-size, 12px) / 2);
+        width: var(--tl-rail-width, 1px);
+        background: var(--tl-rail, #e6decd);
+        transform: translateX(-50%);
+    }
+
+    /* The last item closes the timeline flush — no trailing space beneath it. */
+    &:last-child {
+        padding-bottom: 0;
+
+        &::before {
+            bottom: 0;
+        }
+    }
+
+    .timeline-marker {
+        flex-shrink: 0;
+        width: var(--tl-dot-size, 12px);
+        padding-top: var(--tl-dot-offset, 6px);
+        display: flex;
+        justify-content: center;
+    }
+
+    .timeline-dot {
+        width: var(--tl-dot-size, 12px);
+        height: var(--tl-dot-size, 12px);
+        border-radius: 50%;
+        box-sizing: border-box;
+        position: relative;
+        z-index: 1;
+
+        /* Hollow ring, so the rail never shows through the middle. */
+        background: var(--tl-dot-bg, #ffffff);
+        box-shadow: inset 0 0 0 var(--tl-dot-ring, 2px) var(--tl-dot-color, #5b2a31);
+        transition: background 0.2s ease;
+    }
+
+    /*
+     * Every dot is a hollow circle at rest and fills on hover. `focus-within`
+     * gives the same feedback to anyone tabbing through links in the content.
+     */
+    &:hover .timeline-dot,
+    &:focus-within .timeline-dot {
+        background: var(--tl-dot-color, #5b2a31);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .timeline-dot {
+            transition: none;
+        }
+    }
+
+    .timeline-content {
+        flex: 1;
+        min-width: 0;
+
+        > *:first-child {
+            margin-top: 0;
+        }
+
+        > *:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    // desktop view
+    @media (min-width: 1025px) {
+        & {
+            gap: var(--dicon-gap, 40px);
+            padding-bottom: var(--ditem-gap, 50px);
+        }
+    }
+
+    // tablet view
+    @media (min-width: 768px) and (max-width: 1024px) {
+        & {
+            gap: var(--ticon-gap, var(--dicon-gap, 40px));
+            padding-bottom: var(--titem-gap, var(--ditem-gap, 50px));
+        }
+    }
+}

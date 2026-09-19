@@ -1,0 +1,74 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "dnte/social-share",
+    "version": "1.0.0",
+    "title": "Social Share",
+    "category": "dnte",
+    "icon": "share",
+    "description": "Add social sharing buttons for the current post.",
+    "example": {},
+    "supports": {
+        "html": false,
+        "align": ["wide", "full"],
+        "spacing": {
+            "__experimentalSkipSerialization": true,
+            "margin": true,
+            "padding": true,
+            "__experimentalDefaultControls": {
+                "margin": false,
+                "padding": false
+            }
+        }
+    },
+    "attributes": {
+        "showCopyLink": {
+            "type": "boolean",
+            "default": true
+        },
+        "showLinkedIn": {
+            "type": "boolean",
+            "default": true
+        },
+        "showTwitter": {
+            "type": "boolean",
+            "default": true
+        },
+        "showFacebook": {
+            "type": "boolean",
+            "default": true
+        },
+        "iconSize": {
+            "type": "string",
+            "default": "24px"
+        },
+        "gap": {
+            "type": "string",
+            "default": "12px"
+        },
+        "iconColor": {
+            "type": "string"
+        },
+        "iconBgColor": {
+            "type": "string"
+        },
+        "iconRadius": {
+            "type": "string"
+        },
+        "iconPadding": {
+            "type": "string"
+        },
+        "blockStyle": {
+            "type": "object"
+        },
+        "justifyContent": {
+            "type": "string"
+        }
+    },
+    "textdomain": "dentist-exchange",
+    "editorScript": "file:./index.js",
+    "editorStyle": "file:./index.css",
+    "style": "file:./style-index.css",
+    "viewScript": "file:./view.js",
+    "render": "file:./render.php"
+}

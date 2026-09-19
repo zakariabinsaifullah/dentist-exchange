@@ -1,0 +1,38 @@
+/**
+ * Responsive text alignment for headings and paragraphs.
+ *
+ * Desktop alignment stays with core's own `has-text-align-*` class; the classes
+ * below only override it on tablet and mobile, and are only output for a
+ * breakpoint that was given its own alignment. `!important` is needed because
+ * core's class sits on the same element with the same specificity.
+ */
+
+// tablet view
+@media (min-width: 768px) and (max-width: 1024px) {
+    .has-text-align-tablet-left {
+        text-align: left !important;
+    }
+
+    .has-text-align-tablet-center {
+        text-align: center !important;
+    }
+
+    .has-text-align-tablet-right {
+        text-align: right !important;
+    }
+}
+
+// mobile view
+@media (max-width: 767px) {
+    .has-text-align-mobile-left {
+        text-align: left !important;
+    }
+
+    .has-text-align-mobile-center {
+        text-align: center !important;
+    }
+
+    .has-text-align-mobile-right {
+        text-align: right !important;
+    }
+}

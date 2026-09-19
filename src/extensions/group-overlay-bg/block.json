@@ -1,0 +1,8 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "dnte/group-overlay-bg-extension",
+    "title": "Group Overlay Background Extension",
+    "editorScript": "file:./index.js",
+    "style": "file:./style-index.css"
+}

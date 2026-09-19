@@ -1,0 +1,40 @@
+/**
+ * Highlight format — gradient text.
+ *
+ * Loaded in the editor and on the front end so the two render identically.
+ */
+
+.dnte-highlight {
+    font-weight: 400;
+
+    /*
+     * Fallback for browsers without `background-clip: text`. Without a real
+     * colour here the @supports block below would leave the text invisible,
+     * so this resolves to the middle stop of dnte-gradient-two.
+     */
+    color: var(--wp--preset--color--dnte-bali-hai, #8FA4B7);
+
+    &--400 {
+        font-weight: 400;
+    }
+
+    &--600 {
+        font-weight: 600;
+    }
+}
+
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+    .dnte-highlight {
+        background-image: var(--wp--preset--gradient--dnte-gradient-two);
+
+        /*
+         * `-webkit-text-fill-color` wins over `color` where it is supported,
+         * so both are set to keep the glyphs transparent and let the gradient
+         * behind them show through.
+         */
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        -webkit-text-fill-color: transparent;
+    }
+}

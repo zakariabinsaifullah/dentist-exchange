@@ -1,0 +1,317 @@
+/* =============================================================================
+   Posts Grid Shortcode — shortcode.css
+   ============================================================================= */
+
+/* Wrapper */
+.ipg-wrapper {
+    transition: opacity 0.2s ease;
+}
+
+.ipg-wrapper.is-loading {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* =============================================================================
+   Filter Nav
+   ============================================================================= */
+
+.ipg-nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 50px;
+    justify-content: center;
+}
+
+.ipg-filter-btn {
+    cursor: pointer;
+    background: transparent;
+    border: 1px solid #551c25;
+    font-size: 18px;
+    font-weight: 400;
+    color: #000000;
+    padding: 10px 24px;
+    border-radius: 100px;
+    transition: all 0.25s ease;
+    line-height: 1.2;
+}
+
+.ipg-filter-btn:hover {
+    background: #551c25;
+    color: #ffffff;
+}
+
+.ipg-filter-btn.active {
+    background: #551c25;
+    color: #ffffff;
+    font-weight: 400;
+}
+
+.ipg-filter-btn.active:hover {
+    background: #551c25;
+    color: #ffffff !important;
+}
+
+/* =============================================================================
+   Post Grid
+   ============================================================================= */
+
+.ipg-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 24px;
+    row-gap: 24px;
+}
+
+@media (max-width: 900px) {
+    .ipg-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 560px) {
+    .ipg-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ipg-nav {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .ipg-nav .ipg-filter-btn {
+        width: 100%;
+        padding: 16px 24px;
+    }
+}
+
+.ipg-no-posts {
+    color: #838484;
+    font-size: 15px;
+}
+
+/* =============================================================================
+   Post Card
+   ============================================================================= */
+
+.ipg-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e8ecf0;
+    border-radius: 20px;
+    padding: 16px;
+    position: relative;
+    transition: border-color 0.2s ease;
+}
+
+/* Gradient-one border ring on hover (masked ::before, same as kadence section). */
+.ipg-card:hover::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    padding: 2px;
+    border-radius: inherit;
+    background: var(--wp--preset--gradient--dnte-gradient-one);
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+}
+
+.ipg-card__image {
+    display: block;
+    overflow: hidden;
+    border-radius: 12px;
+    aspect-ratio: 4 / 3;
+    margin-bottom: 16px;
+}
+
+.ipg-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s ease;
+}
+
+.ipg-card__image:hover img {
+    transform: scale(1.04);
+}
+
+.ipg-card__body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+/* Meta row: category · date + reading time */
+.ipg-card__meta-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.ipg-card__category {
+    font-size: 14px;
+    font-weight: 500;
+    color: #551c25;
+    line-height: 1.4;
+}
+
+.ipg-card__meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ipg-card__date,
+.ipg-card__read-time {
+    font-size: 14px;
+    color: #838484;
+}
+
+.ipg-card__sep {
+    font-size: 14px;
+    color: #838484;
+}
+
+.ipg-card__title {
+    margin: 0 0 16px;
+    font-size: 20px;
+    color: #080046;
+}
+
+.ipg-card__title a {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.2s ease;
+}
+
+.ipg-card__title a:hover {
+    color: #551c25;
+}
+
+.ipg-card__excerpt {
+    margin: 0 0 16px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Read more button */
+.ipg-card__read-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: auto;
+    font-size: 14px;
+    font-weight: 500;
+    color: #551c25;
+    text-decoration: none;
+    transition: color 0.2s ease, gap 0.2s ease;
+    align-self: flex-start;
+}
+
+.ipg-card__read-more svg {
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+}
+
+.ipg-card__read-more:hover {
+    color: #551c25;
+    gap: 12px;
+}
+
+.ipg-card__read-more:hover svg {
+    transform: translateX(2px);
+}
+
+.ipg-card__avatar {
+    flex-shrink: 0;
+    line-height: 0;
+}
+
+.ipg-card__avatar-img {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+}
+
+/* =============================================================================
+   Pagination
+   ============================================================================= */
+
+.ipg-pagination-wrap {
+    margin-top: 50px;
+}
+
+.ipg-pagination {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.ipg-page-btn {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 6px;
+    background: #ffffff;
+    border: 1px solid #d8d8d8;
+    border-radius: 8px;
+    color: #191919;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1;
+    transition: all 0.2s ease;
+}
+
+.ipg-page-btn:hover:not(:disabled) {
+    border-color: #551c25;
+    color: #551c25;
+}
+
+.ipg-page-btn.active {
+    background: #551c25;
+    border-color: #551c25;
+    color: #ffffff;
+}
+
+.ipg-page-btn:disabled {
+    cursor: default;
+    opacity: 0.35;
+}
+
+.ipg-page-btn.ipg-page-arrow svg {
+    display: block;
+    pointer-events: none;
+}
+
+.ipg-page-ellipsis {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    color: #b2b2b2;
+    font-size: 14px;
+    user-select: none;
+    letter-spacing: 0.05em;
+}

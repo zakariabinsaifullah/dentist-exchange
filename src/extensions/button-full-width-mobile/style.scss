@@ -1,0 +1,9 @@
+@media (max-width: 767px) {
+    .has-full-width-mobile {
+        display: block !important;
+        width: 100% !important;
+    }
+    .has-full-width-mobile .wp-block-button__link {
+        width: 100%;
+    }
+}

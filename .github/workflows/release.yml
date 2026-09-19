@@ -1,0 +1,51 @@
+name: Publish GitHub Release
+
+on:
+    push:
+        tags:
+            - '*'
+
+jobs:
+    build-and-release:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v6
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v6
+              with:
+                  node-version: '22'
+                  cache: 'npm'
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Build theme
+              run: npm run build
+
+            - name: Prepare Release Artifact
+              run: |
+                  # 1. Create a build directory
+                  mkdir dentist-exchange
+
+                  # 2. Copy files to build dir
+                  rsync -rc --exclude-from='.distignore' --exclude 'dentist-exchange' . dentist-exchange/
+
+                  # 3. CLEANUP: Force remove any .DS_Store files that slipped through
+                  find dentist-exchange -name ".DS_Store" -type f -delete
+
+                  # 4. Zip the clean directory
+                  zip -r dentist-exchange.zip dentist-exchange
+            - name: Create Release
+              uses: ncipollo/release-action@v1.14.0
+              with:
+                  artifacts: 'dentist-exchange.zip'
+                  token: ${{ secrets.TOKEN }}
+                  allowUpdates: true
+                  makeLatest: true
+                  tag: ${{ github.ref_name }}
+                  body: 'Release ${{ github.ref_name }}'

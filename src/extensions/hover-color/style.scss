@@ -1,0 +1,68 @@
+// Variables
+$hover-transition-duration: var(--hover-transition-duration, 200ms);
+$hover-transition-timing: var(--hover-transition-timing, cubic-bezier(0.4, 0, 0.2, 1));
+$hover-color: var(--hover-color);
+$hover-background-color: var(--hover-background-color);
+$hover-br-color: var(--hover-br-color);
+
+// Mixin for hover transitions
+@mixin hover-transition($property) {
+	transition: $property $hover-transition-duration $hover-transition-timing;
+}
+
+// Base color hover styles
+.has-hover__color:not(.wp-block-button) {
+	@include hover-transition(color);
+	&:hover {
+		color: $hover-color !important;
+	}
+}
+
+.has-hover__background-color:not(.wp-block-button) {
+	@include hover-transition(background-color);
+	&:hover {
+		background-color: $hover-background-color !important;
+	}
+}
+
+.has-hover__border-color:not(.wp-block-button) {
+	@include hover-transition(border-color);
+	&:hover {
+		border-color: $hover-br-color !important;
+	}
+}
+
+// WordPress button blocks require special handling: hover styles must target
+// the inner .wp-element-button rather than the outer wrapper div.
+.wp-block-button.has-hover__color {
+	.wp-element-button {
+		@include hover-transition(color);
+	}
+	&:hover {
+		.wp-element-button {
+			color: $hover-color !important;
+		}
+	}
+}
+
+.wp-block-button.has-hover__background-color {
+	.wp-element-button {
+		@include hover-transition(background-color);
+	}
+	&:hover {
+		.wp-element-button {
+			background-color: $hover-background-color !important;
+		}
+	}
+}
+
+.wp-block-button.has-hover__border-color {
+	.wp-element-button {
+		@include hover-transition(border-color);
+	}
+	&:hover {
+		.wp-element-button {
+			border-color: $hover-br-color !important;
+		}
+	}
+}

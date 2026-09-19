@@ -1,0 +1,216 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "dnte/hero-slider",
+    "version": "1.0.0",
+    "title": "Hero Slider",
+    "category": "dnte",
+    "icon": "format-image",
+    "description": "A hero with a sliding background image, fixed content, and a thumbnail gallery to pick the active image.",
+    "keywords": ["hero", "slider", "banner", "thumbnails", "background"],
+    "example": {},
+    "supports": {
+        "html": false,
+        "align": ["wide", "full"],
+        "anchor": true,
+        "color": {
+            "text": true,
+            "background": false,
+            "gradients": false
+        },
+        "spacing": {
+            "margin": true,
+            "padding": true
+        }
+    },
+    "attributes": {
+        "contentMode": {
+            "type": "string",
+            "default": ""
+        },
+        "slides": {
+            "type": "array",
+            "default": [],
+            "items": {
+                "type": "object"
+            }
+        },
+        "blockStyle": {
+            "type": "object"
+        },
+        "resMode": {
+            "type": "string",
+            "default": "Desktop"
+        },
+        "heightType": {
+            "type": "object",
+            "default": {
+                "Desktop": "fixed"
+            }
+        },
+        "heights": {
+            "type": "object",
+            "default": {
+                "Desktop": "720px",
+                "Tablet": "560px",
+                "Mobile": "480px"
+            }
+        },
+        "vAligns": {
+            "type": "object",
+            "default": {
+                "Desktop": "middle"
+            }
+        },
+        "effect": {
+            "type": "string",
+            "default": "fade"
+        },
+        "speed": {
+            "type": "number",
+            "default": 800
+        },
+        "autoplay": {
+            "type": "boolean",
+            "default": false
+        },
+        "delay": {
+            "type": "number",
+            "default": 5000
+        },
+        "loop": {
+            "type": "boolean",
+            "default": false
+        },
+        "overlayColor": {
+            "type": "string"
+        },
+        "overlayGradient": {
+            "type": "string"
+        },
+        "overlayOpacity": {
+            "type": "number",
+            "default": 40
+        },
+        "contentWidths": {
+            "type": "object",
+            "default": {}
+        },
+        "contentAlign": {
+            "type": "string",
+            "default": "left"
+        },
+        "contentPosition": {
+            "type": "string",
+            "default": "center"
+        },
+        "constrainThumbs": {
+            "type": "boolean",
+            "default": true
+        },
+        "contentPadding": {
+            "type": "object"
+        },
+        "showThumbs": {
+            "type": "boolean",
+            "default": true
+        },
+        "thumbWidths": {
+            "type": "object",
+            "default": {
+                "Desktop": "152px",
+                "Mobile": "104px"
+            }
+        },
+        "thumbHeights": {
+            "type": "object",
+            "default": {
+                "Desktop": "88px",
+                "Mobile": "62px"
+            }
+        },
+        "thumbGaps": {
+            "type": "object",
+            "default": {
+                "Desktop": 20,
+                "Mobile": 12
+            }
+        },
+        "thumbsAlign": {
+            "type": "string",
+            "default": "left"
+        },
+        "thumbsOffset": {
+            "type": "string"
+        },
+        "thumbRadius": {
+            "type": "string"
+        },
+        "thumbOpacity": {
+            "type": "number",
+            "default": 70
+        },
+        "thumbBorderColor": {
+            "type": "string"
+        },
+        "thumbBorderWidth": {
+            "type": "string"
+        },
+        "showArrows": {
+            "type": "boolean",
+            "default": true
+        },
+        "navColor": {
+            "type": "string"
+        },
+        "navbgColor": {
+            "type": "string"
+        },
+        "navSize": {
+            "type": "string"
+        },
+        "navIconSize": {
+            "type": "string"
+        },
+        "navGap": {
+            "type": "string"
+        },
+        "navBorder": {
+            "type": "object"
+        },
+        "navBorderRadius": {
+            "type": "object"
+        },
+        "navPadding": {
+            "type": "object"
+        },
+        "prevIconName": {
+            "type": "string",
+            "default": "arrow-left"
+        },
+        "prevIconType": {
+            "type": "string",
+            "default": "fill"
+        },
+        "prevCustomSvg": {
+            "type": "string"
+        },
+        "nextIconName": {
+            "type": "string",
+            "default": "arrow-right"
+        },
+        "nextIconType": {
+            "type": "string",
+            "default": "fill"
+        },
+        "nextCustomSvg": {
+            "type": "string"
+        }
+    },
+    "textdomain": "dentist-exchange",
+    "render": "file:./render.php",
+    "editorScript": ["file:./index.js"],
+    "editorStyle": ["file:./index.css"],
+    "style": ["file:./style-index.css", "dnte-swiper-style"],
+    "viewScript": ["file:./view.js", "dnte-swiper-script"]
+}

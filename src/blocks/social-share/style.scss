@@ -1,0 +1,83 @@
+.wp-block-dnte-social-share {
+	--icon-size: 24px;
+	--gap: 12px;
+	--icon-color: currentColor;
+	--icon-bg: transparent;
+	--icon-radius: 0px;
+	--icon-padding: 0px;
+
+	&.justify-center .dnte-social-share__icons {
+		justify-content: center;
+	}
+
+	&.justify-right .dnte-social-share__icons {
+		justify-content: flex-end;
+	}
+
+	&.justify-left .dnte-social-share__icons {
+		justify-content: flex-start;
+	}
+
+	.dnte-social-share__icons {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--gap);
+	}
+
+	.dnte-social-share__item {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: var(--icon-size);
+		height: var(--icon-size);
+		padding: var(--icon-padding);
+		color: var(--icon-color);
+		background-color: var(--icon-bg);
+		border-radius: var(--icon-radius);
+		border: none;
+		cursor: pointer;
+		text-decoration: none;
+		line-height: 0;
+		box-sizing: content-box;
+		transition: opacity 0.2s ease;
+
+		&:hover {
+			opacity: 0.7;
+		}
+
+		svg {
+			display: block;
+			width: 100%;
+			height: 100%;
+		}
+
+		// Copy link button — "Copied!" tooltip
+		&.is-copy-link {
+			position: relative;
+			background: none;
+
+			&::after {
+				content: 'Copied!';
+				position: absolute;
+				bottom: calc(100% + 6px);
+				left: 50%;
+				transform: translateX(-50%);
+				background: #000;
+				color: #fff;
+				font-size: 11px;
+				line-height: 1;
+				padding: 4px 8px;
+				border-radius: 4px;
+				white-space: nowrap;
+				opacity: 0;
+				pointer-events: none;
+				transition: opacity 0.2s ease;
+			}
+
+			&.is-copied::after {
+				opacity: 1;
+			}
+		}
+	}
+}

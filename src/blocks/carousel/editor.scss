@@ -1,0 +1,42 @@
+.dnte-toggle-group-control {
+    width: 100%;
+    border: 1px solid #1e1e1e !important;
+
+    &.dnte-valign {
+        .dashicons-align-pull-left,
+        .dashicons-align-pull-right {
+            transform: rotate(90deg);
+        }
+    }
+}
+
+.dnte-editor-slides {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+
+    // Scrollbar styling
+    &::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 4px;
+    }
+
+    @for $i from 1 through 6 {
+        &.columns-#{$i} {
+            .wp-block-dnte-slide {
+                width: calc(100% / #{$i});
+                min-width: calc(100% / #{$i});
+            }
+        }
+    }
+
+    @for $i from 0 through 100 {
+        &.gap-#{$i} {
+            gap: #{$i}px;
+        }
+    }
+}

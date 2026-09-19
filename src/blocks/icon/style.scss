@@ -1,0 +1,77 @@
+.wp-block-dnte-icon {
+    display: flex;
+
+    &.justify-center {
+        justify-content: center;
+    }
+    &.justify-right {
+        justify-content: flex-end;
+    }
+    &.justify-left {
+        justify-content: flex-start;
+    }
+
+    .icon-container {
+        line-height: 0;
+    }
+
+    /**
+     * Sizes cascade down: a breakpoint that was never given its own size falls
+     * back to the next larger one, so setting only the desktop size is enough.
+     */
+    svg {
+        width: 1em;
+        height: 1em;
+        font-size: var(--msize, var(--tsize, var(--dsize, 36px)));
+    }
+
+    &.is-fill svg {
+        fill: currentColor;
+    }
+
+    &.is-line svg path {
+        stroke: currentColor;
+    }
+
+    /* Icon + text wrapper */
+    .dnte-icon-block-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--list-gap);
+
+        &.icon-valign-top {
+            align-items: flex-start;
+        }
+
+        &.icon-valign-center {
+            align-items: center;
+        }
+
+        &.icon-valign-bottom {
+            align-items: flex-end;
+        }
+    }
+
+    /* Heading */
+    .icon-heading {
+        color: var(--title-color);
+        font-size: var(--title-size);
+        font-family: var(--title-font-family);
+        margin: 0;
+    }
+
+    // desktop view
+    @media (min-width: 1025px) {
+        svg {
+            font-size: var(--dsize, 36px);
+        }
+    }
+
+    // tablet view
+    @media (min-width: 768px) and (max-width: 1024px) {
+        svg {
+            font-size: var(--tsize, var(--dsize, 36px));
+        }
+    }
+}

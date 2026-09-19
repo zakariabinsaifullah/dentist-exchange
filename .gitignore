@@ -1,0 +1,8 @@
+build
+node_modules
+vendor
+*.log
+*.cache
+*.tmp
+.DS_Store
+.idea

@@ -1,0 +1,40 @@
+.dnte-global-hover {
+	// Container transitions.
+	transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+	// Pre-set transitions on every descendant so the colour change animates.
+	*,
+	svg path,
+	svg circle,
+	svg rect,
+	svg polygon,
+	svg line,
+	svg polyline,
+	svg ellipse {
+		transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1), fill 0.2s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	&:hover {
+		background-color: var(--dnte-ghover-bg) !important;
+
+		// Force colour on the wrapper itself …
+		color: var(--dnte-ghover-color) !important;
+
+		// … and every descendant element (links, headings, spans, etc.).
+		* {
+			color: var(--dnte-ghover-color) !important;
+		}
+
+		// SVG shape fills and strokes.
+		svg path,
+		svg circle,
+		svg rect,
+		svg polygon,
+		svg line,
+		svg polyline,
+		svg ellipse {
+			fill: var(--dnte-ghover-color) !important;
+			stroke: var(--dnte-ghover-color) !important;
+		}
+	}
+}

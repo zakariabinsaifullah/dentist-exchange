@@ -1,0 +1,146 @@
+/*
+Theme Name: Dentist Exchange
+Theme URI: 
+Author: Dentist Exchange
+Description: This Full Site Editing Theme is exclusively developed for Dentist Exchange. It is designed to provide a seamless and intuitive user experience, allowing visitors to easily navigate and access the information they need about Dentist Exchange.
+Requires at least: 6.7
+Tested up to: 7.1
+Requires PHP: 7.4
+Version: 1.7.0
+Text Domain: dentist-exchange
+*/
+
+a {
+    text-decoration: none;
+}
+
+/* Focus styles */
+a:focus {
+    outline: none;
+}
+
+a:hover,
+a:focus-visible {
+    text-decoration: none !important;
+}
+
+/* Increase the bottom margin on submenus, so that the outline is visible. */
+.wp-block-navigation .wp-block-navigation-submenu .wp-block-navigation-item:not(:last-child) {
+    margin-bottom: 3px;
+}
+
+/* Increase the outline offset on the parent menu items, so that the outline does not touch the text. */
+.wp-block-navigation .wp-block-navigation-item .wp-block-navigation-item__content {
+    outline-offset: 4px;
+}
+
+/* Remove outline offset from the submenus, otherwise the outline is visible outside the submenu container. */
+.wp-block-navigation .wp-block-navigation-item ul.wp-block-navigation__submenu-container .wp-block-navigation-item__content {
+    outline-offset: 0;
+}
+
+/*
+ * Progressive enhancement to reduce widows and orphans
+ * https://github.com/WordPress/gutenberg/issues/55190
+ */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+blockquote,
+caption,
+figcaption,
+p {
+    text-wrap: pretty;
+}
+
+/* 
+* Global margin for headings and paragraphs to prevent margin collapse with the footer and header.
+*/
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+/*
+ * Change the position of the more block on the front, by making it a block level element.
+ * https://github.com/WordPress/gutenberg/issues/65934
+*/
+.more-link {
+    display: block;
+}
+
+/*
+ * Prevents unnecessary scrollbars while handling long lines of preformatted text.
+ * https://core.trac.wordpress.org/ticket/63875
+ */
+:where(pre) {
+    overflow-x: auto;
+}
+
+:where(.wp-site-blocks) > * {
+    margin-block-start: 0 !important;
+    margin-block-end: 0 !important;
+}
+
+.dnte-footer a,
+.dnte-footer p {
+    font-size: 14px !important;
+    font-family: 'Roboto', sans-serif !important;
+}
+
+footer .wp-block-paragraph a {
+    font-family: 'Roboto', sans-serif !important;
+}
+
+.dnte-footer .wp-block-gallery.has-nested-images figure.wp-block-image {
+    max-width: 60px !important;
+}
+
+.gform-theme--framework
+    select:where(
+        :not(.gform-theme__disable):not(.gform-theme__disable *)
+            :not(.gform-theme__disable-framework):not(.gform-theme__disable-framework *)
+    ):where(:not([multiple])) {
+    background-repeat: no-repeat !important;
+    background-position: right 10px center !important;
+    padding-right: 40px !important;
+}
+
+.wp-block-kadence-navigation-link {
+    position: relative;
+}
+
+.sub-menu .wp-block-kadence-navigation-link:after {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: #551c25;
+    content: '';
+    transition: 0.3s;
+}
+
+.sub-menu .wp-block-kadence-navigation-link:hover:after {
+    width: 100%;
+}
+
+.kt-blocks-accordion-header .kt-blocks-accordion-title,
+a.kb-nav-link-content {
+    font-family: 'Roboto', sans-serif;
+}
+
+.taxonomy-category a {
+    margin: 0 !important;
+    padding: 0 !important;
+    font-family: 'Roboto', sans-serif;
+}

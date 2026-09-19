@@ -1,0 +1,422 @@
+/**
+ * Hero Slider.
+ *
+ * A four-layer stack: the background Swiper, a tint, the fixed content, and the
+ * thumbnail strip. Only the background moves — the content is a sibling of the
+ * slider rather than a child of it, so nothing about it is tied to the active
+ * slide.
+ *
+ * Responsive values arrive as one custom property per breakpoint (`--d…`,
+ * `--t…`, `--m…`). The Desktop → Tablet/Mobile fallback is already resolved in
+ * JS, so a property is only ever missing when it was genuinely never set —
+ * hence the literal fallbacks here rather than `var()` chains.
+ */
+.wp-block-dnte-hero-slider {
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    /**
+     * No `width: 100%` here, deliberately.
+     *
+     * `alignfull` full-bleeds a block by giving it negative left/right margins
+     * equal to the theme's root padding and leaving the width to resolve from
+     * `margin-left + width + margin-right = containing block width`. A width of
+     * 100% over-constrains that equation, so the browser drops `margin-right`:
+     * the block still pulls left but stops short on the right, leaving a gap
+     * exactly as wide as the root padding. `width: auto` absorbs both margins.
+     */
+
+    /* Keeps the overlay's z-index from escaping into the rest of the page. */
+    isolation: isolate;
+
+    /* Overridden by the block's own padding controls when they are set. */
+    padding: clamp(24px, 5vw, 90px);
+
+    min-height: var(--mheight, auto);
+
+    @media (min-width: 768px) and (max-width: 1024px) {
+        min-height: var(--theight, auto);
+    }
+
+    @media (min-width: 1025px) {
+        min-height: var(--dheight, auto);
+    }
+
+    /* ---------------------------------------------------------------------
+     * Layer 1 — the sliding background
+     * ------------------------------------------------------------------ */
+    .dnte-hero-bg {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        width: 100%;
+        height: 100%;
+
+        .swiper-slide {
+            height: 100%;
+        }
+    }
+
+    /* `<picture>` is only present on slides carrying a separate mobile image. */
+    .dnte-hero-picture {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+
+    .dnte-hero-image {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    /* ---------------------------------------------------------------------
+     * Layer 2 — the tint
+     * ------------------------------------------------------------------ */
+    .dnte-hero-overlay {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        pointer-events: none;
+        background-color: var(--hero-overlay-color, transparent);
+        background-image: var(--hero-overlay-image, none);
+        opacity: var(--hero-overlay-opacity, 0.4);
+    }
+
+    /* ---------------------------------------------------------------------
+     * Layer 3 — the fixed content
+     * ------------------------------------------------------------------ */
+    .dnte-hero-content {
+        position: relative;
+        z-index: 2;
+        box-sizing: border-box;
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        padding: var(--content-padding, 0);
+        justify-content: var(--mvalign, center);
+
+        @media (min-width: 768px) and (max-width: 1024px) {
+            justify-content: var(--tvalign, center);
+        }
+
+        @media (min-width: 1025px) {
+            justify-content: var(--dvalign, center);
+        }
+    }
+
+    /**
+     * The width-limited column. Auto margins rather than the parent's
+     * `align-items` do the placing, so the thumbnail strip below — which lives in
+     * a different flex container — can be given the identical rule and line its
+     * left edge up with the copy.
+     */
+    .dnte-hero-content-inner {
+        box-sizing: border-box;
+        width: 100%;
+        /* Both fall back to `auto`, so a block saved before Content Position
+           existed centres its limited column rather than pinning it left. */
+        margin-left: var(--content-ml, auto);
+        margin-right: var(--content-mr, auto);
+        max-width: var(--mcontent-w, none);
+
+        @media (min-width: 768px) and (max-width: 1024px) {
+            max-width: var(--tcontent-w, none);
+        }
+
+        @media (min-width: 1025px) {
+            max-width: var(--dcontent-w, none);
+        }
+    }
+
+    /**
+     * Per-slide mode overlays one content layer per slide so they can cross-fade.
+     *
+     * The stacking happens on this inner wrapper rather than on
+     * `.dnte-hero-content` itself, which stays a column flexbox. Turning that
+     * into a grid would silently repurpose its `justify-content` — the vertical
+     * alignment in a column flexbox, but the *horizontal* distribution in a grid
+     * — and swing the copy into the middle of the hero.
+     *
+     * Every panel shares one cell, so the tallest sizes the layer and nothing
+     * jumps as slides change.
+     */
+    &.is-per-slide .dnte-hero-content-stack {
+        display: grid;
+        width: 100%;
+    }
+
+    &.is-per-slide .dnte-hero-content-slide {
+        grid-area: 1 / 1;
+        min-width: 0;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.4s;
+    }
+
+    &.is-per-slide .dnte-hero-content-slide.is-active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    &.content-left .dnte-hero-content {
+        align-items: flex-start;
+    }
+
+    &.content-center .dnte-hero-content {
+        align-items: center;
+
+        .dnte-hero-content-inner {
+            text-align: center;
+        }
+    }
+
+    &.content-right .dnte-hero-content {
+        align-items: flex-end;
+
+        .dnte-hero-content-inner {
+            text-align: right;
+        }
+    }
+
+    /* ---------------------------------------------------------------------
+     * Layer 4 — the thumbnail strip
+     * ------------------------------------------------------------------ */
+    /**
+     * The strip shares the content column's container — same max-width, same auto
+     * margins — so the first thumbnail's left edge lines up with the heading's
+     * rather than sitting out at the block padding. `--thumbs-max: none` opts a
+     * hero out and lets the strip run the full width.
+     */
+    .dnte-hero-thumbs-wrap {
+        position: relative;
+        z-index: 3;
+        box-sizing: border-box;
+        display: flex;
+        width: 100%;
+        align-items: center;
+        gap: var(--nav-gap, 24px);
+        padding-bottom: var(--thumbs-offset, 0px);
+        margin-left: var(--content-ml, 0);
+        margin-right: var(--content-mr, 0);
+        max-width: var(--thumbs-max, var(--mcontent-w, none));
+
+        @media (min-width: 768px) and (max-width: 1024px) {
+            max-width: var(--thumbs-max, var(--tcontent-w, none));
+        }
+
+        @media (min-width: 1025px) {
+            max-width: var(--thumbs-max, var(--dcontent-w, none));
+        }
+    }
+
+    /**
+     * The strip is sized to exactly the run of thumbnails it holds, so the
+     * arrows sit against it instead of being flung to the edges of the hero.
+     *
+     * It cannot simply shrink-to-fit: Swiper's own `.swiper-wrapper` is
+     * `width: 100%`, so an auto-width container would resolve against a child
+     * that resolves against the container. The count is published as
+     * `--thumb-count` and the width worked out from it; `min()` hands the
+     * overflow back to Swiper once the run is wider than the hero.
+     */
+    .dnte-hero-thumbs {
+        flex: 0 1 auto;
+        min-width: 0;
+
+        /**
+         * Swiper's base CSS sets `margin-inline: auto` on every `.swiper`. In a
+         * flex row that soaks up all the free space and pushes the arrows out to
+         * the edges of the hero, so it has to go.
+         */
+        margin-left: 0;
+        margin-right: 0;
+
+        width: min(100%, calc(var(--mthumb-w, 104px) * var(--thumb-count, 1) + var(--mthumb-gap, 12px) * (var(--thumb-count, 1) - 1)));
+
+        @media (min-width: 768px) and (max-width: 1024px) {
+            width: min(100%, calc(var(--tthumb-w, 152px) * var(--thumb-count, 1) + var(--tthumb-gap, 20px) * (var(--thumb-count, 1) - 1)));
+        }
+
+        @media (min-width: 1025px) {
+            width: min(100%, calc(var(--dthumb-w, 152px) * var(--thumb-count, 1) + var(--dthumb-gap, 20px) * (var(--thumb-count, 1) - 1)));
+        }
+    }
+
+    &.thumbs-center .dnte-hero-thumbs-wrap {
+        justify-content: center;
+    }
+
+    &.thumbs-right .dnte-hero-thumbs-wrap {
+        justify-content: flex-end;
+    }
+
+    /* `slidesPerView: 'auto'` means the slide takes its width from its content. */
+    .dnte-hero-thumbs .swiper-slide {
+        width: auto;
+        height: auto;
+    }
+
+    .dnte-hero-thumb {
+        display: block;
+        box-sizing: border-box;
+        padding: 0;
+        border: 0;
+        background: none;
+        cursor: pointer;
+        overflow: hidden;
+        border-radius: var(--thumb-radius, 0);
+        opacity: var(--thumb-opacity, 1);
+
+        /**
+         * A ring drawn with box-shadow rather than a border, so switching the
+         * active thumbnail cannot nudge the strip's layout by a pixel.
+         */
+        box-shadow: 0 0 0 0 transparent;
+        transition:
+            opacity 0.3s ease,
+            box-shadow 0.3s ease;
+
+        width: var(--mthumb-w, 104px);
+        height: var(--mthumb-h, 62px);
+
+        @media (min-width: 768px) and (max-width: 1024px) {
+            width: var(--tthumb-w, 152px);
+            height: var(--tthumb-h, 88px);
+        }
+
+        @media (min-width: 1025px) {
+            width: var(--dthumb-w, 152px);
+            height: var(--dthumb-h, 88px);
+        }
+
+        img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        &:hover {
+            opacity: 1;
+        }
+
+        &:focus-visible {
+            outline: 2px solid currentColor;
+            outline-offset: 3px;
+        }
+    }
+
+    .swiper-slide-thumb-active .dnte-hero-thumb,
+    .dnte-hero-thumb.is-active {
+        opacity: 1;
+        box-shadow: 0 0 0 var(--thumb-border-width, 0px) var(--thumb-border-color, transparent);
+    }
+
+    /* ---------------------------------------------------------------------
+     * Arrows — a bare chevron, no button chrome, matching the carousel block.
+     * ------------------------------------------------------------------ */
+    .dnte-nav {
+        flex-shrink: 0;
+        box-sizing: border-box;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: var(--nav-size, 36px);
+        height: var(--nav-size, 36px);
+        padding: var(--nav-padding, 0);
+        border-width: var(--nav-border-width, 0);
+        border-style: var(--nav-border-style, solid);
+        border-color: var(--nborder-color, transparent);
+        background-color: var(--nav-bg, transparent);
+        border-radius: var(--nav-radius, 0);
+        color: var(--nav-color, #fff);
+        cursor: pointer;
+        transition: opacity 0.3s ease;
+
+        &:hover {
+            opacity: 0.7;
+        }
+
+        &:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+        &:focus-visible {
+            outline: 2px solid currentColor;
+            outline-offset: 2px;
+        }
+
+        /**
+         * The chevron itself: a square wearing two borders, turned 45°. Drawn in
+         * CSS so the stroke stays hairline-crisp and mitred at any size.
+         */
+        &::before {
+            content: '';
+            box-sizing: border-box;
+            flex-shrink: 0;
+            width: var(--nicon-size, 20px);
+            height: var(--nicon-size, 20px);
+            border-style: solid;
+            border-width: 0;
+            border-color: currentColor;
+            transform: rotate(45deg);
+        }
+
+        /* The picked icon steps aside for the chevron... */
+        > svg {
+            display: none;
+        }
+
+        /* ...but a hand-inserted SVG still wins. */
+        &:has(.dnte-custom-svg-container)::before {
+            display: none;
+        }
+
+        svg {
+            width: 1em;
+            height: 1em;
+            font-size: var(--nicon-size, 20px);
+            fill: currentColor;
+        }
+
+        &.swiper-button-disabled {
+            opacity: 0.35;
+            pointer-events: none;
+        }
+    }
+
+    .swiper-custom-prev::before {
+        border-left-width: var(--nav-stroke, 2px);
+        border-bottom-width: var(--nav-stroke, 2px);
+    }
+
+    .swiper-custom-next::before {
+        border-top-width: var(--nav-stroke, 2px);
+        border-right-width: var(--nav-stroke, 2px);
+    }
+
+    /**
+     * Swiper only animates once it has initialised; until then every slide is
+     * stacked and visible. Hiding the rest avoids a flash of all images at once.
+     */
+    .dnte-hero-bg:not(.swiper-initialized) .swiper-slide:not(:first-child) {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .wp-block-dnte-hero-slider {
+        .dnte-hero-thumb,
+        .dnte-nav {
+            transition: none;
+        }
+    }
+}

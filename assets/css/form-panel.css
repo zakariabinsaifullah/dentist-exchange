@@ -1,0 +1,302 @@
+/* ── Slide-in Form Panel ───────────────────────────────────────────────────── */
+
+.dnte-form-panel__body .gform-theme--foundation .gform_fields {
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.dnte-form-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 9998;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+        opacity 0.35s ease,
+        visibility 0.35s ease;
+}
+
+.dnte-form-overlay.is-open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.dnte-form-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: 720px;
+    background: #ffffff;
+    z-index: 99999;
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.15);
+}
+
+.dnte-form-panel.is-open {
+    transform: translateX(0);
+}
+
+/* ── Header ──────────────────────────────────────────────────────────────────── */
+
+.dnte-form-panel__header {
+    background: var(--wp--preset--color--dnte-wine-berry, #551c25);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    flex-shrink: 0;
+}
+
+.dnte-form-panel__phone {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #ffffff;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+.dnte-form-panel__phone:hover {
+    color: #ffffff;
+    opacity: 0.85;
+    text-decoration: none;
+}
+
+.dnte-form-panel__close {
+    background: none;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    padding: 4px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s ease;
+    border-radius: 0;
+}
+
+.dnte-form-panel__close:hover {
+    background: none;
+    color: #ffffff;
+    opacity: 0.7;
+}
+
+/* ── Body ────────────────────────────────────────────────────────────────────── */
+
+.dnte-form-panel__body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 40px 32px 52px;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* ── Tab nav ────────────────────────────────────────────────────────────────── */
+
+.dnte-form-panel__tabs {
+    display: flex;
+    justify-content: center;
+    background: #f2f2f2;
+    border-radius: 50px;
+    padding: 8px;
+    margin: 0 auto 30px;
+    max-width: 360px;
+    gap: 4px;
+}
+
+.dnte-form-panel__tab {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.2;
+    color: #2A3136;
+    min-height: 42px;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
+    font-family: inherit;
+}
+
+.dnte-form-panel__tab:hover {
+    color: #2A3136;
+}
+
+.dnte-form-panel__tab:focus-visible {
+    outline: 2px solid #8fa4b7;
+    outline-offset: 2px;
+}
+
+.dnte-form-panel__tab.is-active {
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    color: #2A3136;
+}
+
+/* ── Tab panels ─────────────────────────────────────────────────────────────── */
+
+.dnte-form-panel__panel[hidden] {
+    display: none;
+}
+
+.dnte-form-panel__calendly {
+    margin-top: 8px;
+}
+
+.dnte-form-panel__calendly iframe {
+    display: block;
+    width: 100%;
+}
+
+.dnte-form-panel__title {
+    font-size: clamp(24px, 6vw, 40px);
+    font-weight: 400;
+    line-height: 1.2;
+    color: #515353;
+    margin: 0 0 16px;
+}
+
+.dnte-form-panel__desc {
+    font-size: 16px;
+    color: #838484;
+    line-height: 1.2;
+    margin: 0 0 20px;
+}
+
+/* ── Body scroll lock ────────────────────────────────────────────────────────── */
+
+body.dnte-panel-open {
+    overflow: hidden;
+}
+
+/* ── Gravity Forms fields ───────────────────────────────────────────────────── */
+
+/* Roboto across every Gravity Form. GF's font variables all resolve back to
+   --gf-font-family-base: controls and placeholders through -primary, labels
+   through -secondary, descriptions through -tertiary, buttons and validation
+   direct. Setting that one variable therefore covers the lot.
+
+   The element rule after it is for the no-framework theme, which predates the
+   CSS API and does not read those variables. */
+.gform_wrapper {
+    --gf-font-family-base: var(--wp--preset--font-family--roboto, Roboto, sans-serif);
+}
+
+.gform_wrapper input,
+.gform_wrapper select,
+.gform_wrapper textarea,
+.gform_wrapper button,
+.gform_wrapper label,
+.gform_wrapper legend,
+.gform_wrapper .gfield_description,
+.gform_wrapper .gform_button {
+    font-family: var(--wp--preset--font-family--roboto, Roboto, sans-serif) !important;
+}
+
+/* Field metrics come from Gravity Forms' own CSS API custom properties rather
+   than from per-element overrides. GF derives the height, radius, font size and
+   padding of every control from these, so input, select and textarea stay in
+   step — and the select keeps its native chevron, which GF sizes and positions
+   from these same variables. Scoped to --framework so the no-framework
+   subscription form in style.css is left alone; the doubled class is needed to
+   out-specify GF's own defaults, which are declared on `.gform-theme--framework`
+   in a stylesheet that loads after this one. */
+.gform_wrapper.gform-theme--framework {
+    --gf-ctrl-size: 52px;
+    --gf-ctrl-size-md: 52px;
+    --gf-ctrl-line-height: 52px;
+    --gf-ctrl-font-size: 16px;
+    --gf-ctrl-padding-x: 16px;
+    --gf-ctrl-radius: 3px;
+    --gf-ctrl-select-icon-size: 12px;
+
+    /* GF caps the radius on larger controls via `min()`, so the textarea would
+       otherwise disagree with every other field. */
+    --gf-ctrl-radius-max-lg: 3px;
+}
+
+.gform-theme--foundation .gform_fields {
+    row-gap: 20px !important;
+}
+
+.gform-body.gform_body input,
+.gform-body.gform_body textarea,
+.gform-body.gform_body select {
+    width: 100%;
+    border-color: #d8d8d8 !important;
+    background-color: #ffffff !important;
+    outline: none;
+    box-shadow: none !important;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+    box-sizing: border-box;
+}
+
+/* A select ignores the control line-height GF gives inputs, so its text sits
+   high in the taller box — set it explicitly to centre the value. The chevron is
+   pinned by `right 10px center !important` in style.css; re-align it to the
+   field's own padding. Both need to out-specify that rule. */
+.gform-theme--framework .gform-body.gform_body select {
+    line-height: var(--gf-ctrl-line-height);
+    background-position: right var(--gf-ctrl-padding-x) center !important;
+    padding-right: calc(var(--gf-ctrl-padding-x) * 2 + var(--gf-ctrl-select-icon-size)) !important;
+}
+
+.gfield_label {
+    color: #515353 !important;
+    font-weight: 400 !important;
+}
+
+.gform_body input::placeholder,
+.gform_body textarea::placeholder {
+    color: #838484 !important;
+}
+
+.gform_body input:focus,
+.gform_body textarea:focus,
+.gform_body select:focus {
+    border-color: #2A3136 !important;
+    outline-color: rgba(37, 57, 89, 0.15) !important;
+}
+
+.gform_button.button {
+    background: var(--wp--preset--color--dnte-wine-berry, #551c25) !important;
+    color: #ffffff !important;
+    padding: 12px 24px !important;
+    border: none !important;
+    border-radius: 100px !important;
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    width: auto !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Repeats the resting colour to override Gravity Forms' own hover background. */
+.gform_button.button:hover {
+    background: var(--wp--preset--color--dnte-wine-berry, #551c25) !important;
+    color: #ffffff !important;
+}
+
+label.gfield_label.gform-field-label {
+    flex-wrap: nowrap !important;
+}
+
+p.gform_required_legend {
+    display: none !important;
+}

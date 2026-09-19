@@ -1,0 +1,81 @@
+/**
+ * Open Roles list table — Active toggle switch.
+ *
+ * The track centres the thumb with flex + padding rather than a margin on the
+ * thumb: the track has a fixed height and no border, so a top margin on the
+ * thumb would collapse through it and sit the thumb against the top edge.
+ *
+ * Geometry: 36px track − (3px padding × 2) = 30px inner, thumb 14px,
+ * so the travel distance is exactly 16px.
+ */
+
+.wp-list-table .column-dnte_role_active {
+    width: 90px;
+    max-width: 90px;
+}
+
+.dnte-role-toggle {
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 0;
+    border: 0;
+    background: none;
+    line-height: 0;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.dnte-role-toggle[disabled] {
+    cursor: default;
+    opacity: 0.5;
+}
+
+.dnte-role-toggle.is-busy {
+    cursor: progress;
+    opacity: 0.6;
+}
+
+.dnte-role-toggle__track {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    width: 36px;
+    height: 20px;
+    padding: 3px;
+    border-radius: 10px;
+    background: #c3c4c7;
+    transition: background 0.15s ease;
+}
+
+.dnte-role-toggle__thumb {
+    display: block;
+    box-sizing: border-box;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    transition: transform 0.15s ease;
+}
+
+.dnte-role-toggle[aria-checked='true'] .dnte-role-toggle__track {
+    background: #2271b1;
+}
+
+.dnte-role-toggle[aria-checked='true'] .dnte-role-toggle__thumb {
+    transform: translateX(16px);
+}
+
+.dnte-role-toggle:focus-visible .dnte-role-toggle__track {
+    outline: 2px solid #2271b1;
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dnte-role-toggle__track,
+    .dnte-role-toggle__thumb {
+        transition: none;
+    }
+}

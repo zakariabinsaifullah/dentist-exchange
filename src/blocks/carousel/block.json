@@ -1,0 +1,167 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "dnte/carousel",
+    "version": "1.0.0",
+    "title": "Carousel",
+    "category": "dnte",
+    "icon": "slides",
+    "description": "Create flexible sliders and carousels using any inner blocks",
+    "example": {},
+    "supports": {
+        "html": false,
+        "align": ["wide", "full"]
+    },
+    "attributes": {
+        "status": {
+            "type": "boolean",
+            "default": false
+        },
+        "blockStyle": {
+            "type": "object"
+        },
+        "resMode": {
+            "type": "string",
+            "default": "Desktop"
+        },
+        "heightType": {
+            "type": "object",
+            "default": {
+                "Desktop": "adaptive"
+            }
+        },
+        "columns": {
+            "type": "object",
+            "default": {
+                "Desktop": 3,
+                "Tablet": 2,
+                "Mobile": 1
+            }
+        },
+        "gaps": {
+            "type": "object",
+            "default": {
+                "Desktop": 20,
+                "Tablet": 15,
+                "Mobile": 0
+            }
+        },
+        "navType": {
+            "type": "string",
+            "default": "outside"
+        },
+        "navPosition": {
+            "type": "string",
+            "default": "middle"
+        },
+        "heights": {
+            "type": "object",
+            "default": {}
+        },
+        "vAligns": {
+            "type": "object",
+            "default": {}
+        },
+        "autoplay": {
+            "type": "boolean",
+            "default": false
+        },
+        "delay": {
+            "type": "number",
+            "default": 3000
+        },
+        "loop": {
+            "type": "boolean",
+            "default": true
+        },
+        "showArrows": {
+            "type": "boolean",
+            "default": true
+        },
+        "showPagination": {
+            "type": "boolean",
+            "default": false
+        },
+        "paginationColor": {
+            "type": "string"
+        },
+        "npaginationHeight": {
+            "type": "string"
+        },
+        "paginationHeight": {
+            "type": "string"
+        },
+        "pnSize": {
+            "type": "string"
+        },
+        "paSize": {
+            "type": "string"
+        },
+        "pRadius": {
+            "type": "string"
+        },
+        "paRadius": {
+            "type": "string"
+        },
+        "pgap": {
+            "type": "string"
+        },
+        "navColor": {
+            "type": "string"
+        },
+        "navbgColor": {
+            "type": "string"
+        },
+        "navBorderColor": {
+            "type": "string"
+        },
+        "navSize": {
+            "type": "string"
+        },
+        "navIconSize": {
+            "type": "string"
+        },
+        "navRadius": {
+            "type": "string"
+        },
+        "navEdgeGap": {
+            "type": "string"
+        },
+        "prevIconName": {
+            "type": "string",
+            "default": "arrow-left"
+        },
+        "prevIconType": {
+            "type": "string",
+            "default": "fill"
+        },
+        "prevCustomSvg": {
+            "type": "string"
+        },
+        "nextIconName": {
+            "type": "string",
+            "default": "arrow-right"
+        },
+        "nextIconType": {
+            "type": "string",
+            "default": "fill"
+        },
+        "nextCustomSvg": {
+            "type": "string"
+        },
+        "navPadding": {
+            "type": "object"
+        },
+        "navBorder": {
+            "type": "object"
+        },
+        "navBorderRadius": {
+            "type": "object"
+        }
+    },
+    "textdomain": "dentist-exchange",
+    "editorScript": ["file:./index.js"],
+    "editorStyle": ["file:./index.css"],
+    "style": ["file:./style-index.css", "dnte-swiper-style"],
+    "viewScript": ["file:./view.js", "dnte-swiper-script"]
+}

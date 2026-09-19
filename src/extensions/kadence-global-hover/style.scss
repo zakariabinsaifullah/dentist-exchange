@@ -1,0 +1,32 @@
+/**
+ * Kadence Column — Global Hover Gradient Border
+ *
+ * The `global-hover` class is added to kadence/column containers when the
+ * "Enable Hover Gradient Border" toggle is enabled. The 2px gradient border
+ * ring only exists inside the `:hover` rule, so it is guaranteed to be absent
+ * in the normal state and appears only when the section is hovered. The ring
+ * uses the same masked technique as the default/alternative button borders so
+ * the fill stays transparent.
+ */
+.global-hover .kt-inside-inner-col {
+    position: relative;
+}
+
+.global-hover:hover .kt-inside-inner-col::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    padding: 2px;
+    border-radius: inherit;
+    background: var(--wp--preset--gradient--dnte-gradient-two);
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 1 !important;
+}
