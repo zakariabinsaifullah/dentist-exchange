@@ -19,9 +19,19 @@ const CustomiconModal = ({ customiconPanel, setCustomiconPanel, onInsert, value 
     };
 
     return (
-        <Modal className="svgib__modal custom-svg" title={__('Custom SVG', 'dentist-exchange')} onRequestClose={() => setCustomiconPanel(false)}>
+        <Modal
+            className="svgib__modal custom-svg"
+            title={__('Custom SVG', 'dentist-exchange')}
+            onRequestClose={() => setCustomiconPanel(false)}
+        >
             <div className="svg-controls">
-                <RangeControl label={__('SVG Preview Size', 'dentist-exchange')} value={size} onChange={v => setSize(v)} min={20} max={150} />
+                <RangeControl
+                    label={__('SVG Preview Size', 'dentist-exchange')}
+                    value={size}
+                    onChange={v => setSize(v)}
+                    min={20}
+                    max={150}
+                />
             </div>
             <div className="svgib-modal__wrapper">
                 <div className="svg-code">

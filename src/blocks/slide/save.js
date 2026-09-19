@@ -8,6 +8,8 @@ import {
 } from '@wordpress/block-editor';
 
 export default function save({ attributes }) {
+    const { stackRotate, stackOffsetX, stackOffsetY, stackZIndex } = attributes;
+
     // Get block support props
     const borderProps = getBorderClassesAndStyles(attributes);
     const colorProps = getColorClassesAndStyles(attributes);
@@ -22,7 +24,9 @@ export default function save({ attributes }) {
                     ...borderProps.style,
                     ...colorProps.style,
                     ...spacingProps.style,
-                    ...shadowProps.style
+                    ...shadowProps.style,
+                    transform: `translate(${stackOffsetX || 0}px, ${stackOffsetY || 0}px) rotate(${stackRotate || 0}deg)`,
+                    zIndex: stackZIndex || 0
                 }
             })}
         >

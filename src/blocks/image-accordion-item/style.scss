@@ -1,0 +1,120 @@
+// styles
+.wp-block-dnte-image-accordion-item {
+    position: relative;
+    flex-grow: 1;
+    overflow: hidden;
+    cursor: pointer;
+    width: 20%;
+    height: 701px;
+    box-sizing: border-box;
+    transition: width 0.6s ease;
+
+    &.active {
+        width: 50%;
+        flex-shrink: 0;
+    }
+
+    .img {
+        position: absolute;
+        inset: 0;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    .info {
+        position: absolute;
+        inset: 0;
+        z-index: 20;
+        display: flex;
+        flex-direction: column;
+        padding: 40px 32px;
+        color: #fff;
+        background: linear-gradient(to top, rgba(7, 10, 10, 0.75) 0%, rgba(7, 10, 10, 0.25) 45%, rgba(7, 10, 10, 0) 100%);
+        box-sizing: border-box;
+        transition: background 0.4s ease;
+    }
+
+    .top-content {
+        margin-top: auto;
+        transition: margin-top 0.4s ease;
+    }
+
+    .heading {
+        margin: 0;
+        font-weight: 700;
+        font-size: var(--title-size, 22px);
+        color: var(--title-color, inherit);
+        line-height: 1.25;
+        transition:
+            font-size 0.3s ease,
+            font-weight 0.3s ease;
+    }
+
+    .description {
+        margin: 0;
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        color: #fff;
+        font-size: 16px;
+        transition: all 0.35s ease;
+    }
+
+    .btn {
+        display: inline-block;
+        align-self: flex-start;
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        padding: 0;
+        margin-top: 0;
+        pointer-events: none;
+        text-decoration: none;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 500;
+        border-radius: 152px;
+        background: var(--btn-bg, #2234b0);
+        color: var(--btn-color, #fff);
+        transition: all 0.35s ease;
+
+        &:hover {
+            background: var(--btn-hover-bg, #1a2789);
+        }
+    }
+
+    &.active {
+        .info {
+            padding-top: 101px;
+            padding-bottom: 70px;
+            background: linear-gradient(180deg, rgba(7, 10, 10, 0.55) 0%, rgba(7, 10, 10, 0.1) 45%, rgba(7, 10, 10, 0.55) 100%);
+        }
+
+        .top-content {
+            margin-top: 0;
+        }
+
+        .heading {
+            font-weight: 400;
+            font-size: var(--title-size, 48px);
+        }
+
+        .description {
+            max-height: 300px;
+            opacity: 1;
+            margin-top: 160px;
+        }
+
+        .btn {
+            max-height: 60px;
+            opacity: 1;
+            padding: var(--btn-padding, 16px 10px);
+            margin-top: 160px;
+            pointer-events: auto;
+        }
+    }
+}

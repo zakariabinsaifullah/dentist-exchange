@@ -31,239 +31,40 @@
         }
     }
 
-    // Slider container wrapper - flex to position arrows outside
-    .dnte-slider-container {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    /**
-     * Bottom Right, Long Arrows — the pair sits low on the right of the slide,
-     * spaced apart, and each arrow is a full shaft with a small head instead of
-     * a bare chevron.
-     */
-    &.nav-pos-bottom-right-line {
-        // Out of the vertically centred default and down to the corner.
-        .dnte-nav {
-            top: auto;
-            transform: none;
-            left: auto !important;
-            right: auto !important;
-        }
-
-        .swiper-custom-next { bottom: var(--nav-gap, 25px) !important; right: var(--nav-gap, 25px) !important; }
-        .swiper-custom-prev {
-            bottom: var(--nav-gap, 25px) !important;
-            right: calc(var(--nav-gap, 25px) + var(--nav-size, 36px) + var(--nav-arrow-space, 24px)) !important;
-        }
-
-        /* On mobile the pair swings over to the bottom-left, keeping prev → next order. */
-        @media (max-width: 767px) {
-            .swiper-custom-prev {
-                right: auto !important;
-                left: var(--nav-gap, 25px) !important;
-            }
-
-            .swiper-custom-next {
-                right: auto !important;
-                left: calc(var(--nav-gap, 25px) + var(--nav-size, 36px) + var(--nav-arrow-space, 24px)) !important;
-            }
-        }
-
-        .dnte-nav {
-            /* The head shrinks to a tip; the shaft below carries the length. */
-            &::before {
-                width: var(--nav-head, 10px);
-                height: var(--nav-head, 10px);
-            }
-
-            &::after {
-                content: '';
-                box-sizing: border-box;
-                flex-shrink: 0;
-                width: var(--nav-arrow-length, 28px);
-                height: 0;
-                border-top: var(--nav-stroke, 2px) solid currentColor;
-            }
-
-            /**
-             * Head then shaft reads as ←; reversing the row turns it into →.
-             * The pull-in is 1.2× the head so the shaft starts at the very tip —
-             * a rotated square sticks out ~0.2× past its own box.
-             */
-            &::before {
-                margin-right: calc(var(--nav-head, 10px) * -1.2);
-            }
-        }
-
-        .swiper-custom-next {
-            flex-direction: row-reverse;
-
-            &::before {
-                margin-right: 0;
-                margin-left: calc(var(--nav-head, 10px) * -1.2);
-            }
-        }
-
-        /* A custom SVG replaces the whole arrow, shaft included. */
-        .dnte-nav:has(.dnte-custom-svg-container)::after {
-            display: none;
-        }
-    }
-
-    // OUTSIDE with the corner pair: no side padding, arrows drop below the slider.
-    &.outside.nav-pos-bottom-right-line {
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-
-        .dnte-nav { bottom: calc(-1 * (var(--nav-size, 36px) + 12px)) !important; }
-        .swiper-custom-next { right: 0 !important; }
-        .swiper-custom-prev { right: calc(var(--nav-size, 36px) + var(--nav-arrow-space, 24px)) !important; }
-
-        /* Same mobile flip as above, without the edge gap. */
-        @media (max-width: 767px) {
-            .swiper-custom-prev {
-                right: auto !important;
-                left: 0 !important;
-            }
-
-            .swiper-custom-next {
-                right: auto !important;
-                left: calc(var(--nav-size, 36px) + var(--nav-arrow-space, 24px)) !important;
-            }
-        }
-    }
-
-    // Base Arrow Styles — a bare chevron, no button chrome around it.
-    .dnte-nav {
-        width: var(--nav-size, 36px);
-        height: var(--nav-size, 36px);
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: var(--nav-padding, 0);
-        border-width: var(--nav-border-width, 0);
-        border-style: var(--nav-border-style, solid);
-        border-color: var(--nborder-color, transparent);
-        background-color: var(--nav-bg, transparent);
-        border-radius: var(--nav-radius, 0);
-        color: var(--nav-color, var(--wp--preset--color--dnte-neptune, #83C1C0));
-        box-sizing: border-box;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        flex-shrink: 0;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        z-index: 10;
-
-        &:hover {
-            opacity: 0.7;
-        }
-
-        &:focus {
-            outline: none;
-            box-shadow: none;
-        }
-
-        /**
-         * The chevron itself: a square wearing two borders, turned 45°. Drawn in
-         * CSS so the stroke stays hairline-crisp and mitred at any size.
-         */
-        &::before {
-            content: '';
-            box-sizing: border-box;
-            flex-shrink: 0;
-            width: var(--nicon-size, 24px);
-            height: var(--nicon-size, 24px);
-            border-style: solid;
-            border-width: 0;
-            border-color: currentColor;
-            transform: rotate(45deg);
-        }
-
-        /* The picked icon steps aside for the chevron... */
-        > svg {
-            display: none;
-        }
-
-        /* ...but a hand-inserted SVG still wins. */
-        &:has(.dnte-custom-svg-container)::before {
-            display: none;
-        }
-
-        svg {
-            width: 1em;
-            height: 1em;
-            font-size: var(--nicon-size, 16px);
-            color: var(--nav-color, var(--wp--preset--color--dnte-neptune, #83C1C0));
-            fill: currentColor;
-
-            path, circle, rect, polygon, polyline, ellipse, line {
-                fill: currentColor;
-                stroke: currentColor;
-            }
-        }
-    }
-
-    .swiper-custom-prev {
-        left: var(--nav-gap, 8px);
-
-        &::before {
-            border-left-width: var(--nav-stroke, 2px);
-            border-bottom-width: var(--nav-stroke, 2px);
-        }
-    }
-
-    .swiper-custom-next {
-        right: var(--nav-gap, 8px);
-
-        &::before {
-            border-top-width: var(--nav-stroke, 2px);
-            border-right-width: var(--nav-stroke, 2px);
-        }
-    }
-
-    // Pagination - fraction number style, positioned on the right half
+    // Pagination dots, centered below the slider. There's no navigation
+    // arrows on this block, so pagination is always shown.
     .swiper-pagination {
         position: absolute !important;
-        top: auto !important;
-        bottom: var(--nav-gap, 25px) !important;
         left: 50% !important;
-        padding-left: 24px; /* Adjust to align with the text column padding */
-        padding-top: 0 !important;
-        padding-bottom: 0 !important;
+        bottom: var(--nav-gap, 0) !important;
+        transform: translateX(-50%) !important;
         margin: 0 !important;
-        transform: none !important;
+        padding: 0 !important;
         display: flex !important;
         align-items: center !important;
-        justify-content: flex-start;
+        justify-content: center;
+        gap: var(--pgap, 8px);
         width: auto !important;
-        height: var(--nav-size, 36px) !important;
         line-height: 1 !important;
         z-index: 10;
-        font-size: 16px;
-        font-weight: 600;
-        color: #000;
     }
 
     .swiper-pagination-bullet {
-        width: var(--psize, 10px);
-        height: var(--npagination-height, var(--psize, 10px));
-        min-width: var(--psize, 10px);
+        width: var(--psize, 8px);
+        height: var(--npagination-height, var(--psize, 8px));
+        min-width: var(--psize, 8px);
         border-radius: var(--pradius, 50%);
-        background: var(--pagination-color, var(--wp--preset--color--dnte-bali-hai-darkest, #2A3136));
-        opacity: 0.5;
+        background: var(--pagination-color, #191a1d);
+        opacity: 1;
         transition: all 0.3s ease;
         margin: 0 !important;
 
         &.swiper-pagination-bullet-active {
-            opacity: 1;
-            width: var(--pasize, 10px);
-            height: var(--apagination-height, var(--pasize, 10px));
-            min-width: var(--pasize, 10px);
+            width: var(--pasize, 8px);
+            height: var(--apagination-height, var(--pasize, 8px));
+            min-width: var(--pasize, 8px);
             border-radius: var(--paradius, 50%);
+            background: var(--pagination-active-color, #263adc);
         }
 
         &:focus {
@@ -272,18 +73,35 @@
         }
     }
 
-    // default outside nav arrows behavior
-    &.outside {
-        padding-left: calc(var(--nav-size, 36px) + var(--nav-gap, 8px));
-        padding-right: calc(var(--nav-size, 36px) + var(--nav-gap, 8px));
-        box-sizing: border-box;
-
-        .swiper-custom-prev {
-            left: 0;
+    /**
+     * Rotate Stack — the carousel's only mode. Each Slide bakes its own
+     * rotate/offset/z-index directly into its own markup (slide/save.js).
+     * Swiper itself sizes each slide's width based on `slidesPerView`
+     * (view.js), so no width rule is needed here.
+     */
+    &.is-stack {
+        // Swiper needs `overflow: hidden` on `.swiper` itself to hide the
+        // slides waiting outside the viewport — that same edge would clip a
+        // rotated card's corners if the card sits flush against it. Padding
+        // here gives rotation room to breathe without exposing extra slides.
+        .swiper {
+            padding: 70px 0;
+            overflow: hidden;
         }
 
-        .swiper-custom-next {
-            right: 0;
+        // Flex stretches every slide to match the tallest one by default,
+        // which would force all cards to the same height. Aligning to the
+        // top instead lets each card keep its own height — driven by its
+        // own padding/content — so one card (e.g. the featured one) can
+        // genuinely look bigger than its neighbours, as in the reference
+        // design.
+        .swiper-wrapper {
+            align-items: flex-start;
+        }
+
+        .swiper-slide {
+            height: auto;
+            overflow: visible;
         }
     }
 }

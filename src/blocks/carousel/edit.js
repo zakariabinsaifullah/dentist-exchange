@@ -2,7 +2,13 @@
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useBlockProps, useInnerBlocksProps, BlockControls } from '@wordpress/block-editor';
+import {
+    useBlockProps,
+    useInnerBlocksProps,
+    BlockControls,
+    __experimentalGetColorClassesAndStyles as getColorClassesAndStyles,
+    __experimentalGetSpacingClassesAndStyles as getSpacingClassesAndStyles
+} from '@wordpress/block-editor';
 import { ToolbarGroup, ToolbarButton } from '@wordpress/components';
 import { useEffect } from '@wordpress/element';
 
@@ -12,76 +18,19 @@ import { useEffect } from '@wordpress/element';
 import './editor.scss';
 import Inspector from './inspector';
 import classNames from 'classnames';
-import { RenderIcon } from '../../helpers';
-import { generateBoxStyles, generateBorderWidth, generateBorderStyle, generateBorderColor } from '../../styles';
 import { generateHeightStyles } from './utils';
 
 // Block edit function
 const Edit = props => {
     const { attributes, setAttributes, clientId, isSelected } = props;
-    const {
-        heightType,
-        heights,
-        vAligns,
-        columns,
-        gaps,
-        resMode,
-        showArrows,
-        navType,
-        paginationColor,
-        npaginationHeight,
-        apaginationHeight,
-        pnSize,
-        paSize,
-        pRadius,
-        paRadius,
-        pgap,
-        navColor,
-        navbgColor,
-        navBorderColor,
-        navSize,
-        navIconSize,
-        navBorderRadius,
-        navPadding,
-        navBorder,
-        navEdgeGap,
-        navPosition,
-        prevIconName,
-        prevIconType,
-        prevCustomSvg,
-        nextIconName,
-        nextIconType,
-        nextCustomSvg
-    } = attributes;
-    // tab nav
-    const navPaddingStyles = generateBoxStyles(navPadding);
-    const navBorderWidth = generateBorderWidth(navBorder);
-    const navBorderStyle = generateBorderStyle(navBorder);
-    const navBorderColorValue = generateBorderColor(navBorder);
-    const navBorderRadiusStyle = generateBoxStyles(navBorderRadius);
+    const { heightType, heights, vAligns, gaps, resMode, visibleItems } = attributes;
+
+    const colorProps = getColorClassesAndStyles(attributes);
+    const spacingProps = getSpacingClassesAndStyles(attributes);
 
     // CSS Custom Properties
     const cssCustomProperties = {
-        ...generateHeightStyles(heightType, heights, vAligns),
-        ...(paginationColor && { '--pagination-color': paginationColor }),
-        ...(apaginationHeight && { '--apagination-height': `${apaginationHeight}` }),
-        ...(npaginationHeight && { '--npagination-height': `${npaginationHeight}` }),
-        ...(pnSize && { '--psize': `${pnSize}` }),
-        ...(paSize && { '--pasize': `${paSize}` }),
-        ...(pRadius && { '--pradius': `${pRadius}` }),
-        ...(paRadius && { '--paradius': `${paRadius}` }),
-        ...(navBorderRadiusStyle && { '--nav-radius': navBorderRadiusStyle }),
-        ...(navPaddingStyles && { '--nav-padding': navPaddingStyles }),
-        ...(navBorderWidth && { '--nav-border-width': navBorderWidth }),
-        ...(navBorderStyle && { '--nav-border-style': navBorderStyle }),
-        ...(navBorderColorValue && { '--nborder-color': navBorderColorValue }),
-        ...(!navBorderColorValue && navBorderColor && { '--nborder-color': navBorderColor }),
-        ...(navSize && { '--nav-size': `${navSize}` }),
-        ...(navIconSize && { '--nicon-size': `${navIconSize}` }),
-        ...(navColor && { '--nav-color': navColor }),
-        ...(navbgColor && { '--nav-bg': navbgColor }),
-        ...(navEdgeGap && { '--nav-gap': `${navEdgeGap}` }),
-        ...(pgap && { '--pgap': `${pgap}` })
+        ...generateHeightStyles(heightType, heights, vAligns)
     };
 
     // Update block style when CSS properties change
@@ -89,34 +38,13 @@ const Edit = props => {
         setAttributes({
             blockStyle: cssCustomProperties
         });
-    }, [
-        heightType,
-        heights,
-        vAligns,
-        navColor,
-        navbgColor,
-        paginationColor,
-        navBorderRadius,
-        navPadding,
-        navBorder,
-        npaginationHeight,
-        apaginationHeight,
-        pnSize,
-        paSize,
-        pRadius,
-        paRadius,
-        navBorderColor,
-        navSize,
-        navIconSize,
-        navEdgeGap,
-        pgap
-    ]);
+    }, [heightType, heights, vAligns]);
 
-    // Inner blocks configuration
+    // Inner blocks configuration — the carousel is always in Rotate Stack mode.
     const innerBlocksProps = useInnerBlocksProps(
         {
-            className: classNames('dnte-editor-slides', {
-                [`columns-${columns[resMode]}`]: columns[resMode],
+            className: classNames('dnte-editor-slides', 'is-stack', {
+                [`visible-${visibleItems?.[resMode]}`]: visibleItems?.[resMode],
                 [`gap-${gaps[resMode]}`]: gaps[resMode]
             })
         },
@@ -129,11 +57,8 @@ const Edit = props => {
 
     // Block Props
     const blockProps = useBlockProps({
-        style: cssCustomProperties,
-        className: classNames({
-            outside: navType === 'outside' && showArrows,
-            [`nav-pos-${navPosition}`]: navPosition
-        })
+        style: { ...cssCustomProperties, ...colorProps.style, ...spacingProps.style },
+        className: classNames(colorProps.className, spacingProps.className, 'is-stack')
     });
 
     return (
@@ -156,16 +81,6 @@ const Edit = props => {
 
             <div {...blockProps}>
                 <div {...innerBlocksProps} />
-                {showArrows && (
-                    <>
-                        <div className="swiper-custom-prev dnte-nav">
-                            <RenderIcon customSvgCode={prevCustomSvg} iconName={prevIconName} iconType={prevIconType} size={navIconSize} />
-                        </div>
-                        <div className="swiper-custom-next dnte-nav">
-                            <RenderIcon customSvgCode={nextCustomSvg} iconName={nextIconName} iconType={nextIconType} size={navIconSize} />
-                        </div>
-                    </>
-                )}
             </div>
         </>
     );

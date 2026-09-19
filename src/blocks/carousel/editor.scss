@@ -25,18 +25,35 @@
         border-radius: 4px;
     }
 
-    @for $i from 1 through 6 {
-        &.columns-#{$i} {
-            .wp-block-dnte-slide {
-                width: calc(100% / #{$i});
-                min-width: calc(100% / #{$i});
-            }
-        }
-    }
-
     @for $i from 0 through 100 {
         &.gap-#{$i} {
             gap: #{$i}px;
+        }
+    }
+
+    /**
+     * Rotate Stack preview — each Slide applies its own rotate/offset/z-index
+     * directly (see slide/edit.js, which mirrors what save.js bakes into the
+     * frontend markup). This sizes each slide from the "Visible Items" count
+     * (mirroring Swiper's own `slidesPerView` sizing on the frontend) and
+     * leaves room around the row so the rotated/offset cards aren't clipped
+     * while previewing.
+     */
+    &.is-stack {
+        justify-content: center;
+        align-items: flex-start;
+        overflow: visible;
+        padding: 60px 0;
+
+        .wp-block-dnte-slide {
+            flex-shrink: 0;
+            transition: transform 0.2s ease;
+        }
+
+        @for $i from 1 through 10 {
+            &.visible-#{$i} .wp-block-dnte-slide {
+                width: calc(100% / #{$i});
+            }
         }
     }
 }
