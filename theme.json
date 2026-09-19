@@ -46,214 +46,184 @@
                     "slug": "dnte-white"
                 },
                 {
-                    "color": "#F2F2F2",
-                    "name": "Neutral Lightest",
-                    "slug": "dnte-neutral-lightest"
+                    "color": "#ECEDF2",
+                    "name": "Stroke",
+                    "slug": "dnte-stroke"
                 },
                 {
-                    "color": "#D9DADA",
-                    "name": "Neutral Lighter",
-                    "slug": "dnte-neutral-lighter"
+                    "color": "#ECF5FF",
+                    "name": "Primary 50",
+                    "slug": "dnte-primary-50"
                 },
                 {
-                    "color": "#B4B5B5",
-                    "name": "Neutral Light",
-                    "slug": "dnte-neutral-light"
+                    "color": "#DCECFF",
+                    "name": "Primary 100",
+                    "slug": "dnte-primary-100"
                 },
                 {
-                    "color": "#838484",
-                    "name": "Neutral",
-                    "slug": "dnte-neutral"
+                    "color": "#C0DAFF",
+                    "name": "Primary 200",
+                    "slug": "dnte-primary-200"
                 },
                 {
-                    "color": "#515353",
-                    "name": "Neutral Dark",
-                    "slug": "dnte-neutral-dark"
+                    "color": "#9BC0FF",
+                    "name": "Primary 300",
+                    "slug": "dnte-primary-300"
                 },
                 {
-                    "color": "#1F2222",
-                    "name": "Neutral Darker",
-                    "slug": "dnte-neutral-darker"
+                    "color": "#739AFF",
+                    "name": "Primary 400",
+                    "slug": "dnte-primary-400"
                 },
                 {
-                    "color": "#070A0A",
-                    "name": "Neutral Darkest",
-                    "slug": "dnte-neutral-darkest"
+                    "color": "#5276FF",
+                    "name": "Primary 500",
+                    "slug": "dnte-primary-500"
                 },
                 {
-                    "color": "#EEE8E9",
-                    "name": "Wine Berry Lightest",
-                    "slug": "dnte-wine-berry-lightest"
+                    "color": "#334DF8",
+                    "name": "Primary 600",
+                    "slug": "dnte-primary-600"
                 },
                 {
-                    "color": "#DDD1D3",
-                    "name": "Wine Berry Lighter",
-                    "slug": "dnte-wine-berry-lighter"
+                    "color": "#263ADC",
+                    "name": "Primary 700",
+                    "slug": "dnte-primary-700"
                 },
                 {
-                    "color": "#886066",
-                    "name": "Wine Berry Light",
-                    "slug": "dnte-wine-berry-light"
+                    "color": "#2234B0",
+                    "name": "Primary 800",
+                    "slug": "dnte-primary-800"
                 },
                 {
-                    "color": "#551C25",
-                    "name": "Wine Berry",
-                    "slug": "dnte-wine-berry"
+                    "color": "#24338B",
+                    "name": "Primary 900",
+                    "slug": "dnte-primary-900"
                 },
                 {
-                    "color": "#44161D",
-                    "name": "Wine Berry Dark",
-                    "slug": "dnte-wine-berry-dark"
+                    "color": "#151C51",
+                    "name": "Primary 950",
+                    "slug": "dnte-primary-950"
                 },
                 {
-                    "color": "#220B0E",
-                    "name": "Wine Berry Darker",
-                    "slug": "dnte-wine-berry-darker"
+                    "color": "#EDF0FC",
+                    "name": "Secondary 50",
+                    "slug": "dnte-secondary-50"
                 },
                 {
-                    "color": "#19080B",
-                    "name": "Wine Berry Darkest",
-                    "slug": "dnte-wine-berry-darkest"
+                    "color": "#DEE5FA",
+                    "name": "Secondary 100",
+                    "slug": "dnte-secondary-100"
                 },
                 {
-                    "color": "#F3F5F7",
-                    "name": "Bali Hai Lightest",
-                    "slug": "dnte-bali-hai-lightest"
+                    "color": "#BDCAF6",
+                    "name": "Secondary 200",
+                    "slug": "dnte-secondary-200"
                 },
                 {
-                    "color": "#E8ECF0",
-                    "name": "Bali Hai Lighter",
-                    "slug": "dnte-bali-hai-lighter"
+                    "color": "#9BB1F2",
+                    "name": "Secondary 300",
+                    "slug": "dnte-secondary-300"
                 },
                 {
-                    "color": "#B0BFCC",
-                    "name": "Bali Hai Light",
-                    "slug": "dnte-bali-hai-light"
+                    "color": "#7598EF",
+                    "name": "Secondary 400",
+                    "slug": "dnte-secondary-400"
                 },
                 {
-                    "color": "#8FA4B7",
-                    "name": "Bali Hai",
-                    "slug": "dnte-bali-hai"
+                    "color": "#487EEC",
+                    "name": "Secondary 500",
+                    "slug": "dnte-secondary-500"
                 },
                 {
-                    "color": "#728392",
-                    "name": "Bali Hai Dark",
-                    "slug": "dnte-bali-hai-dark"
+                    "color": "#0067DE",
+                    "name": "Secondary 600",
+                    "slug": "dnte-secondary-600"
                 },
                 {
-                    "color": "#394149",
-                    "name": "Bali Hai Darker",
-                    "slug": "dnte-bali-hai-darker"
+                    "color": "#0052B2",
+                    "name": "Secondary 700",
+                    "slug": "dnte-secondary-700"
                 },
                 {
-                    "color": "#2A3136",
-                    "name": "Bali Hai Darkest",
-                    "slug": "dnte-bali-hai-darkest"
+                    "color": "#003E87",
+                    "name": "Secondary 800",
+                    "slug": "dnte-secondary-800"
                 },
                 {
-                    "color": "#F4F3E5",
-                    "name": "Olive Lightest",
-                    "slug": "dnte-olive-lightest"
+                    "color": "#002B5E",
+                    "name": "Secondary 900",
+                    "slug": "dnte-secondary-900"
                 },
                 {
-                    "color": "#EAE7CC",
-                    "name": "Olive Lighter",
-                    "slug": "dnte-olive-lighter"
+                    "color": "#001A38",
+                    "name": "Secondary 950",
+                    "slug": "dnte-secondary-950"
                 },
                 {
-                    "color": "#B8AB4C",
-                    "name": "Olive Light",
-                    "slug": "dnte-olive-light"
+                    "color": "#FFFFFF",
+                    "name": "Neutral 0",
+                    "slug": "dnte-neutral-0"
                 },
                 {
-                    "color": "#9A8700",
-                    "name": "Olive",
-                    "slug": "dnte-olive"
+                    "color": "#F9FAFB",
+                    "name": "Neutral 50",
+                    "slug": "dnte-neutral-50"
                 },
                 {
-                    "color": "#7B6C00",
-                    "name": "Olive Dark",
-                    "slug": "dnte-olive-dark"
+                    "color": "#F3F4F6",
+                    "name": "Neutral 100",
+                    "slug": "dnte-neutral-100"
                 },
                 {
-                    "color": "#3D3600",
-                    "name": "Olive Darker",
-                    "slug": "dnte-olive-darker"
+                    "color": "#E5E7EB",
+                    "name": "Neutral 200",
+                    "slug": "dnte-neutral-200"
                 },
                 {
-                    "color": "#2E2800",
-                    "name": "Olive Darkest",
-                    "slug": "dnte-olive-darkest"
+                    "color": "#D1D5DB",
+                    "name": "Neutral 300",
+                    "slug": "dnte-neutral-300"
                 },
                 {
-                    "color": "#F2F8F8",
-                    "name": "Neptune Lightest",
-                    "slug": "dnte-neptune-lightest"
+                    "color": "#9CA3AF",
+                    "name": "Neutral 400",
+                    "slug": "dnte-neutral-400"
                 },
                 {
-                    "color": "#E6F2F2",
-                    "name": "Neptune Lighter",
-                    "slug": "dnte-neptune-lighter"
+                    "color": "#6B7280",
+                    "name": "Neutral 500",
+                    "slug": "dnte-neutral-500"
                 },
                 {
-                    "color": "#A8D3D2",
-                    "name": "Neptune Light",
-                    "slug": "dnte-neptune-light"
+                    "color": "#4B5563",
+                    "name": "Neutral 600",
+                    "slug": "dnte-neutral-600"
                 },
                 {
-                    "color": "#83C1C0",
-                    "name": "Neptune",
-                    "slug": "dnte-neptune"
+                    "color": "#374151",
+                    "name": "Neutral 700",
+                    "slug": "dnte-neutral-700"
                 },
                 {
-                    "color": "#689A99",
-                    "name": "Neptune Dark",
-                    "slug": "dnte-neptune-dark"
+                    "color": "#1F2937",
+                    "name": "Neutral 800",
+                    "slug": "dnte-neutral-800"
                 },
                 {
-                    "color": "#344D4C",
-                    "name": "Neptune Darker",
-                    "slug": "dnte-neptune-darker"
+                    "color": "#111827",
+                    "name": "Neutral 900",
+                    "slug": "dnte-neutral-900"
                 },
                 {
-                    "color": "#273939",
-                    "name": "Neptune Darkest",
-                    "slug": "dnte-neptune-darkest"
+                    "color": "#000512",
+                    "name": "Neutral 950",
+                    "slug": "dnte-neutral-950"
                 },
                 {
-                    "color": "#FDFAF2",
-                    "name": "Flax Lightest",
-                    "slug": "dnte-flax-lightest"
-                },
-                {
-                    "color": "#FBF6E6",
-                    "name": "Flax Lighter",
-                    "slug": "dnte-flax-lighter"
-                },
-                {
-                    "color": "#F3E0A8",
-                    "name": "Flax Light",
-                    "slug": "dnte-flax-light"
-                },
-                {
-                    "color": "#EED484",
-                    "name": "Flax",
-                    "slug": "dnte-flax"
-                },
-                {
-                    "color": "#BEA969",
-                    "name": "Flax Dark",
-                    "slug": "dnte-flax-dark"
-                },
-                {
-                    "color": "#5E5434",
-                    "name": "Flax Darker",
-                    "slug": "dnte-flax-darker"
-                },
-                {
-                    "color": "#473F27",
-                    "name": "Flax Darkest",
-                    "slug": "dnte-flax-darkest"
+                    "color": "#000000",
+                    "name": "Neutral 1000",
+                    "slug": "dnte-neutral-1000"
                 }
             ],
             "units": ["%", "px", "em", "rem", "vh", "vw"]
@@ -263,112 +233,82 @@
             "fluid": true,
             "fontFamilies": [
                 {
-                    "name": "FreightText Pro",
-                    "slug": "freight-text-pro",
-                    "fontFamily": "\"FreightText Pro Book\", Georgia, \"Times New Roman\", Times, serif",
+                    "name": "Inter",
+                    "slug": "inter",
+                    "fontFamily": "\"Inter\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Helvetica, Arial, sans-serif",
                     "fontFace": [
                         {
-                            "src": ["file:./assets/fonts/freight-text-pro/freight-text-pro-400-normal.woff2"],
+                            "src": ["file:./assets/fonts/inter/inter-300-normal.woff2"],
+                            "fontWeight": "300",
+                            "fontStyle": "normal",
+                            "fontFamily": "\"Inter\""
+                        },
+                        {
+                            "src": ["file:./assets/fonts/inter/inter-300-italic.woff2"],
+                            "fontWeight": "300",
+                            "fontStyle": "italic",
+                            "fontFamily": "\"Inter\""
+                        },
+                        {
+                            "src": ["file:./assets/fonts/inter/inter-400-normal.woff2"],
                             "fontWeight": "400",
                             "fontStyle": "normal",
-                            "fontFamily": "\"FreightText Pro Book\""
+                            "fontFamily": "\"Inter\""
+                        },
+                        {
+                            "src": ["file:./assets/fonts/inter/inter-400-italic.woff2"],
+                            "fontWeight": "400",
+                            "fontStyle": "italic",
+                            "fontFamily": "\"Inter\""
+                        },
+                        {
+                            "src": ["file:./assets/fonts/inter/inter-500-normal.woff2"],
+                            "fontWeight": "500",
+                            "fontStyle": "normal",
+                            "fontFamily": "\"Inter\""
+                        },
+                        {
+                            "src": ["file:./assets/fonts/inter/inter-500-italic.woff2"],
+                            "fontWeight": "500",
+                            "fontStyle": "italic",
+                            "fontFamily": "\"Inter\""
+                        },
+                        {
+                            "src": ["file:./assets/fonts/inter/inter-600-normal.woff2"],
+                            "fontWeight": "600",
+                            "fontStyle": "normal",
+                            "fontFamily": "\"Inter\""
+                        },
+                        {
+                            "src": ["file:./assets/fonts/inter/inter-600-italic.woff2"],
+                            "fontWeight": "600",
+                            "fontStyle": "italic",
+                            "fontFamily": "\"Inter\""
+                        },
+                        {
+                            "src": ["file:./assets/fonts/inter/inter-700-normal.woff2"],
+                            "fontWeight": "700",
+                            "fontStyle": "normal",
+                            "fontFamily": "\"Inter\""
+                        },
+                        {
+                            "src": ["file:./assets/fonts/inter/inter-700-italic.woff2"],
+                            "fontWeight": "700",
+                            "fontStyle": "italic",
+                            "fontFamily": "\"Inter\""
                         }
                     ]
                 },
                 {
-                    "name": "Roboto",
-                    "slug": "roboto",
-                    "fontFamily": "\"Roboto\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Helvetica, Arial, sans-serif",
+                    "name": "Skywalker Free Demo",
+                    "slug": "skywalker-free-demo",
+                    "fontFamily": "\"Skywalker Free Demo\", Georgia, \"Times New Roman\", Times, serif",
                     "fontFace": [
                         {
-                            "src": ["file:./assets/fonts/roboto/roboto-200-normal.woff2"],
-                            "fontWeight": "200",
-                            "fontStyle": "normal",
-                            "fontFamily": "\"Roboto\""
-                        },
-                        {
-                            "src": ["file:./assets/fonts/roboto/roboto-200-italic.woff2"],
-                            "fontWeight": "200",
-                            "fontStyle": "italic",
-                            "fontFamily": "\"Roboto\""
-                        },
-                        {
-                            "src": ["file:./assets/fonts/roboto/roboto-300-normal.woff2"],
-                            "fontWeight": "300",
-                            "fontStyle": "normal",
-                            "fontFamily": "\"Roboto\""
-                        },
-                        {
-                            "src": ["file:./assets/fonts/roboto/roboto-300-italic.woff2"],
-                            "fontWeight": "300",
-                            "fontStyle": "italic",
-                            "fontFamily": "\"Roboto\""
-                        },
-                        {
-                            "src": ["file:./assets/fonts/roboto/roboto-400-normal.woff2"],
+                            "src": ["file:./assets/fonts/skywalker-free-demo/Skywalker-Free-Demo.ttf.woff2"],
                             "fontWeight": "400",
                             "fontStyle": "normal",
-                            "fontFamily": "\"Roboto\""
-                        },
-                        {
-                            "src": ["file:./assets/fonts/roboto/roboto-400-italic.woff2"],
-                            "fontWeight": "400",
-                            "fontStyle": "italic",
-                            "fontFamily": "\"Roboto\""
-                        },
-                        {
-                            "src": ["file:./assets/fonts/roboto/roboto-500-normal.woff2"],
-                            "fontWeight": "500",
-                            "fontStyle": "normal",
-                            "fontFamily": "\"Roboto\""
-                        },
-                        {
-                            "src": ["file:./assets/fonts/roboto/roboto-500-italic.woff2"],
-                            "fontWeight": "500",
-                            "fontStyle": "italic",
-                            "fontFamily": "\"Roboto\""
-                        },
-                        {
-                            "src": ["file:./assets/fonts/roboto/roboto-600-normal.woff2"],
-                            "fontWeight": "600",
-                            "fontStyle": "normal",
-                            "fontFamily": "\"Roboto\""
-                        },
-                        {
-                            "src": ["file:./assets/fonts/roboto/roboto-600-italic.woff2"],
-                            "fontWeight": "600",
-                            "fontStyle": "italic",
-                            "fontFamily": "\"Roboto\""
-                        },
-                        {
-                            "src": ["file:./assets/fonts/roboto/roboto-700-normal.woff2"],
-                            "fontWeight": "700",
-                            "fontStyle": "normal",
-                            "fontFamily": "\"Roboto\""
-                        },
-                        {
-                            "src": ["file:./assets/fonts/roboto/roboto-700-italic.woff2"],
-                            "fontWeight": "700",
-                            "fontStyle": "italic",
-                            "fontFamily": "\"Roboto\""
-                        },
-                        {
-                            "src": ["file:./assets/fonts/roboto/roboto-800-normal.woff2"],
-                            "fontWeight": "800",
-                            "fontStyle": "normal",
-                            "fontFamily": "\"Roboto\""
-                        },
-                        {
-                            "src": ["file:./assets/fonts/roboto/roboto-900-normal.woff2"],
-                            "fontWeight": "900",
-                            "fontStyle": "normal",
-                            "fontFamily": "\"Roboto\""
-                        },
-                        {
-                            "src": ["file:./assets/fonts/roboto/roboto-900-italic.woff2"],
-                            "fontWeight": "900",
-                            "fontStyle": "italic",
-                            "fontFamily": "\"Roboto\""
+                            "fontFamily": "\"Skywalker Free Demo\""
                         }
                     ]
                 }
@@ -376,11 +316,11 @@
             "fontSizes": [
                 {
                     "name": "Display",
-                    "size": "72px",
+                    "size": "64px",
                     "slug": "dnte-display",
                     "fluid": {
                         "min": "48px",
-                        "max": "72px"
+                        "max": "64px"
                     }
                 },
                 {
@@ -388,7 +328,7 @@
                     "size": "56px",
                     "slug": "dnte-heading-one",
                     "fluid": {
-                        "min": "48px",
+                        "min": "40px",
                         "max": "56px"
                     }
                 },
@@ -397,26 +337,26 @@
                     "size": "48px",
                     "slug": "dnte-heading-two",
                     "fluid": {
-                        "min": "40px",
+                        "min": "36px",
                         "max": "48px"
                     }
                 },
                 {
                     "name": "Heading Three",
-                    "size": "40px",
+                    "size": "36px",
                     "slug": "dnte-heading-three",
                     "fluid": {
-                        "min": "32px",
-                        "max": "40px"
+                        "min": "30px",
+                        "max": "36px"
                     }
                 },
                 {
                     "name": "Heading Four",
-                    "size": "32px",
+                    "size": "30px",
                     "slug": "dnte-heading-four",
                     "fluid": {
-                        "min": "28px",
-                        "max": "32px"
+                        "min": "24px",
+                        "max": "30px"
                     }
                 },
                 {
@@ -446,20 +386,32 @@
                 {
                     "fluid": false,
                     "name": "Large",
-                    "size": "16px",
+                    "size": "17px",
                     "slug": "dnte-large"
                 },
                 {
                     "fluid": false,
+                    "name": "Paragraph",
+                    "size": "17px",
+                    "slug": "dnte-paragraph"
+                },
+                {
+                    "fluid": false,
                     "name": "Medium",
-                    "size": "14px",
+                    "size": "16px",
                     "slug": "dnte-medium"
                 },
                 {
                     "fluid": false,
                     "name": "Small",
-                    "size": "12px",
+                    "size": "15px",
                     "slug": "dnte-small"
+                },
+                {
+                    "fluid": false,
+                    "name": "Extra Small",
+                    "size": "14px",
+                    "slug": "dnte-extra-small"
                 }
             ],
             "writingMode": true
@@ -498,12 +450,12 @@
                         },
                         ":hover": {
                             "color": {
-                                "text": "var(--wp--preset--color--dnte-wine-berry)"
+                                "text": "var(--wp--preset--color--dnte-primary-600)"
                             }
                         },
                         "color": {
                             "background": "transparent",
-                            "text": "#538988"
+                            "text": "#487EEC"
                         },
                         "css": "background: transparent !important;",
                         "spacing": {
@@ -521,15 +473,13 @@
                     "alternative": {
                         ":hover": {
                             "color": {
+                                "background": "var(--wp--preset--color--dnte-primary-400)",
                                 "text": "var(--wp--preset--color--dnte-white)"
                             }
                         },
-                        "border": {
-                            "radius": "100px"
-                        },
                         "color": {
-                            "background": "var(--wp--preset--color--dnte-neptune)",
-                            "text": "#000000"
+                            "background": "var(--wp--preset--color--dnte-primary-200)",
+                            "text": "var(--wp--preset--color--dnte-primary-950)"
                         }
                     },
                     "outline": {
@@ -542,14 +492,13 @@
                             }
                         },
                         "border": {
-                            "color": "var(--wp--preset--color--dnte-white)",
-                            "radius": "100px",
+                            "color": "var(--wp--preset--color--dnte-primary-800)",
                             "style": "solid",
                             "width": "1px"
                         },
                         "color": {
                             "background": "transparent",
-                            "text": "var(--wp--preset--color--dnte-white)"
+                            "text": "var(--wp--preset--color--dnte-primary-800)"
                         }
                     }
                 }
@@ -561,8 +510,8 @@
             },
             "core/code": {
                 "color": {
-                    "background": "var(--wp--preset--color--dnte-neutral-lightest)",
-                    "text": "var(--wp--preset--color--dnte-neutral-darkest)"
+                    "background": "var(--wp--preset--color--dnte-neutral-100)",
+                    "text": "var(--wp--preset--color--dnte-neutral-950)"
                 },
                 "spacing": {
                     "padding": {
@@ -585,7 +534,7 @@
             },
             "core/comment-author-name": {
                 "color": {
-                    "text": "var(--wp--preset--color--dnte-neutral-dark)"
+                    "text": "var(--wp--preset--color--dnte-neutral-600)"
                 },
                 "elements": {
                     "link": {
@@ -595,7 +544,7 @@
                             }
                         },
                         "color": {
-                            "text": "var(--wp--preset--color--dnte-neutral-dark)"
+                            "text": "var(--wp--preset--color--dnte-neutral-600)"
                         },
                         "typography": {
                             "textDecoration": "none"
@@ -625,12 +574,12 @@
             },
             "core/comment-date": {
                 "color": {
-                    "text": "var(--wp--preset--color--dnte-neutral-darkest)"
+                    "text": "var(--wp--preset--color--dnte-neutral-950)"
                 },
                 "elements": {
                     "link": {
                         "color": {
-                            "text": "var(--wp--preset--color--dnte-neutral-darkest)"
+                            "text": "var(--wp--preset--color--dnte-neutral-950)"
                         }
                     }
                 },
@@ -642,7 +591,7 @@
                 "elements": {
                     "link": {
                         "color": {
-                            "text": "var(--wp--preset--color--dnte-neutral-darkest)"
+                            "text": "var(--wp--preset--color--dnte-neutral-950)"
                         }
                     }
                 },
@@ -654,7 +603,7 @@
                 "elements": {
                     "link": {
                         "color": {
-                            "text": "var(--wp--preset--color--dnte-neutral-darkest)"
+                            "text": "var(--wp--preset--color--dnte-neutral-950)"
                         }
                     }
                 },
@@ -710,16 +659,16 @@
             },
             "core/paragraph": {
                 "typography": {
-                    "fontFamily": "var(--wp--preset--font-family--freight-text-pro)",
-                    "fontSize": "var(--wp--preset--font-size--dnte-large)",
+                    "fontFamily": "var(--wp--preset--font-family--inter)",
+                    "fontSize": "var(--wp--preset--font-size--dnte-paragraph)",
                     "lineHeight": "1.5"
                 },
                 "color": {
-                    "text": "var(--wp--preset--color--dnte-neutral-darker)"
+                    "text": "var(--wp--preset--color--dnte-neutral-950)"
                 }
             },
             "core/post-comments-form": {
-                "css": "& textarea, input:not([type=submit]){border-radius:.25rem; border-color: var(--wp--preset--color--dnte-neutral-lighter) !important;} & input[type=checkbox]{margin:0 .2rem 0 0 !important;} & label {font-size: var(--wp--preset--font-size--dnte-small); }",
+                "css": "& textarea, input:not([type=submit]){border-radius:.25rem; border-color: var(--wp--preset--color--dnte-neutral-300) !important;} & input[type=checkbox]{margin:0 .2rem 0 0 !important;} & label {font-size: var(--wp--preset--font-size--dnte-small); }",
                 "spacing": {
                     "padding": {
                         "bottom": "var(--wp--preset--spacing--dnte-40)",
@@ -732,7 +681,7 @@
             },
             "core/post-date": {
                 "color": {
-                    "text": "var(--wp--preset--color--dnte-neutral-dark)"
+                    "text": "var(--wp--preset--color--dnte-neutral-600)"
                 },
                 "elements": {
                     "link": {
@@ -742,7 +691,7 @@
                             }
                         },
                         "color": {
-                            "text": "var(--wp--preset--color--dnte-neutral-dark)"
+                            "text": "var(--wp--preset--color--dnte-neutral-600)"
                         },
                         "typography": {
                             "textDecoration": "none"
@@ -863,7 +812,7 @@
                 }
             },
             "core/search": {
-                "css": "& .wp-block-search__input{border-radius:3.125rem;padding-left:1.5625rem;padding-right:1.5625rem;border-color:var(--wp--preset--color--dnte-neutral-lighter);}",
+                "css": "& .wp-block-search__input{border-radius:3.125rem;padding-left:1.5625rem;padding-right:1.5625rem;border-color:var(--wp--preset--color--dnte-neutral-300);}",
                 "elements": {
                     "button": {
                         "border": {
@@ -888,7 +837,7 @@
                     "width": "0 0 1px 0"
                 },
                 "color": {
-                    "text": "var(--wp--preset--color--dnte-neutral-lighter)"
+                    "text": "var(--wp--preset--color--dnte-neutral-300)"
                 },
                 "variations": {
                     "wide": {
@@ -927,7 +876,7 @@
         },
         "color": {
             "background": "var(--wp--preset--color--dnte-white)",
-            "text": "var(--wp--preset--color--dnte-neutral-darker)"
+            "text": "var(--wp--preset--color--dnte-neutral-800)"
         },
         "elements": {
             "button": {
@@ -935,127 +884,128 @@
                     "radius": "100px"
                 },
                 "color": {
-                    "background": "var(--wp--preset--color--dnte-white)",
-                    "text": "var(--wp--preset--color--dnte-wine-berry)"
+                    "background": "var(--wp--preset--color--dnte-primary-800)",
+                    "text": "var(--wp--preset--color--dnte-white)"
                 },
                 "css": "transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);",
                 "spacing": {
                     "padding": {
                         "bottom": "10px",
-                        "left": "24px",
-                        "right": "24px",
+                        "left": "20px",
+                        "right": "20px",
                         "top": "10px"
                     }
                 },
                 "typography": {
-                    "fontFamily": "var(--wp--preset--font-family--roboto)",
-                    "fontSize": "var(--wp--preset--font-size--dnte-large)",
+                    "fontFamily": "var(--wp--preset--font-family--inter)",
+                    "fontSize": "var(--wp--preset--font-size--dnte-medium)",
                     "fontStyle": "normal",
-                    "fontWeight": "400",
+                    "fontWeight": "500",
                     "lineHeight": "1.5"
                 },
                 ":hover": {
                     "color": {
-                        "text": "#000000"
+                        "background": "var(--wp--preset--color--dnte-primary-900)",
+                        "text": "var(--wp--preset--color--dnte-white)"
                     }
                 },
                 ":focus": {
                     "outline": {
-                        "color": "var(--wp--preset--color--dnte-bali-hai-darkest)",
+                        "color": "var(--wp--preset--color--dnte-neutral-800)",
                         "offset": "2px"
                     }
                 }
             },
             "caption": {
                 "typography": {
-                    "fontFamily": "var(--wp--preset--font-family--freight-text-pro)",
+                    "fontFamily": "var(--wp--preset--font-family--inter)",
                     "fontSize": "var(--wp--preset--font-size--dnte-small)",
                     "lineHeight": "1.5"
                 }
             },
             "h1": {
                 "typography": {
-                    "fontFamily": "var(--wp--preset--font-family--roboto)",
+                    "fontFamily": "var(--wp--preset--font-family--inter)",
                     "fontSize": "var(--wp--preset--font-size--dnte-heading-one)",
                     "fontStyle": "normal",
-                    "fontWeight": "300",
+                    "fontWeight": "400",
                     "lineHeight": "1.2"
                 },
                 "color": {
-                    "text": "var(--wp--preset--color--dnte-neutral-darkest)"
+                    "text": "var(--wp--preset--color--dnte-neutral-950)"
                 }
             },
             "h2": {
                 "typography": {
-                    "fontFamily": "var(--wp--preset--font-family--roboto)",
+                    "fontFamily": "var(--wp--preset--font-family--inter)",
                     "fontSize": "var(--wp--preset--font-size--dnte-heading-two)",
                     "fontStyle": "normal",
-                    "fontWeight": "300",
+                    "fontWeight": "400",
                     "lineHeight": "1.2"
                 },
                 "color": {
-                    "text": "var(--wp--preset--color--dnte-neutral-darkest)"
+                    "text": "var(--wp--preset--color--dnte-neutral-950)"
                 }
             },
             "h3": {
                 "typography": {
-                    "fontFamily": "var(--wp--preset--font-family--roboto)",
+                    "fontFamily": "var(--wp--preset--font-family--inter)",
                     "fontSize": "var(--wp--preset--font-size--dnte-heading-three)",
                     "fontStyle": "normal",
-                    "fontWeight": "300",
+                    "fontWeight": "400",
                     "lineHeight": "1.2"
                 },
                 "color": {
-                    "text": "var(--wp--preset--color--dnte-neutral-darkest)"
+                    "text": "var(--wp--preset--color--dnte-neutral-950)"
                 }
             },
             "h4": {
                 "typography": {
-                    "fontFamily": "var(--wp--preset--font-family--roboto)",
+                    "fontFamily": "var(--wp--preset--font-family--inter)",
                     "fontSize": "var(--wp--preset--font-size--dnte-heading-four)",
                     "fontStyle": "normal",
-                    "fontWeight": "300",
+                    "fontWeight": "400",
                     "lineHeight": "1.2"
                 },
                 "color": {
-                    "text": "var(--wp--preset--color--dnte-neutral-darkest)"
+                    "text": "var(--wp--preset--color--dnte-neutral-950)"
                 }
             },
             "h5": {
                 "typography": {
-                    "fontFamily": "var(--wp--preset--font-family--roboto)",
+                    "fontFamily": "var(--wp--preset--font-family--inter)",
                     "fontSize": "var(--wp--preset--font-size--dnte-heading-five)",
                     "fontStyle": "normal",
-                    "fontWeight": "300",
+                    "fontWeight": "400",
                     "letterSpacing": "0px",
                     "lineHeight": "1.2"
                 },
                 "color": {
-                    "text": "var(--wp--preset--color--dnte-neutral-darkest)"
+                    "text": "var(--wp--preset--color--dnte-neutral-950)"
                 }
             },
             "h6": {
                 "typography": {
-                    "fontFamily": "var(--wp--preset--font-family--roboto)",
+                    "fontFamily": "var(--wp--preset--font-family--inter)",
                     "fontSize": "var(--wp--preset--font-size--dnte-heading-six)",
                     "fontStyle": "normal",
-                    "fontWeight": "300",
+                    "fontWeight": "400",
                     "letterSpacing": "0px",
                     "lineHeight": "1.2",
                     "textTransform": "none"
                 },
                 "color": {
-                    "text": "var(--wp--preset--color--dnte-neutral-darkest)"
+                    "text": "var(--wp--preset--color--dnte-neutral-950)"
                 }
             },
             "heading": {
                 "color": {
-                    "text": "var(--wp--preset--color--dnte-neutral-darkest)"
+                    "text": "var(--wp--preset--color--dnte-neutral-950)"
                 },
                 "typography": {
-                    "fontFamily": "var(--wp--preset--font-family--roboto)",
+                    "fontFamily": "var(--wp--preset--font-family--inter)",
                     "fontStyle": "normal",
-                    "fontWeight": "300",
+                    "fontWeight": "400",
                     "letterSpacing": "0px",
                     "lineHeight": "1.2"
                 }
@@ -1063,18 +1013,18 @@
             "link": {
                 ":hover": {
                     "color": {
-                        "text": "var(--wp--preset--color--dnte-wine-berry-dark)"
+                        "text": "var(--wp--preset--color--dnte-primary-700)"
                     },
                     "typography": {
                         "textDecoration": "none"
                     }
                 },
                 "color": {
-                    "text": "var(--wp--preset--color--dnte-neutral-darker)"
+                    "text": "var(--wp--preset--color--dnte-neutral-800)"
                 },
                 "css": "transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);",
                 "typography": {
-                    "fontFamily": "var(--wp--preset--font-family--freight-text-pro)",
+                    "fontFamily": "var(--wp--preset--font-family--inter)",
                     "fontStyle": "normal",
                     "fontWeight": "400",
                     "lineHeight": "1.5",
@@ -1092,7 +1042,7 @@
             }
         },
         "typography": {
-            "fontFamily": "var(--wp--preset--font-family--freight-text-pro)",
+            "fontFamily": "var(--wp--preset--font-family--inter)",
             "fontSize": "var(--wp--preset--font-size--dnte-large)",
             "fontStyle": "normal",
             "fontWeight": "400",

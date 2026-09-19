@@ -46,7 +46,7 @@
 /* ── Header ──────────────────────────────────────────────────────────────────── */
 
 .dnte-form-panel__header {
-    background: var(--wp--preset--color--dnte-wine-berry, #551c25);
+    background: var(--wp--preset--color--dnte-primary-600, #334DF8);
     color: #ffffff;
     display: flex;
     align-items: center;
@@ -276,7 +276,7 @@ body.dnte-panel-open {
 }
 
 .gform_button.button {
-    background: var(--wp--preset--color--dnte-wine-berry, #551c25) !important;
+    background: var(--wp--preset--color--dnte-primary-600, #334DF8) !important;
     color: #ffffff !important;
     padding: 12px 24px !important;
     border: none !important;
@@ -289,7 +289,7 @@ body.dnte-panel-open {
 
 /* Repeats the resting colour to override Gravity Forms' own hover background. */
 .gform_button.button:hover {
-    background: var(--wp--preset--color--dnte-wine-berry, #551c25) !important;
+    background: var(--wp--preset--color--dnte-primary-600, #334DF8) !important;
     color: #ffffff !important;
 }
 

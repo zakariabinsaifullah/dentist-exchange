@@ -101,7 +101,7 @@ export default function Edit(props) {
     ];
 
     // Default size, and the value each breakpoint falls back to when unset.
-    const DEFAULT_ICON_SIZE = 36;
+    const DEFAULT_ICON_SIZE = 24;
 
     const resolvedSizes = {
         Desktop: sizes?.Desktop ?? DEFAULT_ICON_SIZE,

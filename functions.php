@@ -17,8 +17,7 @@ require_once get_theme_file_path( 'inc/setup.php' );      // Post formats, edito
 require_once get_theme_file_path( 'inc/enqueue.php' );    // Frontend & block styles
 
 // ── Content types ──────────────────────────────────────────────────────────────
-require_once get_theme_file_path( 'inc/post-types.php' ); // Event post type
-require_once get_theme_file_path( 'inc/taxonomies.php' ); // Event Type taxonomy
+require_once get_theme_file_path( 'inc/post-types.php' ); // Open Role post type
 
 // ── Blocks ─────────────────────────────────────────────────────────────────────
 require_once get_theme_file_path( 'inc/blocks.php' );        // Custom block registration
@@ -39,10 +38,6 @@ require_once get_theme_file_path( 'inc/form.php' );       // Slide-in form panel
 
 // ── Shortcodes ─────────────────────────────────────────────────────────────────
 require_once get_theme_file_path( 'inc/shortcode.php' );         // Posts grid shortcode
-require_once get_theme_file_path( 'inc/shortcode-insights.php' ); // Latest insights (events + post carousel)
-require_once get_theme_file_path( 'inc/shortcode-events-articles.php' ); // Articles & Events filterable grid
-require_once get_theme_file_path( 'inc/shortcode-team.php' );    // Team grid shortcode
-require_once get_theme_file_path( 'inc/shortcode-partners.php' ); // Partners grid shortcode & detail modal
 require_once get_theme_file_path( 'inc/shortcode-roles.php' );   // Opening roles shortcode
 require_once get_theme_file_path( 'inc/shortcodes-page.php' );  // Appearance → Dentist Exchange reference page
 

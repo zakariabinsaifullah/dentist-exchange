@@ -11,7 +11,7 @@
  */
 
 ?>
-<!-- wp:kadence/rowlayout {"uniqueID":"dnte-fse__index_7ed570-1f","columns":1,"colLayout":"equal","bgColor":"#000000","align":"full","firstColumnWidth":0,"secondColumnWidth":0,"thirdColumnWidth":0,"fourthColumnWidth":0,"fifthColumnWidth":0,"sixthColumnWidth":0,"inheritMaxWidth":true,"bgColorClass":"dnte-neutral-darkest","padding":[0,0,0,0],"margin":[0,"",0,""],"kbVersion":2} -->
+<!-- wp:kadence/rowlayout {"uniqueID":"dnte-fse__index_7ed570-1f","columns":1,"colLayout":"equal","bgColor":"#000000","align":"full","firstColumnWidth":0,"secondColumnWidth":0,"thirdColumnWidth":0,"fourthColumnWidth":0,"fifthColumnWidth":0,"sixthColumnWidth":0,"inheritMaxWidth":true,"bgColorClass":"dnte-neutral-950","padding":[0,0,0,0],"margin":[0,"",0,""],"kbVersion":2} -->
 <!-- wp:kadence/column {"borderWidth":["","","",""],"uniqueID":"dnte-fse__index_a2870e-5d","justifyContent":["flex-end","",""],"kbVersion":2} -->
 <div class="wp-block-kadence-column kadence-columndnte-fse__index_a2870e-5d"><div class="kt-inside-inner-col"><!-- wp:kadence/advancedbtn {"hAlign":"right","uniqueID":"dnte-fse__index_156c45-4f","margin":[{"desk":[0,0,0,0],"tablet":["","","",""],"mobile":["","","",""]}],"padding":[0,0,0,0]} -->
 <div class="wp-block-kadence-advancedbtn kb-buttons-wrap kb-btnsdnte-fse__index_156c45-4f"><!-- wp:kadence/singlebtn {"uniqueID":"dnte-fse__index_78bd48-a7","text":"818-408-7117","link":"tel:8184087117","padding":[15,30,15,30],"margin":[0,0,0,0],"background":"rgba(0,0,0,0)","borderRadius":[0,0,0,0],"icon":"fe_phone","iconSide":"left","iconPadding":[0,0,0,0],"inheritStyles":"inherit"} /--></div>

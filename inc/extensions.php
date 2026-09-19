@@ -1510,3 +1510,66 @@ if ( ! function_exists( 'dnte_enqueue_highlight_frontend_assets' ) ) :
 	}
 endif;
 add_action( 'enqueue_block_assets', 'dnte_enqueue_highlight_frontend_assets' );
+
+
+if ( ! function_exists( 'dnte_render_highlight_attributes' ) ) :
+	/**
+	 * Injects the highlight CSS custom properties (`--dnte-highlight-*`) into
+	 * core/heading and core/paragraph blocks on the frontend when the
+	 * `highlightFontFamily` / `highlightColor` attributes are set.
+	 *
+	 * A solid highlight colour also sets `--dnte-highlight-gradient: none` so
+	 * it replaces the default gradient fill.
+	 *
+	 * The editor applies the same variables via the JS `editor.BlockListBlock`
+	 * filter, which has no effect on saved frontend markup, so this PHP
+	 * `render_block` filter replicates it for the rendered HTML.
+	 *
+	 * @param string $block_content The rendered block HTML.
+	 * @param array  $block         The block data including attributes.
+	 * @return string Modified block HTML.
+	 */
+	function dnte_render_highlight_attributes( $block_content, $block ) {
+		$supported = array( 'core/heading', 'core/paragraph' );
+
+		if ( ! in_array( $block['blockName'], $supported, true ) ) {
+			return $block_content;
+		}
+
+		$attrs       = $block['attrs'] ?? array();
+		$font_family = $attrs['highlightFontFamily'] ?? '';
+		$color       = $attrs['highlightColor'] ?? '';
+
+		if ( ( empty( $font_family ) && empty( $color ) ) || empty( $block_content ) ) {
+			return $block_content;
+		}
+
+		$css_vars = array();
+		// Values are passed raw: WP_HTML_Tag_Processor::set_attribute() escapes
+		// attribute values itself, so pre-escaping would double-encode quotes
+		// (e.g. font stacks) into invalid CSS.
+		if ( ! empty( $font_family ) ) {
+			$css_vars[] = '--dnte-highlight-font-family:' . $font_family;
+		}
+		if ( ! empty( $color ) ) {
+			$css_vars[] = '--dnte-highlight-color:' . $color;
+			$css_vars[] = '--dnte-highlight-gradient:none';
+		}
+
+		$processor = new WP_HTML_Tag_Processor( $block_content );
+		if ( $processor->next_tag() ) {
+			$existing_style = $processor->get_attribute( 'style' ) ?? '';
+			$new_style      = rtrim( $existing_style, '; ' );
+			if ( $new_style ) {
+				$new_style .= ';';
+			}
+			$new_style .= implode( ';', $css_vars );
+			$processor->set_attribute( 'style', $new_style );
+
+			return $processor->get_updated_html();
+		}
+
+		return $block_content;
+	}
+endif;
+add_filter( 'render_block', 'dnte_render_highlight_attributes', 10, 2 );

@@ -45,7 +45,7 @@
     flex-direction: column;
     gap: 16px;
     padding: 24px;
-    border: 1px solid var(--wp--preset--color--dnte-neutral-lightest, #f2f2f2);
+    border: 1px solid var(--wp--preset--color--dnte-neutral-100, #F3F4F6);
     border-radius: 16px;
     background: var(--wp--preset--color--dnte-white, #ffffff);
     box-shadow: 0px 4px 20px rgba(195, 195, 195, 0.25);
@@ -115,7 +115,7 @@
     gap: 8px;
     padding: 11px 18px;
     border-radius: 8px;
-    background: var(--wp--preset--color--dnte-wine-berry, #551c25);
+    background: var(--wp--preset--color--dnte-primary-600, #334DF8);
     font-size: 14px;
     font-weight: 600;
     line-height: 1.2;
@@ -126,7 +126,7 @@
 
 .hrg-card__apply:hover,
 .hrg-card__apply:focus-visible {
-    background: var(--wp--preset--color--dnte-wine-berry-dark, #44161d);
+    background: var(--wp--preset--color--dnte-primary-700, #263ADC);
     color: var(--wp--preset--color--dnte-white, #ffffff);
 }
 
@@ -161,13 +161,13 @@
 
 .hrg-card__nature {
     padding: 8px 14px;
-    border: 1px solid var(--wp--preset--color--dnte-neutral-lighter, #d9dada);
+    border: 1px solid var(--wp--preset--color--dnte-neutral-300, #D1D5DB);
     border-radius: 8px;
     font-size: 14px;
     font-weight: 600;
     line-height: 1.2;
     white-space: nowrap;
-    color: var(--wp--preset--color--dnte-neutral-darkest, #070a0a);
+    color: var(--wp--preset--color--dnte-neutral-950, #000512);
 }
 
 /* --- Row 3: salary and job type ------------------------------------------ */
@@ -181,7 +181,7 @@
 
 .hrg-empty {
     margin: 0;
-    color: var(--wp--preset--color--dnte-neutral, #838484);
+    color: var(--wp--preset--color--dnte-neutral-500, #6B7280);
 }
 
 /* --- Responsive ---------------------------------------------------------- */

@@ -76,12 +76,12 @@
         "sizes": {
             "type": "object",
             "default": {
-                "Desktop": 36
+                "Desktop": 24
             }
         },
         "iconSize": {
             "type": "number",
-            "default": 36
+            "default": 24
         },
         "width": {
             "type": "number"

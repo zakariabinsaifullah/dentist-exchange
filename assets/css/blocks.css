@@ -130,8 +130,8 @@ header.wp-block-kadence-rowlayout::before {
  * are defined here rather than there.
  *
  * The only hover state is `styles.elements.button[":hover"]` in theme.json,
- * which sets the text colour to #000000. Do not add hover rules here without
- * checking theme.json, or the two will disagree.
+ * which sets the background to `dnte-primary-900` and the text to white. Do not
+ * add hover rules here without checking theme.json, or the two will disagree.
  */
 
 /*
@@ -145,12 +145,13 @@ header.wp-block-kadence-rowlayout::before {
  * restated here. Keep the two in sync.
  */
 .wp-block-button.is-style-alternative .wp-block-button__link {
-    background-color: var(--wp--preset--color--dnte-neptune);
-    color: #000000;
+    background-color: var(--wp--preset--color--dnte-primary-200);
+    color: var(--wp--preset--color--dnte-primary-950);
 }
 
-/* Overrides the default button's hover, which would otherwise keep the text black. */
+/* Overrides the default button's hover with the darker fill and white text. */
 .wp-block-button.is-style-alternative .wp-block-button__link:hover {
+    background-color: var(--wp--preset--color--dnte-primary-400);
     color: var(--wp--preset--color--dnte-white);
 }
 
@@ -159,13 +160,13 @@ header.wp-block-kadence-rowlayout::before {
  * this variation (`border: 2px solid`, `color: currentColor`) wrapped in
  * `:root :where(...)`, so these plain class selectors outrank it.
  *
- * Intended for dark sections: the fill is transparent and the text is white.
+ * The fill is transparent with `dnte-primary-800` text and border.
  */
 .wp-block-button.is-style-outline .wp-block-button__link {
     background-color: transparent;
     background-image: none;
-    border: 1px solid var(--wp--preset--color--dnte-white);
-    color: var(--wp--preset--color--dnte-white);
+    border: 1px solid var(--wp--preset--color--dnte-primary-800);
+    color: var(--wp--preset--color--dnte-primary-800);
 }
 
 .wp-block-button.is-style-outline .wp-block-button__link:hover {
@@ -201,7 +202,7 @@ header.wp-block-kadence-rowlayout::before {
 }
 
 .wp-block-button.is-style-link .wp-block-button__link:hover {
-    color: var(--wp--preset--color--dnte-wine-berry);
+    color: var(--wp--preset--color--dnte-primary-600);
 }
 
 /* Kadence Table */

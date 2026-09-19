@@ -22,7 +22,7 @@
     svg {
         width: 1em;
         height: 1em;
-        font-size: var(--msize, var(--tsize, var(--dsize, 36px)));
+        font-size: var(--msize, var(--tsize, var(--dsize, 24px)));
     }
 
     &.is-fill svg {
@@ -64,14 +64,14 @@
     // desktop view
     @media (min-width: 1025px) {
         svg {
-            font-size: var(--dsize, 36px);
+            font-size: var(--dsize, 24px);
         }
     }
 
     // tablet view
     @media (min-width: 768px) and (max-width: 1024px) {
         svg {
-            font-size: var(--tsize, var(--dsize, 36px));
+            font-size: var(--tsize, var(--dsize, 24px));
         }
     }
 }
