@@ -2,24 +2,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const sliders = document.querySelectorAll('.wp-block-dnte-carousel');
     sliders.forEach(function (slider) {
         const options = JSON.parse(slider.getAttribute('data-options'));
-        const { loop, autoplay, columns, gaps } = options;
+        const { loop, autoplay, gaps, visibleItems } = options;
 
         const swiper = new Swiper(slider.querySelector('.swiper'), {
             loop: loop,
             autoplay: autoplay,
-            navigation: {
-                nextEl: slider.querySelector('.swiper-custom-next'),
-                prevEl: slider.querySelector('.swiper-custom-prev')
-            },
             pagination: {
                 el: slider.querySelector('.swiper-pagination'),
-                type: 'fraction',
-                formatFractionCurrent: function (number) {
-                    return ('0' + number).slice(-2);
-                },
-                formatFractionTotal: function (number) {
-                    return ('0' + number).slice(-2);
-                },
+                type: 'bullets',
                 clickable: true
             },
             // Touch/Swipe navigation options for mobile
@@ -31,22 +21,27 @@ document.addEventListener('DOMContentLoaded', function () {
             touchStartPreventDefault: false,
             touchStartForcePreventDefault: false,
             touchReleaseOnEdges: true,
-            slidesPerView: columns?.Desktop || 1,
-            spaceBetween: gaps?.Desktop || 20,
+            // Each Slide bakes its own rotate/offset/z-index into its own
+            // markup (see slide/save.js), so the default 'slide' effect is
+            // used here — Swiper only transforms the wrapper track for
+            // horizontal movement in that effect, leaving each slide's own
+            // transform untouched. `centeredSlides` is skipped on purpose:
+            // it reserves extra space to center the active slide, which
+            // shrinks how many slides actually fit versus "Visible Items".
+            slidesPerView: visibleItems?.Desktop || 5,
+            spaceBetween: gaps?.Desktop || 0,
             breakpoints: {
-                // when window width is >= 480px
                 320: {
-                    slidesPerView: columns?.Mobile || 1,
+                    slidesPerView: visibleItems?.Mobile || 1,
                     spaceBetween: gaps?.Mobile || 0
                 },
-                // when window width is >= 768px
                 768: {
-                    slidesPerView: columns?.Tablet || 2,
-                    spaceBetween: gaps?.Tablet || 15
+                    slidesPerView: visibleItems?.Tablet || 3,
+                    spaceBetween: gaps?.Tablet || 0
                 },
                 1025: {
-                    slidesPerView: columns?.Desktop || 1,
-                    spaceBetween: gaps?.Desktop || 20
+                    slidesPerView: visibleItems?.Desktop || 5,
+                    spaceBetween: gaps?.Desktop || 0
                 }
             }
         });

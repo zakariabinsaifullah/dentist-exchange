@@ -1,7 +1,6 @@
 /**
  * WordPress Dependencies
  */
-import { __ } from '@wordpress/i18n';
 import {
     useBlockProps,
     InnerBlocks,
@@ -11,8 +10,16 @@ import {
     __experimentalGetShadowClassesAndStyles as getShadowClassesAndStyles
 } from '@wordpress/block-editor';
 
+/**
+ * Internal Dependencies
+ */
+import Inspector from './inspector';
+
 // Block edit function
-const Edit = ({ attributes }) => {
+const Edit = props => {
+    const { attributes } = props;
+    const { stackRotate, stackOffsetX, stackOffsetY, stackZIndex } = attributes;
+
     // Get block support props
     const borderProps = getBorderClassesAndStyles(attributes);
     const colorProps = getColorClassesAndStyles(attributes);
@@ -25,14 +32,19 @@ const Edit = ({ attributes }) => {
             ...borderProps.style,
             ...colorProps.style,
             ...spacingProps.style,
-            ...shadowProps.style
+            ...shadowProps.style,
+            transform: `translate(${stackOffsetX || 0}px, ${stackOffsetY || 0}px) rotate(${stackRotate || 0}deg)`,
+            zIndex: stackZIndex || 0
         }
     });
 
     return (
-        <div {...blockProps}>
-            <InnerBlocks renderAppender={() => <InnerBlocks.ButtonBlockAppender />} />
-        </div>
+        <>
+            <Inspector {...props} />
+            <div {...blockProps}>
+                <InnerBlocks renderAppender={() => <InnerBlocks.ButtonBlockAppender />} />
+            </div>
+        </>
     );
 };
 

@@ -1,43 +1,34 @@
-import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
+import {
+    useBlockProps,
+    InnerBlocks,
+    __experimentalGetColorClassesAndStyles as getColorClassesAndStyles,
+    __experimentalGetSpacingClassesAndStyles as getSpacingClassesAndStyles
+} from '@wordpress/block-editor';
 import classNames from 'classnames';
-import { RenderIcon } from '../../helpers';
 
 export default function save({ attributes }) {
-    const {
-        blockStyle,
-        columns,
-        gaps,
-        showArrows,
-        showPagination,
-        loop,
-        autoplay,
-        delay,
-        navType,
-        navIconSize,
-        navPosition,
-        prevIconName,
-        prevIconType,
-        prevCustomSvg,
-        nextIconName,
-        nextIconType,
-        nextCustomSvg
-    } = attributes;
+    const { blockStyle, gaps, loop, autoplay, delay, visibleItems } = attributes;
 
+    // The carousel is always in Rotate Stack mode, with no navigation arrows.
     const options = {
         loop,
         autoplay: autoplay ? { delay: delay || 3000 } : false,
-        columns,
-        gaps
+        gaps,
+        visibleItems
     };
+
+    const colorProps = getColorClassesAndStyles(attributes);
+    const spacingProps = getSpacingClassesAndStyles(attributes);
 
     return (
         <div
             {...useBlockProps.save({
-                style: blockStyle,
-                className: classNames({
-                    outside: navType === 'outside' && showArrows,
-                    [`nav-pos-${navPosition}`]: navPosition
-                })
+                style: {
+                    ...blockStyle,
+                    ...colorProps.style,
+                    ...spacingProps.style
+                },
+                className: classNames(colorProps.className, spacingProps.className, 'is-stack')
             })}
             data-options={JSON.stringify(options)}
         >
@@ -46,17 +37,7 @@ export default function save({ attributes }) {
                     <InnerBlocks.Content />
                 </div>
             </div>
-            {showArrows && (
-                <>
-                    <div className="swiper-custom-prev dnte-nav">
-                        <RenderIcon customSvgCode={prevCustomSvg} iconName={prevIconName} iconType={prevIconType} size={navIconSize} />
-                    </div>
-                    <div className="swiper-custom-next dnte-nav">
-                        <RenderIcon customSvgCode={nextCustomSvg} iconName={nextIconName} iconType={nextIconType} size={navIconSize} />
-                    </div>
-                </>
-            )}
-            {showPagination && <div className="swiper-pagination"></div>}
+            <div className="swiper-pagination"></div>
         </div>
     );
 }

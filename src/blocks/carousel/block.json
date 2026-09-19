@@ -10,7 +10,21 @@
     "example": {},
     "supports": {
         "html": false,
-        "align": ["wide", "full"]
+        "align": ["wide", "full"],
+        "color": {
+            "text": false,
+            "background": true,
+            "gradients": true,
+            "__experimentalDefaultControls": {
+                "background": false
+            }
+        },
+        "spacing": {
+            "padding": true,
+            "__experimentalDefaultControls": {
+                "padding": false
+            }
+        }
     },
     "attributes": {
         "status": {
@@ -30,29 +44,21 @@
                 "Desktop": "adaptive"
             }
         },
-        "columns": {
-            "type": "object",
-            "default": {
-                "Desktop": 3,
-                "Tablet": 2,
-                "Mobile": 1
-            }
-        },
         "gaps": {
             "type": "object",
             "default": {
-                "Desktop": 20,
-                "Tablet": 15,
+                "Desktop": 0,
+                "Tablet": 0,
                 "Mobile": 0
             }
         },
-        "navType": {
-            "type": "string",
-            "default": "outside"
-        },
-        "navPosition": {
-            "type": "string",
-            "default": "middle"
+        "visibleItems": {
+            "type": "object",
+            "default": {
+                "Desktop": 5,
+                "Tablet": 3,
+                "Mobile": 1
+            }
         },
         "heights": {
             "type": "object",
@@ -73,90 +79,6 @@
         "loop": {
             "type": "boolean",
             "default": true
-        },
-        "showArrows": {
-            "type": "boolean",
-            "default": true
-        },
-        "showPagination": {
-            "type": "boolean",
-            "default": false
-        },
-        "paginationColor": {
-            "type": "string"
-        },
-        "npaginationHeight": {
-            "type": "string"
-        },
-        "paginationHeight": {
-            "type": "string"
-        },
-        "pnSize": {
-            "type": "string"
-        },
-        "paSize": {
-            "type": "string"
-        },
-        "pRadius": {
-            "type": "string"
-        },
-        "paRadius": {
-            "type": "string"
-        },
-        "pgap": {
-            "type": "string"
-        },
-        "navColor": {
-            "type": "string"
-        },
-        "navbgColor": {
-            "type": "string"
-        },
-        "navBorderColor": {
-            "type": "string"
-        },
-        "navSize": {
-            "type": "string"
-        },
-        "navIconSize": {
-            "type": "string"
-        },
-        "navRadius": {
-            "type": "string"
-        },
-        "navEdgeGap": {
-            "type": "string"
-        },
-        "prevIconName": {
-            "type": "string",
-            "default": "arrow-left"
-        },
-        "prevIconType": {
-            "type": "string",
-            "default": "fill"
-        },
-        "prevCustomSvg": {
-            "type": "string"
-        },
-        "nextIconName": {
-            "type": "string",
-            "default": "arrow-right"
-        },
-        "nextIconType": {
-            "type": "string",
-            "default": "fill"
-        },
-        "nextCustomSvg": {
-            "type": "string"
-        },
-        "navPadding": {
-            "type": "object"
-        },
-        "navBorder": {
-            "type": "object"
-        },
-        "navBorderRadius": {
-            "type": "object"
         }
     },
     "textdomain": "dentist-exchange",

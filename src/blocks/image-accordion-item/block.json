@@ -1,0 +1,95 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "dnte/image-accordion-item",
+    "version": "1.0.0",
+    "title": "Image Accordion Item",
+    "category": "dnte",
+    "icon": "format-image",
+    "description": "Individual image, title and button for the Image Accordion block.",
+    "example": {},
+    "parent": ["dnte/image-accordion"],
+    "usesContext": ["dnte/showTitle", "dnte/showDesc", "dnte/showBtn", "dnte/titleTag"],
+    "supports": {
+        "anchor": true,
+        "html": false,
+        "align": false,
+        "reusable": false,
+        "color": {
+            "text": false,
+            "background": true,
+            "gradients": true,
+            "__experimentalDefaultControls": {
+                "background": false
+            }
+        },
+        "__experimentalBorder": {
+            "color": true,
+            "radius": true,
+            "style": true,
+            "width": true,
+            "__experimentalDefaultControls": {
+                "color": false,
+                "radius": false,
+                "width": false
+            }
+        },
+        "spacing": {
+            "padding": true,
+            "__experimentalDefaultControls": {
+                "padding": false
+            }
+        },
+        "shadow": true
+    },
+    "attributes": {
+        "image": {
+            "type": "object",
+            "default": {
+                "id": "",
+                "url": "",
+                "alt": ""
+            }
+        },
+        "showTitle": {
+            "type": "boolean",
+            "default": true
+        },
+        "title": {
+            "type": "string"
+        },
+        "titleTag": {
+            "type": "string",
+            "default": "h4"
+        },
+        "showDesc": {
+            "type": "boolean",
+            "default": true
+        },
+        "description": {
+            "type": "string"
+        },
+        "showBtn": {
+            "type": "boolean",
+            "default": true
+        },
+        "btnLabel": {
+            "type": "string",
+            "default": "Show More"
+        },
+        "href": {
+            "type": "string",
+            "default": "#"
+        },
+        "linkTarget": {
+            "type": "string"
+        },
+        "linkRel": {
+            "type": "string"
+        }
+    },
+    "textdomain": "dentist-exchange",
+    "editorScript": "file:./index.js",
+    "editorStyle": "file:./index.css",
+    "style": "file:./style-index.css"
+}

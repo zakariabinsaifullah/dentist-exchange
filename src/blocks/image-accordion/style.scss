@@ -1,0 +1,18 @@
+.wp-block-dnte-image-accordion {
+    .dnte-image-accordion {
+        display: flex;
+        gap: var(--dgap, 0px);
+    }
+
+    @media (max-width: 781px) {
+        .dnte-image-accordion {
+            gap: var(--tgap, var(--dgap, 0px));
+        }
+    }
+
+    @media (max-width: 599px) {
+        .dnte-image-accordion {
+            gap: var(--mgap, var(--tgap, var(--dgap, 0px)));
+        }
+    }
+}

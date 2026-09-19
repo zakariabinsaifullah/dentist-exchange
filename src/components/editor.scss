@@ -276,4 +276,23 @@ button.native-responsive-device-button span::before {
         height: 3px !important;
         margin-top: 14px !important;
     }
+
+    // RangeControl's own width/flex rules are injected at runtime by Emotion
+    // (there is no static CSS for them at all). The track/thumb inside
+    // `__wrapper` are all `position: absolute`, so they contribute zero
+    // intrinsic content size, which lets the wrapper collapse toward zero
+    // width. A small, fixed `min-width` here is enough to stop that collapse
+    // without forcing any ancestor container wider than the sidebar itself
+    // (that's what caused the previous overflow — this only touches the
+    // track element, not its containers).
+    .components-range-control__wrapper {
+        flex: 1 1 auto !important;
+        width: auto !important;
+        min-width: 60px !important;
+        max-width: none !important;
+    }
+
+    .components-range-control__number {
+        flex: 0 0 auto !important;
+    }
 }
