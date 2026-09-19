@@ -60,7 +60,7 @@
         opacity: 0;
         overflow: hidden;
         color: #fff;
-        font-size: 16px;
+        font-size: 17px;
         transition: all 0.35s ease;
     }
 
@@ -75,7 +75,7 @@
         pointer-events: none;
         text-decoration: none;
         text-align: center;
-        font-size: 14px;
+        font-size: 16px;
         font-weight: 500;
         border-radius: 152px;
         background: var(--btn-bg, #2234b0);
@@ -112,7 +112,7 @@
         .btn {
             max-height: 60px;
             opacity: 1;
-            padding: var(--btn-padding, 16px 10px);
+            padding: var(--btn-padding, 10px 22px);
             margin-top: 160px;
             pointer-events: auto;
         }
