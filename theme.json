@@ -427,6 +427,11 @@
                     "name": "Default Shadow",
                     "shadow": "0 0 11.5px 0 #8FA4B7",
                     "slug": "dnte-shadow"
+                },
+                {
+                    "name": "Soft Shadow",
+                    "shadow": "0 4px 20px 0 rgba(123, 123, 123, 0.25)",
+                    "slug": "dnte-shadow-soft"
                 }
             ]
         },

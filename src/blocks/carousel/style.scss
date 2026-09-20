@@ -104,4 +104,14 @@
             overflow: visible;
         }
     }
+
+    // "Make overflow visible" — opt out of Swiper's clipping so slides waiting
+    // outside the viewport stay on screen (and nothing rotated gets cut off).
+    // Swiper sets `overflow: hidden` on `.swiper` from its own stylesheet, so
+    // this needs `!important` to win.
+    &.has-visible-overflow {
+        .swiper {
+            overflow: visible !important;
+        }
+    }
 }

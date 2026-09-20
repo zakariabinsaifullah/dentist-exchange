@@ -23,7 +23,7 @@ import { generateHeightStyles } from './utils';
 // Block edit function
 const Edit = props => {
     const { attributes, setAttributes, clientId, isSelected } = props;
-    const { heightType, heights, vAligns, gaps, resMode, visibleItems } = attributes;
+    const { heightType, heights, vAligns, gaps, resMode, visibleItems, overflowVisible } = attributes;
 
     const colorProps = getColorClassesAndStyles(attributes);
     const spacingProps = getSpacingClassesAndStyles(attributes);
@@ -58,7 +58,9 @@ const Edit = props => {
     // Block Props
     const blockProps = useBlockProps({
         style: { ...cssCustomProperties, ...colorProps.style, ...spacingProps.style },
-        className: classNames(colorProps.className, spacingProps.className, 'is-stack')
+        className: classNames(colorProps.className, spacingProps.className, 'is-stack', {
+            'has-visible-overflow': overflowVisible
+        })
     });
 
     return (

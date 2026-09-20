@@ -29,7 +29,7 @@ const InheritReset = ({ device, value, onReset }) => {
 
 const Inspector = props => {
     const { attributes, setAttributes } = props;
-    const { resMode, heightType, heights, vAligns, autoplay, loop, delay, visibleItems } = attributes;
+    const { resMode, heightType, heights, vAligns, autoplay, loop, delay, visibleItems, overflowVisible } = attributes;
 
     // What the device currently in preview actually renders with.
     const currentHeightType = resolveResponsive(heightType, resMode) || 'adaptive';
@@ -112,6 +112,11 @@ const Inspector = props => {
                     label={__('Autoplay', 'dentist-exchange')}
                     checked={autoplay}
                     onChange={value => setAttributes({ autoplay: value })}
+                />
+                <NativeToggleControl
+                    label={__('Make overflow visible', 'dentist-exchange')}
+                    checked={overflowVisible}
+                    onChange={value => setAttributes({ overflowVisible: value })}
                 />
                 {autoplay && (
                     <NativeRangeControl

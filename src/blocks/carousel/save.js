@@ -7,7 +7,7 @@ import {
 import classNames from 'classnames';
 
 export default function save({ attributes }) {
-    const { blockStyle, gaps, loop, autoplay, delay, visibleItems } = attributes;
+    const { blockStyle, gaps, loop, autoplay, delay, visibleItems, overflowVisible } = attributes;
 
     // The carousel is always in Rotate Stack mode, with no navigation arrows.
     const options = {
@@ -28,7 +28,9 @@ export default function save({ attributes }) {
                     ...colorProps.style,
                     ...spacingProps.style
                 },
-                className: classNames(colorProps.className, spacingProps.className, 'is-stack')
+                className: classNames(colorProps.className, spacingProps.className, 'is-stack', {
+                    'has-visible-overflow': overflowVisible
+                })
             })}
             data-options={JSON.stringify(options)}
         >

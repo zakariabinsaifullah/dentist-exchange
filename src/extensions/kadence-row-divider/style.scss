@@ -17,13 +17,34 @@
     position: relative;
 }
 
-.dnte-has-top-divider::before,
+/*
+ * The top selector is deliberately doubled.
+ *
+ * Kadence puts a clearfix on this exact pseudo-element:
+ *
+ *     .kt-row-layout-inner:before,
+ *     .kb-row-layout-wrap:before { clear: both; display: table; content: "" }
+ *
+ * That is single-class specificity — identical to ours — so load order decided
+ * the winner, and Kadence's `display: table` collapsed the absolutely
+ * positioned box to shrink-to-fit, i.e. zero width. The top divider rendered
+ * nothing at all. The bottom divider was unaffected because Kadence leaves
+ * `::after` alone.
+ *
+ * Repeating the class raises specificity above the clearfix without hard-coding
+ * a Kadence selector, so this keeps working if their class names change.
+ */
+.dnte-has-top-divider.dnte-has-top-divider::before,
 .dnte-has-bottom-divider::after {
     content: '';
     position: absolute;
     left: 0;
     right: 0;
     background-image: var(--dnte-divider-image);
+
+    /* Undo the clearfix, which sets both of these on ::before. */
+    display: block;
+    clear: none;
 
     /*
      * Stretched to the full row width. The source is 1862px wide raster, so
@@ -46,17 +67,25 @@
 }
 
 /*
- * Each divider carries its own height and offset — they are not symmetrical.
+ * Each divider carries its own height and offset.
  *
- * Top sits flush inside the row. The -1px, taken from Kadence's separators,
- * closes the hairline gap that subpixel rounding can leave at the edge.
+ * Top hangs 50px above the row, mirroring the bottom, so the tear overlaps
+ * the preceding section rather than sitting inside this row's own edge. As
+ * with the bottom, that overhang is only visible if nothing clips it — see
+ * the overflow note below.
  */
-.dnte-has-top-divider::before {
+.dnte-has-top-divider.dnte-has-top-divider::before {
     height: var(--dnte-divider-top-height, 100px);
-    top: var(--dnte-divider-top-offset, -1px);
+    top: var(--dnte-divider-top-offset, -50px);
 
-    /* The vertical mirror of the bottom divider, so the tear faces downward. */
-    transform: scaleX(-1);
+    /*
+     * No transform: the artwork's natural orientation is the top edge.
+     *
+     * The supplied top.svg embeds a byte-identical PNG to the bottom one — the
+     * only difference between the two wrappers is that the bottom applies
+     * rotate(-180) and the top does not. So one image file serves both, and
+     * the orientation is the transform (or absence of one) applied here.
+     */
 }
 
 /*
