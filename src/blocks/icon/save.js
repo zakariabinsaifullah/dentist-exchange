@@ -43,9 +43,22 @@ export default function save({ attributes, className }) {
         showTitle,
         heading,
         headingTag,
+        showDesc,
+        description,
+        descTag,
         blockStyle,
         iconVerticalAlign
     } = attributes;
+
+    // Title and description are independent toggles, so the content area
+    // renders for either one on its own. Shared between the custom-SVG and
+    // icon-library branches below.
+    const content = (showTitle || showDesc) && (
+        <div className="icon-content">
+            {showTitle && <RichText.Content tagName={headingTag} value={heading} className="icon-heading" />}
+            {showDesc && <RichText.Content tagName={descTag} value={description} className="icon-description" />}
+        </div>
+    );
 
     // Get block support props
     const borderProps = getBorderClassesAndStyles(attributes);
@@ -97,11 +110,7 @@ export default function save({ attributes, className }) {
                     })}
                 >
                     <div className={iconClasses} style={iconStyle} dangerouslySetInnerHTML={{ __html: customSvgCode }} />
-                    {showTitle && (
-                        <div className="icon-content">
-                            <RichText.Content tagName={headingTag} value={heading} className="icon-heading" />
-                        </div>
-                    )}
+                    {content}
                 </div>
             </Tag>
         );
@@ -123,11 +132,7 @@ export default function save({ attributes, className }) {
                 <div className={iconClasses} style={iconStyle}>
                     <Icon icon={selectedIcon.icon} size={iconSize} />
                 </div>
-                {showTitle && (
-                    <div className="icon-content">
-                        <RichText.Content tagName={headingTag} value={heading} className="icon-heading" />
-                    </div>
-                )}
+                {content}
             </div>
         </Tag>
     );

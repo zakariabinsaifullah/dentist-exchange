@@ -23,6 +23,7 @@ require_once get_theme_file_path( 'inc/post-types.php' ); // Open Role post type
 require_once get_theme_file_path( 'inc/blocks.php' );        // Custom block registration
 require_once get_theme_file_path( 'inc/block-styles.php' );  // Core block style variations
 require_once get_theme_file_path( 'inc/extensions.php' );    // Block editor extensions
+require_once get_theme_file_path( 'inc/annotations.php' );   // Hand-drawn heading annotations
 
 // ── Icon library ───────────────────────────────────────────────────────────────
 require_once get_theme_file_path( 'inc/my-icons.php' );      // Site-wide saved SVG icons

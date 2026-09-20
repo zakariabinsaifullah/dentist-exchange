@@ -1,0 +1,186 @@
+/**
+ * Annotation format — hand-drawn strokes over a heading selection.
+ *
+ * Loaded in the editor and on the front end. The front end gets a real inline
+ * <svg> spliced in by dnte_render_annotation(); the editor gets a `mask-image`
+ * stand-in on `::after` (see editor.scss), because the Format API cannot emit
+ * child nodes into a RichText value. Both share the geometry below, so the two
+ * line up — only the draw-in animation is frontend-only.
+ */
+
+.dnte-annotation {
+    /*
+     * The stroke is absolutely positioned against this span, so it needs a box
+     * of its own. `inline-block` is the trade-off: a phrase long enough to wrap
+     * gets one stroke across the whole box rather than one per line. Every
+     * reference design annotates a short phrase, which is the intended use.
+     */
+    position: relative;
+    display: inline-block;
+
+    /*
+     * Critical for positioning. An inline-block's height is its own line box,
+     * so on a heading with line-height 1.4 the span is ~40% taller than the
+     * glyphs — and `top: 100%` would drop the underline well below the text,
+     * onto the following line. Collapsing to 1 makes the box hug the text.
+     *
+     * The surrounding line box is still governed by the heading's own
+     * line-height, and an inline-block aligns on its baseline, so this changes
+     * where the stroke sits without touching the layout of the heading.
+     */
+    line-height: 1;
+
+    /* Overridable per instance from the toolbar colour picker. */
+    --dnte-annotation-stroke: var(--dnte-annotation-color, var(--wp--preset--color--dnte-primary-600, currentColor));
+
+    /* Per-family tuning knobs — adjust once the final artwork is in place. */
+    --dnte-annotation-underline-height: 0.34em;
+    --dnte-annotation-underline-offset: -0.08em;
+    --dnte-annotation-underline-bleed: 0.06em;
+    --dnte-annotation-circle-bleed-x: 0.55em;
+    --dnte-annotation-circle-bleed-y: 0.3em;
+}
+
+.dnte-annotation__stroke,
+.dnte-annotation::after {
+    position: absolute;
+    z-index: 1;
+    pointer-events: none;
+
+    /*
+     * Stroke caps and the overshoot on the circle variants sit outside the
+     * viewBox; without this they get clipped.
+     */
+    overflow: visible;
+
+    /*
+     * <svg> is a replaced element, so an absolutely positioned one with
+     * `width: auto` takes its *intrinsic* size and ignores the top/right/
+     * bottom/left box it was given. Every variant below therefore sets width
+     * and height explicitly rather than stretching via opposing insets.
+     * `max-width` guards against the theme's global image/media rules.
+     */
+    max-width: none;
+}
+
+/*
+ * `::after` is the editor-only preview. It stays off unless editor.scss turns
+ * it on, so the front end never paints a second stroke on top of the real SVG.
+ */
+.dnte-annotation::after {
+    content: none;
+    background-color: var(--dnte-annotation-stroke);
+}
+
+.dnte-annotation__stroke {
+    /* Paths are authored with `stroke="currentColor"`. */
+    color: var(--dnte-annotation-stroke);
+}
+
+/*
+ * Geometry is keyed off the slug prefix, so a new artwork file in a known
+ * family (`underline-3.svg`, `circle-2.svg`) needs no CSS at all.
+ */
+.dnte-annotation[data-annotation^='underline'] {
+    .dnte-annotation__stroke,
+    &::after {
+        top: 100%;
+        left: calc(var(--dnte-annotation-underline-bleed) * -1);
+        width: calc(100% + var(--dnte-annotation-underline-bleed) * 2);
+        height: var(--dnte-annotation-underline-height);
+        margin-top: var(--dnte-annotation-underline-offset);
+    }
+}
+
+/*
+ * underline-2's artwork only inks the middle ~57% of its 609x58 viewBox, where
+ * underline-1 fills its own edge to edge. Squeezed into the same box its three
+ * passes collapse into a sliver, so it gets a proportionally taller one
+ * (0.34 / 0.57) plus an upward nudge to keep the ink under the text rather than
+ * below it.
+ *
+ * It still draws lighter than underline-1 — its wide viewBox scales down more —
+ * and that is wanted: underline-1 is the heavy multi-pass stroke, underline-2
+ * the fine one.
+ */
+.dnte-annotation[data-annotation='underline-2'] {
+    --dnte-annotation-underline-height: 0.6em;
+    --dnte-annotation-underline-offset: -0.21em;
+}
+
+.dnte-annotation[data-annotation^='circle'] {
+    .dnte-annotation__stroke,
+    &::after {
+        top: calc(var(--dnte-annotation-circle-bleed-y) * -1);
+        left: calc(var(--dnte-annotation-circle-bleed-x) * -1);
+        width: calc(100% + var(--dnte-annotation-circle-bleed-x) * 2);
+        height: calc(100% + var(--dnte-annotation-circle-bleed-y) * 2);
+    }
+}
+
+/*
+ * Draw-in: the stroke traces itself along its own path.
+ *
+ * view.js measures each path with getTotalLength() and writes it to
+ * `--dnte-stroke-length`, then adds `.is-drawn` when the phrase scrolls into
+ * view. Dashing one full path-length and animating the offset to zero walks
+ * the stroke on from its start.
+ *
+ * The length is measured rather than declared with `pathLength="1"` because
+ * Chrome does not apply `pathLength` normalisation to a CSS-specified
+ * `stroke-dasharray` — the dash stays 1px and the stroke renders as speckles.
+ * Measuring is deterministic everywhere, and the artwork must therefore NOT
+ * carry `pathLength`, or browsers that *do* honour it would rescale the
+ * measured value and break the animation the other way.
+ *
+ * The artwork must also not carry `vector-effect="non-scaling-stroke"`: that
+ * resolves dash lengths in screen pixels instead of path units, which breaks
+ * the dashing regardless of how the length is obtained.
+ *
+ * The 5000 fallback is an arbitrary value larger than any realistic path, so
+ * the stroke starts hidden before view.js has measured it — no flash of a
+ * fully drawn stroke on load.
+ */
+.dnte-annotation__stroke path {
+    stroke-dasharray: var(--dnte-stroke-length, 5000);
+    stroke-dashoffset: var(--dnte-stroke-length, 5000);
+}
+
+.dnte-annotation.is-drawn .dnte-annotation__stroke path {
+    animation: dnte-annotation-draw 0.75s cubic-bezier(0.45, 0.05, 0.3, 1) forwards;
+}
+
+/* Multi-pass artwork reads as hand-drawn when the passes are staggered. */
+.dnte-annotation.is-drawn .dnte-annotation__stroke path:nth-child(2) {
+    animation-delay: 0.18s;
+}
+
+.dnte-annotation.is-drawn .dnte-annotation__stroke path:nth-child(3) {
+    animation-delay: 0.32s;
+}
+
+@keyframes dnte-annotation-draw {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+/*
+ * Without JavaScript nothing ever adds `.is-drawn`, so the stroke has to start
+ * fully drawn or it would never appear at all.
+ */
+@media (scripting: none) {
+    .dnte-annotation__stroke path {
+        stroke-dashoffset: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dnte-annotation__stroke path {
+        stroke-dashoffset: 0;
+    }
+
+    .dnte-annotation.is-drawn .dnte-annotation__stroke path {
+        animation: none;
+    }
+}

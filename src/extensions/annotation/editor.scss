@@ -1,0 +1,99 @@
+/**
+ * Annotation format — editor-only chrome.
+ *
+ * Two jobs: turn on the `::after` stroke preview on the canvas (the front end
+ * uses a real inline <svg> instead, so the preview must stay off there), and
+ * style the picker popover.
+ *
+ * The `mask-image` for each variant is generated from the same .svg files by
+ * dnte_annotation_editor_preview_css() and arrives as an inline style, so this
+ * file never hardcodes artwork.
+ */
+
+/*
+ * Higher specificity than the `content: none` default in style.scss, so this
+ * wins regardless of which stylesheet the editor happens to load second.
+ */
+.dnte-annotation[data-annotation]::after,
+.dnte-annotation-swatch[data-annotation]::after {
+    content: '';
+
+    /*
+     * The fallback is a fully transparent mask, not `none` — an undefined mask
+     * would let the background colour paint as a solid rectangle, which is how
+     * an unrecognised slug would otherwise show up.
+     */
+    --dnte-annotation-mask-fallback: linear-gradient(transparent, transparent);
+
+    mask-image: var(--dnte-annotation-mask, var(--dnte-annotation-mask-fallback));
+    -webkit-mask-image: var(--dnte-annotation-mask, var(--dnte-annotation-mask-fallback));
+    mask-size: 100% 100%;
+    -webkit-mask-size: 100% 100%;
+    mask-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
+}
+
+/* ── Picker popover ──────────────────────────────────────────────────────── */
+
+.dnte-annotation-popover {
+    .components-popover__content {
+        min-width: 260px;
+    }
+}
+
+.dnte-annotation-popover__inner {
+    padding: 16px;
+}
+
+.dnte-annotation-popover__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin: 8px 0 16px;
+}
+
+.dnte-annotation-popover__empty {
+    margin: 0 0 8px;
+    color: #757575;
+}
+
+.dnte-annotation-swatch {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 44px;
+    padding: 0;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:hover {
+        border-color: #949494;
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--wp-admin-theme-color, #3858e9);
+        outline-offset: 1px;
+    }
+
+    &.is-selected {
+        border-color: var(--wp-admin-theme-color, #3858e9);
+        box-shadow: 0 0 0 1px var(--wp-admin-theme-color, #3858e9);
+    }
+
+    /*
+     * Inset so the stroke reads as a sample rather than filling the tile, and
+     * centred so underline and circle artwork both sit sensibly.
+     */
+    &::after {
+        position: absolute;
+        inset: 10px 8px;
+        background-color: var(--wp--preset--color--dnte-primary-600, #2938e0);
+    }
+}
+
+.dnte-annotation-popover__remove {
+    width: 100%;
+    justify-content: center;
+}

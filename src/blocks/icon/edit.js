@@ -39,6 +39,7 @@ import {
     NativeIconPicker,
     PanelColorControl,
     NativeSelectControl,
+    NativeTextareaControl,
     NativeUnitControl
 } from '../../components';
 
@@ -51,6 +52,7 @@ export default function Edit(props) {
     const {
         iconName,
         iconSize,
+        iconMarginTop,
         customSvgCode,
         iconType,
         strokeWidth,
@@ -66,8 +68,19 @@ export default function Edit(props) {
         titleColor,
         titleSize,
         titleFontFamily,
+        titleMarginBottom,
+        showDesc,
+        description,
+        descTag,
+        descColor,
+        descSize,
+        descFontFamily,
         iconVerticalAlign
     } = attributes;
+
+    // The title and the description are independent, so the content area
+    // renders for either one on its own.
+    const hasContent = showTitle || showDesc;
 
     const fontFamilies = useSelect(select => {
         const settings = select('core/block-editor').getSettings();
@@ -120,16 +133,21 @@ export default function Edit(props) {
 
     const cssCustomProperties = {
         ...(listGap && { '--list-gap': `${listGap}` }),
+        ...(iconMarginTop && { '--icon-margin-top': `${iconMarginTop}` }),
         ...(titleColor && { '--title-color': titleColor }),
         ...(titleSize && { '--title-size': `${titleSize}` }),
-        ...(titleFontFamily && { '--title-font-family': titleFontFamily })
+        ...(titleFontFamily && { '--title-font-family': titleFontFamily }),
+        ...(titleMarginBottom && { '--title-margin-bottom': `${titleMarginBottom}` }),
+        ...(descColor && { '--desc-color': descColor }),
+        ...(descSize && { '--desc-size': `${descSize}` }),
+        ...(descFontFamily && { '--desc-font-family': descFontFamily })
     };
 
     useEffect(() => {
         setAttributes({
             blockStyle: cssCustomProperties
         });
-    }, [listGap, titleColor, titleSize, titleFontFamily]);
+    }, [listGap, iconMarginTop, titleColor, titleSize, titleFontFamily, titleMarginBottom, descColor, descSize, descFontFamily]);
 
     // states
     const [isEditingURL, setIsEditingURL] = useState(false);
@@ -210,6 +228,11 @@ export default function Edit(props) {
                         checked={showTitle}
                         onChange={value => setAttributes({ showTitle: value })}
                     />
+                    <NativeToggleControl
+                        label={__('Add Description', 'dentist-exchange')}
+                        checked={showDesc}
+                        onChange={value => setAttributes({ showDesc: value })}
+                    />
                     <NativeIconPicker
                         onIconSelect={(iconName, iconType) => {
                             setAttributes({ iconName, iconType, customSvgCode: undefined });
@@ -240,9 +263,15 @@ export default function Edit(props) {
                             __next40pxDefaultSize
                         />
                     </NativeResponsiveControl>
+                    {/* Nudges the icon down — mainly for top-aligned icons beside multi-line text. */}
+                    <NativeUnitControl
+                        label={__('Icon Top Margin', 'dentist-exchange')}
+                        value={iconMarginTop}
+                        onChange={value => setAttributes({ iconMarginTop: value })}
+                    />
                 </PanelBody>
-                {showTitle && (
-                    <PanelBody title={__('List Title', 'dentist-exchange')} initialOpen={false}>
+                {hasContent && (
+                    <PanelBody title={__('Title & Description', 'dentist-exchange')} initialOpen={false}>
                         <NativeUnitControl
                             label={__('Gap ', 'dentist-exchange')}
                             value={listGap}
@@ -261,7 +290,7 @@ export default function Edit(props) {
                         {showTitle && (
                             <>
                                 <NativeSelectControl
-                                    label={__('Select Tag', 'dentist-exchange')}
+                                    label={__('Title Tag', 'dentist-exchange')}
                                     value={headingTag}
                                     onChange={value => setAttributes({ headingTag: value })}
                                     options={[
@@ -283,6 +312,26 @@ export default function Edit(props) {
                                 />
                             </>
                         )}
+                        {showDesc && (
+                            <>
+                                <NativeSelectControl
+                                    label={__('Description Tag', 'dentist-exchange')}
+                                    value={descTag}
+                                    onChange={value => setAttributes({ descTag: value })}
+                                    options={[
+                                        { label: __('Paragraph', 'dentist-exchange'), value: 'p' },
+                                        { label: __('Div', 'dentist-exchange'), value: 'div' },
+                                        { label: __('Span', 'dentist-exchange'), value: 'span' }
+                                    ]}
+                                />
+                                <NativeTextareaControl
+                                    label={__('Description Text', 'dentist-exchange')}
+                                    value={description}
+                                    onChange={value => setAttributes({ description: value })}
+                                    placeholder={__('Description...', 'dentist-exchange')}
+                                />
+                            </>
+                        )}
                     </PanelBody>
                 )}
             </InspectorControls>
@@ -293,7 +342,9 @@ export default function Edit(props) {
                         resetAll={() =>
                             setAttributes({
                                 titleSize: undefined,
-                                titleColor: undefined
+                                titleColor: undefined,
+                                titleFontFamily: undefined,
+                                titleMarginBottom: undefined
                             })
                         }
                     >
@@ -353,6 +404,92 @@ export default function Edit(props) {
                                 options={fontFamilyOptions}
                             />
                         </ToolsPanelItem>
+
+                        <ToolsPanelItem
+                            hasValue={() => !!titleMarginBottom}
+                            label={__('Bottom Margin', 'dentist-exchange')}
+                            onDeselect={() => {
+                                setAttributes({
+                                    titleMarginBottom: undefined
+                                });
+                            }}
+                            onSelect={() => {}}
+                        >
+                            <NativeUnitControl
+                                label={__('Bottom Margin', 'dentist-exchange')}
+                                value={titleMarginBottom}
+                                onChange={value => setAttributes({ titleMarginBottom: value })}
+                            />
+                        </ToolsPanelItem>
+                    </ToolsPanel>
+                )}
+                {showDesc && (
+                    <ToolsPanel
+                        label={__('Description', 'dentist-exchange')}
+                        resetAll={() =>
+                            setAttributes({
+                                descSize: undefined,
+                                descColor: undefined,
+                                descFontFamily: undefined
+                            })
+                        }
+                    >
+                        <ToolsPanelItem
+                            hasValue={() => !!descSize}
+                            label={__('Size', 'dentist-exchange')}
+                            onDeselect={() => {
+                                setAttributes({
+                                    descSize: undefined
+                                });
+                            }}
+                            onSelect={() => {}}
+                        >
+                            <NativeUnitControl
+                                label={__('Font Size', 'dentist-exchange')}
+                                value={descSize}
+                                onChange={value => setAttributes({ descSize: value })}
+                            />
+                        </ToolsPanelItem>
+
+                        <ToolsPanelItem
+                            hasValue={() => !!descColor}
+                            label={__('Color', 'dentist-exchange')}
+                            onDeselect={() => {
+                                setAttributes({
+                                    descColor: undefined
+                                });
+                            }}
+                            onSelect={() => {}}
+                        >
+                            <PanelColorControl
+                                label={__('Color', 'dentist-exchange')}
+                                colorSettings={[
+                                    {
+                                        value: descColor,
+                                        onChange: color => setAttributes({ descColor: color }),
+                                        label: __('Color', 'dentist-exchange')
+                                    }
+                                ]}
+                            />
+                        </ToolsPanelItem>
+
+                        <ToolsPanelItem
+                            hasValue={() => !!descFontFamily}
+                            label={__('Font', 'dentist-exchange')}
+                            onDeselect={() => {
+                                setAttributes({
+                                    descFontFamily: undefined
+                                });
+                            }}
+                            onSelect={() => {}}
+                        >
+                            <NativeSelectControl
+                                label={__('Font', 'dentist-exchange')}
+                                value={descFontFamily}
+                                onChange={value => setAttributes({ descFontFamily: value })}
+                                options={fontFamilyOptions}
+                            />
+                        </ToolsPanelItem>
                     </ToolsPanel>
                 )}
             </InspectorControls>
@@ -374,15 +511,26 @@ export default function Edit(props) {
                     >
                         <RenderIcon customSvgCode={customSvgCode} iconName={iconName} size={iconSize} />
                     </div>
-                    {showTitle && (
+                    {hasContent && (
                         <div className="icon-content">
-                            <RichText
-                                tagName={headingTag}
-                                value={heading}
-                                onChange={value => setAttributes({ heading: value })}
-                                placeholder={__('List title...', 'dentist-exchange')}
-                                className="icon-heading"
-                            />
+                            {showTitle && (
+                                <RichText
+                                    tagName={headingTag}
+                                    value={heading}
+                                    onChange={value => setAttributes({ heading: value })}
+                                    placeholder={__('List title...', 'dentist-exchange')}
+                                    className="icon-heading"
+                                />
+                            )}
+                            {showDesc && (
+                                <RichText
+                                    tagName={descTag}
+                                    value={description}
+                                    onChange={value => setAttributes({ description: value })}
+                                    placeholder={__('Description...', 'dentist-exchange')}
+                                    className="icon-description"
+                                />
+                            )}
                         </div>
                     )}
                 </div>

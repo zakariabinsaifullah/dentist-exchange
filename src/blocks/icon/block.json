@@ -83,6 +83,9 @@
             "type": "number",
             "default": 24
         },
+        "iconMarginTop": {
+            "type": "string"
+        },
         "width": {
             "type": "number"
         },
@@ -119,6 +122,29 @@
             "type": "string"
         },
         "titleFontFamily": {
+            "type": "string"
+        },
+        "titleMarginBottom": {
+            "type": "string"
+        },
+        "showDesc": {
+            "type": "boolean",
+            "default": false
+        },
+        "description": {
+            "type": "string"
+        },
+        "descTag": {
+            "type": "string",
+            "default": "p"
+        },
+        "descColor": {
+            "type": "string"
+        },
+        "descSize": {
+            "type": "string"
+        },
+        "descFontFamily": {
             "type": "string"
         },
         "iconVerticalAlign": {

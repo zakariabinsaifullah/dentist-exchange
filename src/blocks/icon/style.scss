@@ -13,6 +13,15 @@
 
     .icon-container {
         line-height: 0;
+
+        /*
+         * Set from Settings → Icon Top Margin. Unset means 0.
+         *
+         * The block also exposes core's spacing support on this element, and
+         * that one serializes as an inline style, so a margin set through the
+         * Dimensions panel takes precedence over this.
+         */
+        margin-top: var(--icon-margin-top, 0);
     }
 
     /**
@@ -59,6 +68,24 @@
         font-size: var(--title-size);
         font-family: var(--title-font-family);
         margin: 0;
+
+        /*
+         * Set from the Title → Bottom Margin control. Unset means 0, so a
+         * title sits flush against whatever follows it unless spacing is
+         * asked for explicitly.
+         */
+        margin-bottom: var(--title-margin-bottom, 0);
+    }
+
+    /* Description */
+    .icon-description {
+        color: var(--desc-color);
+        font-size: var(--desc-size);
+        font-family: var(--desc-font-family);
+        margin: 0;
+
+        /* `span` is one of the tag options, and needs a box to sit in. */
+        display: block;
     }
 
     // desktop view
