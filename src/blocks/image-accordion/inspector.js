@@ -23,7 +23,7 @@ const HEADING_TAGS = [
 
 const Inspector = props => {
     const { attributes, setAttributes } = props;
-    const { showTitle, showDesc, showBtn, titleTag, itemsGap, resMode } = attributes;
+    const { showTitle, showDesc, showBtn, titleTag, itemsGap, contentMargin, contentMaxWidth, contentVAlign, resMode } = attributes;
 
     return (
         <InspectorControls>
@@ -57,6 +57,36 @@ const Inspector = props => {
                         onChange={value => setAttributes({ itemsGap: { ...itemsGap, [resMode]: value } })}
                     />
                 </NativeResponsiveControl>
+                {/* Spacing between an expanded item's title, description and button. */}
+                <NativeResponsiveControl label={__('Content Margin', 'dentist-exchange')} props={props}>
+                    <NativeUnitControl
+                        value={contentMargin?.[resMode]}
+                        onChange={value => setAttributes({ contentMargin: { ...contentMargin, [resMode]: value } })}
+                        placeholder="24"
+                    />
+                </NativeResponsiveControl>
+                {/* Where the content sits vertically once an item is expanded. */}
+                <NativeSelectControl
+                    label={__('Content Vertical Position', 'dentist-exchange')}
+                    value={contentVAlign}
+                    onChange={value => setAttributes({ contentVAlign: value })}
+                    options={[
+                        { label: __('Top', 'dentist-exchange'), value: 'top' },
+                        { label: __('Middle', 'dentist-exchange'), value: 'center' },
+                        { label: __('Bottom', 'dentist-exchange'), value: 'bottom' }
+                    ]}
+                />
+                <NativeUnitControl
+                    label={__('Content Max Width', 'dentist-exchange')}
+                    value={contentMaxWidth}
+                    onChange={value => setAttributes({ contentMaxWidth: value })}
+                    units={[
+                        { label: 'px', value: 'px' },
+                        { label: '%', value: '%' },
+                        { label: 'em', value: 'em' },
+                        { label: 'rem', value: 'rem' }
+                    ]}
+                />
             </PanelBody>
         </InspectorControls>
     );

@@ -24,19 +24,35 @@ const TEMPLATE = [
 // block edit function
 const Edit = props => {
     const { attributes, setAttributes, clientId } = props;
-    const { itemsGap } = attributes;
+    const { itemsGap, contentMargin, contentMaxWidth, contentVAlign } = attributes;
+
+    // The control speaks in layout terms; the stylesheet needs flexbox values.
+    const V_ALIGN_VALUES = {
+        top: 'flex-start',
+        center: 'center',
+        bottom: 'flex-end'
+    };
 
     // Only breakpoints with an explicit value are written out; style.scss
     // cascades each unset breakpoint up to the next larger one.
+    //
+    // These land on the parent wrapper, and the items read them from there —
+    // the spacing between an item's title, description and button is one
+    // setting for the whole accordion rather than per item.
     const cssCustomProperties = {
         ...(itemsGap?.Desktop && { '--dgap': `${itemsGap.Desktop}` }),
         ...(itemsGap?.Tablet && { '--tgap': `${itemsGap.Tablet}` }),
-        ...(itemsGap?.Mobile && { '--mgap': `${itemsGap.Mobile}` })
+        ...(itemsGap?.Mobile && { '--mgap': `${itemsGap.Mobile}` }),
+        ...(contentMargin?.Desktop && { '--dcm': `${contentMargin.Desktop}` }),
+        ...(contentMargin?.Tablet && { '--tcm': `${contentMargin.Tablet}` }),
+        ...(contentMargin?.Mobile && { '--mcm': `${contentMargin.Mobile}` }),
+        ...(contentMaxWidth && { '--content-max-width': `${contentMaxWidth}` }),
+        '--content-valign': V_ALIGN_VALUES[contentVAlign] || 'center'
     };
 
     useEffect(() => {
         setAttributes({ blockStyle: cssCustomProperties });
-    }, [itemsGap]);
+    }, [itemsGap, contentMargin, contentMaxWidth, contentVAlign]);
 
     const blockProps = useBlockProps({
         style: cssCustomProperties

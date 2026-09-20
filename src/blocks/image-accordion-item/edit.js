@@ -107,6 +107,13 @@ const Edit = props => {
                 </div>
                 <div className="info">
                     <div className="top-content">
+                        {/*
+                         * `allowedFormats={[]}` permits no inline formats at
+                         * all — no bold, italic, links or pasted markup — while
+                         * line breaks stay enabled, so Shift+Enter is the one
+                         * piece of HTML these fields accept. Anything pasted in
+                         * is stripped to plain text plus its breaks.
+                         */}
                         {showTitle && (
                             <RichText
                                 tagName={titleTag || 'h4'}
@@ -114,6 +121,8 @@ const Edit = props => {
                                 value={title}
                                 onChange={value => setAttributes({ title: value })}
                                 placeholder={__('Accordion title..', 'dentist-exchange')}
+                                allowedFormats={[]}
+                                withoutInteractiveFormatting
                             />
                         )}
                         {showDesc && (
@@ -123,6 +132,8 @@ const Edit = props => {
                                 value={description}
                                 onChange={value => setAttributes({ description: value })}
                                 placeholder={__('Accordion description..', 'dentist-exchange')}
+                                allowedFormats={[]}
+                                withoutInteractiveFormatting
                             />
                         )}
                     </div>

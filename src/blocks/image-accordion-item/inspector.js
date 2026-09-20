@@ -10,6 +10,26 @@ import { __ } from '@wordpress/i18n';
  */
 import { NativeTextControl, NativeTextareaControl, NativeToggleControl } from '../../components';
 
+/**
+ * Strips every tag except <br>.
+ *
+ * The canvas fields already enforce this through RichText's
+ * `allowedFormats={[]}`, but these inspector inputs write straight to the
+ * attribute, so without this they would be a way around it — and the help
+ * text below would be a lie.
+ *
+ * Requires a letter after the angle bracket so ordinary prose survives:
+ * "a < b > c" is left alone, while <p>, </p> and <script> are removed. This
+ * is an input guard for consistency, not a security boundary — WordPress's
+ * own kses still governs what untrusted roles are allowed to save.
+ *
+ * @param {string} value Raw field value.
+ * @return {string} Value with only line-break tags left intact.
+ */
+const allowOnlyLineBreaks = value => (value || '').replace(/<\/?(?!br\b)[a-zA-Z][^>]*>/gi, '');
+
+const BR_HELP = __('Use <br> for a line break. Other HTML is removed.', 'dentist-exchange');
+
 const Inspector = props => {
     const { attributes, setAttributes } = props;
     const { image, showTitle, title, showDesc, description, showBtn, btnLabel, href, linkTarget } = attributes;
@@ -42,7 +62,8 @@ const Inspector = props => {
                         label={__('Heading', 'dentist-exchange')}
                         value={title}
                         placeholder={__('Accordion title..', 'dentist-exchange')}
-                        onChange={value => setAttributes({ title: value })}
+                        help={BR_HELP}
+                        onChange={value => setAttributes({ title: allowOnlyLineBreaks(value) })}
                     />
                 )}
                 {showDesc && (
@@ -50,7 +71,8 @@ const Inspector = props => {
                         label={__('Description', 'dentist-exchange')}
                         value={description}
                         placeholder={__('Accordion description..', 'dentist-exchange')}
-                        onChange={value => setAttributes({ description: value })}
+                        help={BR_HELP}
+                        onChange={value => setAttributes({ description: allowOnlyLineBreaks(value) })}
                     />
                 )}
                 {showBtn && (
