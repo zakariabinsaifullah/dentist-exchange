@@ -17,6 +17,7 @@ import {
 } from '@wordpress/block-editor';
 import { link } from '@wordpress/icons';
 import {
+    Button,
     PanelBody,
     RangeControl,
     ToolbarButton,
@@ -75,12 +76,24 @@ export default function Edit(props) {
         descColor,
         descSize,
         descFontFamily,
+        showButton,
+        buttonText,
+        buttonUrl,
+        buttonLinkTarget,
+        buttonLinkRel,
+        buttonMarginTop,
+        buttonIconName,
+        buttonCustomSvgCode,
+        buttonIconType,
+        buttonStrokeWidth,
         iconVerticalAlign
     } = attributes;
 
-    // The title and the description are independent, so the content area
-    // renders for either one on its own.
-    const hasContent = showTitle || showDesc;
+    // Title, description and button are independent, so the content area
+    // renders for any one of them on its own.
+    const hasContent = showTitle || showDesc || showButton;
+
+    const hasButtonIcon = !!(buttonIconName || buttonCustomSvgCode);
 
     const fontFamilies = useSelect(select => {
         const settings = select('core/block-editor').getSettings();
@@ -140,14 +153,26 @@ export default function Edit(props) {
         ...(titleMarginBottom && { '--title-margin-bottom': `${titleMarginBottom}` }),
         ...(descColor && { '--desc-color': descColor }),
         ...(descSize && { '--desc-size': `${descSize}` }),
-        ...(descFontFamily && { '--desc-font-family': descFontFamily })
+        ...(descFontFamily && { '--desc-font-family': descFontFamily }),
+        ...(buttonMarginTop && { '--button-margin-top': `${buttonMarginTop}` })
     };
 
     useEffect(() => {
         setAttributes({
             blockStyle: cssCustomProperties
         });
-    }, [listGap, iconMarginTop, titleColor, titleSize, titleFontFamily, titleMarginBottom, descColor, descSize, descFontFamily]);
+    }, [
+        listGap,
+        iconMarginTop,
+        titleColor,
+        titleSize,
+        titleFontFamily,
+        titleMarginBottom,
+        descColor,
+        descSize,
+        descFontFamily,
+        buttonMarginTop
+    ]);
 
     // states
     const [isEditingURL, setIsEditingURL] = useState(false);
@@ -232,6 +257,11 @@ export default function Edit(props) {
                         label={__('Add Description', 'dentist-exchange')}
                         checked={showDesc}
                         onChange={value => setAttributes({ showDesc: value })}
+                    />
+                    <NativeToggleControl
+                        label={__('Add Button', 'dentist-exchange')}
+                        checked={showButton}
+                        onChange={value => setAttributes({ showButton: value })}
                     />
                     <NativeIconPicker
                         onIconSelect={(iconName, iconType) => {
@@ -332,6 +362,76 @@ export default function Edit(props) {
                                 />
                             </>
                         )}
+                    </PanelBody>
+                )}
+                {showButton && (
+                    <PanelBody title={__('Button', 'dentist-exchange')} initialOpen={false}>
+                        <NativeTextControl
+                            label={__('Button Text', 'dentist-exchange')}
+                            value={buttonText}
+                            onChange={value => setAttributes({ buttonText: value })}
+                            placeholder={__('Learn more', 'dentist-exchange')}
+                        />
+                        <NativeTextControl
+                            label={__('Button URL', 'dentist-exchange')}
+                            value={buttonUrl}
+                            onChange={value => setAttributes({ buttonUrl: value })}
+                            placeholder={__('https://…', 'dentist-exchange')}
+                        />
+                        <NativeToggleControl
+                            label={__('Open in New Tab', 'dentist-exchange')}
+                            checked={'_blank' === buttonLinkTarget}
+                            onChange={value =>
+                                setAttributes({
+                                    buttonLinkTarget: value ? '_blank' : undefined,
+                                    // Matches the rel the block's own link control sets.
+                                    buttonLinkRel: value ? 'noreferrer noopener' : undefined
+                                })
+                            }
+                        />
+                        {/* Same picker the block's main icon uses, so the icon sets match. */}
+                        <NativeIconPicker
+                            label={__('Button Icon', 'dentist-exchange')}
+                            onIconSelect={(iconName, iconType) => {
+                                setAttributes({
+                                    buttonIconName: iconName,
+                                    buttonIconType: iconType,
+                                    buttonCustomSvgCode: undefined
+                                });
+                            }}
+                            onCustomSvgInsert={({ customSvgCode, iconType, strokeWidth }) => {
+                                setAttributes({
+                                    buttonCustomSvgCode: customSvgCode,
+                                    buttonIconType: iconType,
+                                    buttonStrokeWidth: strokeWidth,
+                                    buttonIconName: undefined
+                                });
+                            }}
+                            iconName={buttonIconName}
+                            customSvgCode={buttonCustomSvgCode}
+                            iconSize={24}
+                            strokeWidth={buttonStrokeWidth}
+                        />
+                        {hasButtonIcon && (
+                            <Button
+                                variant="tertiary"
+                                isDestructive
+                                onClick={() =>
+                                    setAttributes({
+                                        buttonIconName: undefined,
+                                        buttonCustomSvgCode: undefined,
+                                        buttonStrokeWidth: undefined
+                                    })
+                                }
+                            >
+                                {__('Remove Button Icon', 'dentist-exchange')}
+                            </Button>
+                        )}
+                        <NativeUnitControl
+                            label={__('Top Margin', 'dentist-exchange')}
+                            value={buttonMarginTop}
+                            onChange={value => setAttributes({ buttonMarginTop: value })}
+                        />
                     </PanelBody>
                 )}
             </InspectorControls>
@@ -530,6 +630,23 @@ export default function Edit(props) {
                                     placeholder={__('Description...', 'dentist-exchange')}
                                     className="icon-description"
                                 />
+                            )}
+                            {/* No href in the editor, so clicking it cannot navigate away. */}
+                            {showButton && (
+                                <a className="wp-element-button icon-button">
+                                    <RichText
+                                        tagName="span"
+                                        value={buttonText}
+                                        onChange={value => setAttributes({ buttonText: value })}
+                                        placeholder={__('Learn more', 'dentist-exchange')}
+                                        className="icon-button__text"
+                                    />
+                                    {hasButtonIcon && (
+                                        <span className={classNames('icon-button__icon', `is-${buttonIconType}`)}>
+                                            <RenderIcon customSvgCode={buttonCustomSvgCode} iconName={buttonIconName} size={24} />
+                                        </span>
+                                    )}
+                                </a>
                             )}
                         </div>
                     )}

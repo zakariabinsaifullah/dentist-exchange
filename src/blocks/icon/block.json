@@ -2,7 +2,7 @@
     "$schema": "https://schemas.wp.org/trunk/block.json",
     "apiVersion": 3,
     "name": "dnte/icon",
-    "version": "0.1.0",
+    "version": "0.0.3",
     "title": "Icon",
     "category": "dnte",
     "description": "Display SVG icons from library or upload custom SVGs.",
@@ -146,6 +146,38 @@
         },
         "descFontFamily": {
             "type": "string"
+        },
+        "showButton": {
+            "type": "boolean",
+            "default": false
+        },
+        "buttonText": {
+            "type": "string"
+        },
+        "buttonUrl": {
+            "type": "string"
+        },
+        "buttonLinkTarget": {
+            "type": "string"
+        },
+        "buttonLinkRel": {
+            "type": "string"
+        },
+        "buttonMarginTop": {
+            "type": "string"
+        },
+        "buttonIconName": {
+            "type": "string"
+        },
+        "buttonCustomSvgCode": {
+            "type": "string"
+        },
+        "buttonIconType": {
+            "type": "string",
+            "default": "fill"
+        },
+        "buttonStrokeWidth": {
+            "type": "number"
         },
         "iconVerticalAlign": {
             "type": "string",

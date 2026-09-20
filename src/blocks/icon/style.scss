@@ -27,18 +27,22 @@
     /**
      * Sizes cascade down: a breakpoint that was never given its own size falls
      * back to the next larger one, so setting only the desktop size is enough.
+     *
+     * Scoped to `.icon-container` rather than every `svg` in the block: the
+     * optional button can carry its own icon, which must size to the button
+     * text and follow the button's own fill/line type, not the main icon's.
      */
-    svg {
+    .icon-container svg {
         width: 1em;
         height: 1em;
         font-size: var(--msize, var(--tsize, var(--dsize, 24px)));
     }
 
-    &.is-fill svg {
+    &.is-fill .icon-container svg {
         fill: currentColor;
     }
 
-    &.is-line svg path {
+    &.is-line .icon-container svg path {
         stroke: currentColor;
     }
 
@@ -88,16 +92,56 @@
         display: block;
     }
 
+    /*
+     * Button.
+     *
+     * Styling comes entirely from `wp-element-button`, which is the selector
+     * theme.json's `styles.elements.button` compiles to — so this button is
+     * the theme's default button by construction and stays in step with any
+     * future change to it. Only layout and spacing are set here.
+     */
+    .icon-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--button-icon-gap, 8px);
+        width: fit-content;
+
+        /* Set from Settings → Button → Top Margin. Unset means 0. */
+        margin-top: var(--button-margin-top, 0);
+
+        .icon-button__icon {
+            display: inline-flex;
+            align-items: center;
+            flex-shrink: 0;
+            line-height: 0;
+
+            /* 1em of the button's own font size, so it tracks the label. */
+            svg {
+                width: 1em;
+                height: 1em;
+            }
+
+            &.is-fill svg {
+                fill: currentColor;
+            }
+
+            &.is-line svg path {
+                stroke: currentColor;
+            }
+        }
+    }
+
     // desktop view
     @media (min-width: 1025px) {
-        svg {
+        .icon-container svg {
             font-size: var(--dsize, 24px);
         }
     }
 
     // tablet view
     @media (min-width: 768px) and (max-width: 1024px) {
-        svg {
+        .icon-container svg {
             font-size: var(--tsize, var(--dsize, 24px));
         }
     }

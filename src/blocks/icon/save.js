@@ -46,17 +46,48 @@ export default function save({ attributes, className }) {
         showDesc,
         description,
         descTag,
+        showButton,
+        buttonText,
+        buttonUrl,
+        buttonLinkTarget,
+        buttonLinkRel,
+        buttonIconName,
+        buttonCustomSvgCode,
+        buttonIconType,
         blockStyle,
         iconVerticalAlign
     } = attributes;
 
-    // Title and description are independent toggles, so the content area
-    // renders for either one on its own. Shared between the custom-SVG and
-    // icon-library branches below.
-    const content = (showTitle || showDesc) && (
+    const buttonIcon = getIconByName(buttonIconName);
+    const hasButtonIcon = !!(buttonCustomSvgCode || buttonIcon);
+
+    // `wp-element-button` is what theme.json's `styles.elements.button`
+    // compiles against, so this picks up the theme's default button exactly
+    // — background, radius, padding, type, hover and focus — with no styles
+    // of our own duplicating it.
+    const button = showButton && (
+        <a className="wp-element-button icon-button" {...(buttonUrl && { href: buttonUrl, target: buttonLinkTarget, rel: buttonLinkRel })}>
+            <RichText.Content tagName="span" value={buttonText} className="icon-button__text" />
+            {hasButtonIcon && (
+                <span className={classNames('icon-button__icon', `is-${buttonIconType}`)}>
+                    {buttonCustomSvgCode ? (
+                        <span dangerouslySetInnerHTML={{ __html: buttonCustomSvgCode }} />
+                    ) : (
+                        <Icon icon={buttonIcon.icon} size={24} />
+                    )}
+                </span>
+            )}
+        </a>
+    );
+
+    // Title, description and button are independent toggles, so the content
+    // area renders for any one of them on its own. Shared between the
+    // custom-SVG and icon-library branches below.
+    const content = (showTitle || showDesc || showButton) && (
         <div className="icon-content">
             {showTitle && <RichText.Content tagName={headingTag} value={heading} className="icon-heading" />}
             {showDesc && <RichText.Content tagName={descTag} value={description} className="icon-description" />}
+            {button}
         </div>
     );
 
