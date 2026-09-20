@@ -1,0 +1,83 @@
+/**
+ * Kadence RowLayout — torn paper dividers.
+ *
+ * The artwork is a torn paper *strip*: transparent along both its top and
+ * bottom edges with the opaque paper band running through the middle. It is
+ * an overlay for a section seam, not a mask that cuts the section's shape —
+ * so it is painted over the row's own background rather than clipping it.
+ *
+ * The image URL arrives as `--dnte-divider-image`, set by PHP on the front end
+ * and by the editor.BlockListBlock filter in the editor, so neither this file
+ * nor the bundle has to know the theme's asset path.
+ */
+
+.dnte-has-top-divider,
+.dnte-has-bottom-divider {
+    /* The dividers are absolutely positioned against the row. */
+    position: relative;
+}
+
+.dnte-has-top-divider::before,
+.dnte-has-bottom-divider::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    background-image: var(--dnte-divider-image);
+
+    /*
+     * Stretched to the full row width. The source is 1862px wide raster, so
+     * on very wide viewports it softens — inherent to the artwork, which has
+     * no vector path to scale.
+     */
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+
+    /* Decorative only: never swallow clicks meant for row content. */
+    pointer-events: none;
+
+    /*
+     * Matches Kadence's own row separators (.kt-row-layout-top-sep), which use
+     * z-index 1 — above the row background and overlay, level with the column
+     * wrap. Deliberately not higher: .kt-row-column-wrap is also z-index 1, so
+     * raising this would paint the divider over the row's content.
+     */
+    z-index: var(--dnte-divider-z-index, 1);
+}
+
+/*
+ * Each divider carries its own height and offset — they are not symmetrical.
+ *
+ * Top sits flush inside the row. The -1px, taken from Kadence's separators,
+ * closes the hairline gap that subpixel rounding can leave at the edge.
+ */
+.dnte-has-top-divider::before {
+    height: var(--dnte-divider-top-height, 100px);
+    top: var(--dnte-divider-top-offset, -1px);
+
+    /* The vertical mirror of the bottom divider, so the tear faces downward. */
+    transform: scaleX(-1);
+}
+
+/*
+ * Bottom is taller and hangs 50px below the row, so the tear overlaps whatever
+ * comes next instead of sitting inside this row's own edge.
+ *
+ * That overhang only shows if nothing clips it: a row with `overflow: hidden`
+ * — or an ancestor that has it — will cut the lower 50px off. Kadence does not
+ * set it on the row wrapper by default, but its background/parallax options
+ * and some section wrappers do.
+ */
+.dnte-has-bottom-divider::after {
+    height: var(--dnte-divider-bottom-height, 140px);
+    bottom: var(--dnte-divider-bottom-offset, -50px);
+
+    /*
+     * The artwork's designed orientation. The source SVG wrapper carried
+     * `transform="rotate(-180)"` on its rect, and correlating the tear line in
+     * the reference design against each candidate transform confirms it:
+     * rotate(180deg) scores 0.80, a plain scaleY(-1) only 0.67 (right vertical
+     * flip, wrong horizontal mirror), and the untransformed image is negative.
+     */
+    transform: rotate(180deg);
+}

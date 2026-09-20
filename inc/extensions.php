@@ -1573,3 +1573,150 @@ if ( ! function_exists( 'dnte_render_highlight_attributes' ) ) :
 	}
 endif;
 add_filter( 'render_block', 'dnte_render_highlight_attributes', 10, 2 );
+
+
+// =============================================================================
+// Kadence RowLayout — Torn Paper Dividers Extension
+// =============================================================================
+
+if ( ! function_exists( 'dnte_kadence_row_divider_image_uri' ) ) :
+	/**
+	 * URL of the torn paper divider artwork.
+	 *
+	 * The source asset was an SVG, but it carried no vector path — it was a
+	 * base64 PNG inside an SVG wrapper (a Figma export), so the PNG is stored
+	 * directly: same pixels, ~25% smaller, and cacheable as a normal image.
+	 *
+	 * @return string Image URL, or '' when the file is missing.
+	 */
+	function dnte_kadence_row_divider_image_uri() {
+		$path = get_theme_file_path( 'assets/images/dividers/paper-tear.png' );
+
+		if ( ! file_exists( $path ) ) {
+			return '';
+		}
+
+		return get_theme_file_uri( 'assets/images/dividers/paper-tear.png' );
+	}
+endif;
+
+
+if ( ! function_exists( 'dnte_enqueue_kadence_row_divider_editor_assets' ) ) :
+	/**
+	 * Enqueues the kadence-row-divider extension script.
+	 * Runs on `enqueue_block_editor_assets` (editor only).
+	 */
+	function dnte_enqueue_kadence_row_divider_editor_assets() {
+		$asset_file = get_theme_file_path( 'build/extensions/kadence-row-divider/index.asset.php' );
+
+		if ( ! file_exists( $asset_file ) ) {
+			return;
+		}
+
+		$assets = require $asset_file;
+
+		wp_enqueue_script(
+			'dnte-kadence-row-divider-extension',
+			get_theme_file_uri( 'build/extensions/kadence-row-divider/index.js' ),
+			$assets['dependencies'],
+			wp_get_theme()->get( 'Version' ),
+			true
+		);
+
+		// The editor preview needs the artwork URL; PHP owns the asset path so
+		// the bundle never has to resolve it.
+		wp_add_inline_script(
+			'dnte-kadence-row-divider-extension',
+			'window.dnteRowDivider = ' . wp_json_encode( array( 'image' => dnte_kadence_row_divider_image_uri() ) ) . ';',
+			'before'
+		);
+	}
+endif;
+add_action( 'enqueue_block_editor_assets', 'dnte_enqueue_kadence_row_divider_editor_assets' );
+
+
+if ( ! function_exists( 'dnte_enqueue_kadence_row_divider_frontend_assets' ) ) :
+	/**
+	 * Enqueues the kadence-row-divider stylesheet.
+	 * Runs on `enqueue_block_assets` (editor + front end).
+	 */
+	function dnte_enqueue_kadence_row_divider_frontend_assets() {
+		$style_file = get_theme_file_path( 'build/extensions/kadence-row-divider/style-index.css' );
+
+		if ( ! file_exists( $style_file ) ) {
+			return;
+		}
+
+		wp_enqueue_style(
+			'dnte-kadence-row-divider-extension-style',
+			get_theme_file_uri( 'build/extensions/kadence-row-divider/style-index.css' ),
+			array(),
+			wp_get_theme()->get( 'Version' )
+		);
+	}
+endif;
+add_action( 'enqueue_block_assets', 'dnte_enqueue_kadence_row_divider_frontend_assets' );
+
+
+if ( ! function_exists( 'dnte_render_kadence_row_divider' ) ) :
+	/**
+	 * Adds the divider classes and artwork URL to kadence/rowlayout blocks on
+	 * the front end when either divider toggle is enabled.
+	 *
+	 * The editor applies the same classes through the JS
+	 * `editor.BlockListBlock` filter, which has no effect on rendered markup,
+	 * so this replicates it for the front end.
+	 *
+	 * @param string $block_content The rendered block HTML.
+	 * @param array  $block         The block data including name and attributes.
+	 * @return string Modified block HTML.
+	 */
+	function dnte_render_kadence_row_divider( $block_content, $block ) {
+		if ( 'kadence/rowlayout' !== ( $block['blockName'] ?? '' ) || empty( $block_content ) ) {
+			return $block_content;
+		}
+
+		$attrs      = $block['attrs'] ?? array();
+		$has_top    = ! empty( $attrs['enableTopDivider'] );
+		$has_bottom = ! empty( $attrs['enableBottomDivider'] );
+
+		if ( ! $has_top && ! $has_bottom ) {
+			return $block_content;
+		}
+
+		$image_url = dnte_kadence_row_divider_image_uri();
+
+		if ( '' === $image_url ) {
+			return $block_content;
+		}
+
+		$processor = new WP_HTML_Tag_Processor( $block_content );
+
+		if ( ! $processor->next_tag() ) {
+			return $block_content;
+		}
+
+		if ( $has_top ) {
+			$processor->add_class( 'dnte-has-top-divider' );
+		}
+
+		if ( $has_bottom ) {
+			$processor->add_class( 'dnte-has-bottom-divider' );
+		}
+
+		// Values are passed raw: WP_HTML_Tag_Processor::set_attribute() escapes
+		// attribute values itself, so pre-escaping would double-encode.
+		$existing_style = $processor->get_attribute( 'style' ) ?? '';
+		$new_style      = rtrim( $existing_style, '; ' );
+
+		if ( $new_style ) {
+			$new_style .= ';';
+		}
+
+		$new_style .= '--dnte-divider-image:url(' . esc_url_raw( $image_url ) . ')';
+		$processor->set_attribute( 'style', $new_style );
+
+		return $processor->get_updated_html();
+	}
+endif;
+add_filter( 'render_block', 'dnte_render_kadence_row_divider', 10, 2 );
