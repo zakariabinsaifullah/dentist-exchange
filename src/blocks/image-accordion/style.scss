@@ -4,8 +4,11 @@
         gap: var(--dgap, 0px);
     }
 
+    // Below the tablet breakpoint the items are too narrow to read side by
+    // side, so the accordion stacks and each item expands downwards instead.
     @media (max-width: 781px) {
         .dnte-image-accordion {
+            flex-direction: column;
             gap: var(--tgap, var(--dgap, 0px));
         }
     }
