@@ -30,7 +30,20 @@ import Inspector from './inspector';
 // block edit function
 const Edit = props => {
     const { attributes, setAttributes, context, clientId } = props;
-    const { image, showTitle, title, titleTag, showDesc, description, showBtn, btnLabel } = attributes;
+    const { image, imageTablet, imageMobile, itemStyle, showTitle, title, titleTag, showDesc, description, showBtn, btnLabel } = attributes;
+
+    // Only breakpoints with their own image are written out; style.scss
+    // cascades each unset one up to the next larger — mobile falls back to
+    // tablet, tablet to desktop.
+    const imageCustomProperties = {
+        ...(image?.url && { '--dimg': `url("${image.url}")` }),
+        ...(imageTablet?.url && { '--timg': `url("${imageTablet.url}")` }),
+        ...(imageMobile?.url && { '--mimg': `url("${imageMobile.url}")` })
+    };
+
+    useEffect(() => {
+        setAttributes({ itemStyle: imageCustomProperties });
+    }, [image?.url, imageTablet?.url, imageMobile?.url]);
 
     // Sync the parent's toggles into this item's own attributes so the
     // frontend (which never sees block context) renders the same thing.
@@ -93,10 +106,13 @@ const Edit = props => {
         <Fragment>
             <Inspector {...props} />
             <div {...blockProps} ref={itemRef}>
-                <div className="img">
-                    {image?.url ? (
-                        <img src={image.url} alt={image.alt || ''} className="img-cover" />
-                    ) : (
+                {/*
+                 * The image is painted as a background so the tablet and
+                 * mobile variants can be swapped by media query alone. The
+                 * editor canvas is desktop-width, so it previews --dimg.
+                 */}
+                <div className="img" style={imageCustomProperties}>
+                    {!image?.url && (
                         <MediaPlaceholder
                             labels={{ title: __('Accordion Image', 'dentist-exchange') }}
                             onSelect={media => setAttributes({ image: { id: media.id, url: media.url, alt: media.alt } })}

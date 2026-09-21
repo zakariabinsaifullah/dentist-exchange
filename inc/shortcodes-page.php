@@ -29,26 +29,62 @@ if ( ! function_exists( 'dnte_get_shortcodes' ) ) :
 			array(
 				'title'       => __( 'Opening Roles', 'dentist-exchange' ),
 				'tag'         => 'opening_roles',
-				'description' => __( 'Renders open roles as a card grid: title, match percentage, Apply button, location, posting date, work arrangement, salary and employment type. Only roles switched on in the Active column of All Open Roles are listed.', 'dentist-exchange' ),
+				'description' => __( 'Renders the job board: a search bar, Job Type tabs and a grid of role cards showing the symbolic icon, the role title and its job type with the vacancy count. Only roles switched on in the Active column of All Open Roles are listed. Add roles under <code>Open Roles</code>, and their categories under <code>Open Roles &rarr; Job Types</code>.', 'dentist-exchange' ),
 				'examples'    => array(
 					array(
 						'label' => __( 'Basic usage', 'dentist-exchange' ),
-						'note'  => __( 'Every attribute is optional — this shows up to 10 active roles in 2 columns, newest first.', 'dentist-exchange' ),
+						'note'  => __( 'Every attribute is optional — this shows all active roles in 4 columns, newest first, with the search bar and tabs.', 'dentist-exchange' ),
 						'code'  => '[opening_roles]',
 					),
 					array(
+						'label' => __( 'Just the grid', 'dentist-exchange' ),
+						'note'  => __( 'Drops the search bar and the tabs, for a section that only lists roles.', 'dentist-exchange' ),
+						'code'  => '[opening_roles search="no" tabs="no" per_page="8"]',
+					),
+					array(
 						'label' => __( 'All optional attributes', 'dentist-exchange' ),
-						'note'  => __( 'Each attribute shown at its default value, except <code>type</code> and <code>nature</code>.', 'dentist-exchange' ),
-						'code'  => '[opening_roles columns="2" per_page="10" type="full-time" nature="remote" order="DESC" orderby="date"]',
+						'note'  => __( 'Each attribute shown at its default value.', 'dentist-exchange' ),
+						'code'  => '[opening_roles columns="4" per_page="-1" order="DESC" orderby="date" search="yes" tabs="yes"]',
 					),
 				),
 				'attrs'       => array(
-					array( 'name' => 'columns',  'default' => '2',     'desc' => __( 'Columns on desktop, 1&ndash;4. Drops to a single column below 900px.', 'dentist-exchange' ) ),
-					array( 'name' => 'per_page', 'default' => '10',    'desc' => __( 'How many roles to show, 1&ndash;50.', 'dentist-exchange' ) ),
-					array( 'name' => 'type',     'default' => '(all)', 'desc' => __( 'Employment type: <code>full-time</code>, <code>part-time</code>, <code>hourly</code>, <code>contractual</code> or <code>internship</code>.', 'dentist-exchange' ) ),
-					array( 'name' => 'nature',   'default' => '(all)', 'desc' => __( 'Work arrangement: <code>remote</code>, <code>in-house</code> or <code>hybrid</code>.', 'dentist-exchange' ) ),
-					array( 'name' => 'order',    'default' => 'DESC',  'desc' => __( 'Sort direction &mdash; <code>ASC</code> or <code>DESC</code>.', 'dentist-exchange' ) ),
-					array( 'name' => 'orderby',  'default' => 'date',  'desc' => __( 'Any WP_Query orderby value, such as <code>title</code> or <code>menu_order</code>.', 'dentist-exchange' ) ),
+					array( 'name' => 'columns',  'default' => '4',    'desc' => __( 'Columns on desktop, 1&ndash;4. Drops to 2 below 1024px and to 1 below 600px.', 'dentist-exchange' ) ),
+					array( 'name' => 'per_page', 'default' => '-1',   'desc' => __( 'How many roles to show. <code>-1</code> shows every active one.', 'dentist-exchange' ) ),
+					array( 'name' => 'order',    'default' => 'DESC', 'desc' => __( 'Sort direction &mdash; <code>ASC</code> or <code>DESC</code>.', 'dentist-exchange' ) ),
+					array( 'name' => 'orderby',  'default' => 'date', 'desc' => __( 'Any WP_Query orderby value. Use <code>menu_order</code> with each role&rsquo;s Order field to sequence them by hand.', 'dentist-exchange' ) ),
+					array( 'name' => 'search',   'default' => 'yes',  'desc' => __( 'Show the search bar &mdash; <code>yes</code> or <code>no</code>. It filters by keyword (title and Tags), by city and by job type.', 'dentist-exchange' ) ),
+					array( 'name' => 'tabs',     'default' => 'yes',  'desc' => __( 'Show the Job Type tabs &mdash; <code>yes</code> or <code>no</code>. Only job types that have an active role behind them appear.', 'dentist-exchange' ) ),
+				),
+			),
+			array(
+				'title'       => __( 'Testimonials', 'dentist-exchange' ),
+				'tag'         => 'dnte_testimonials',
+				'description' => __( 'Renders published testimonials as a swipeable deck of tilted cards, each showing the quote icon, the review message, the reviewer name and their designation. Add entries under <code>Testimonials</code> in the admin menu. Autoplay, speed, loop and pagination default to whatever is set in <code>Testimonials &rarr; Settings</code>; the attributes below override them per shortcode.', 'dentist-exchange' ),
+				'examples'    => array(
+					array(
+						'label' => __( 'Basic usage', 'dentist-exchange' ),
+						'note'  => __( 'Every attribute is optional — this shows all published testimonials, newest first, autoplaying.', 'dentist-exchange' ),
+						'code'  => '[dnte_testimonials]',
+					),
+					array(
+						'label' => __( 'A fixed set, in the order you arranged them', 'dentist-exchange' ),
+						'note'  => __( 'Pair <code>orderby="menu_order"</code> with the Order field on each testimonial to control the sequence by hand.', 'dentist-exchange' ),
+						'code'  => '[dnte_testimonials count="6" order="ASC" orderby="menu_order"]',
+					),
+					array(
+						'label' => __( 'Overriding the settings for one carousel', 'dentist-exchange' ),
+						'note'  => __( 'Autoplay this instance regardless of what <code>Testimonials &rarr; Settings</code> says.', 'dentist-exchange' ),
+						'code'  => '[dnte_testimonials autoplay="yes" speed="4000" loop="yes" pagination="yes"]',
+					),
+				),
+				'attrs'       => array(
+					array( 'name' => 'count',      'default' => '-1',         'desc' => __( 'How many testimonials to show. <code>-1</code> shows every published one.', 'dentist-exchange' ) ),
+					array( 'name' => 'order',      'default' => 'DESC',       'desc' => __( 'Sort direction &mdash; <code>ASC</code> or <code>DESC</code>.', 'dentist-exchange' ) ),
+					array( 'name' => 'orderby',    'default' => 'date',       'desc' => __( 'Any WP_Query orderby value. Use <code>menu_order</code> to order them by hand, or <code>rand</code> to shuffle.', 'dentist-exchange' ) ),
+					array( 'name' => 'autoplay',   'default' => '(settings)', 'desc' => __( 'Advance on its own &mdash; <code>yes</code> or <code>no</code>. Off by default, and always off for visitors who have asked for reduced motion.', 'dentist-exchange' ) ),
+					array( 'name' => 'speed',      'default' => '(settings)', 'desc' => __( 'Milliseconds each card is held when autoplaying. Values below 1000 are raised to 1000.', 'dentist-exchange' ) ),
+					array( 'name' => 'loop',       'default' => '(settings)', 'desc' => __( 'Wrap around from the last card to the first &mdash; <code>yes</code> or <code>no</code>.', 'dentist-exchange' ) ),
+					array( 'name' => 'pagination', 'default' => '(settings)', 'desc' => __( 'Show the dots beneath the carousel &mdash; <code>yes</code> or <code>no</code>.', 'dentist-exchange' ) ),
 				),
 			),
 		);

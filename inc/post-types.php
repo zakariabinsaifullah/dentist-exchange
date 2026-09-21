@@ -97,112 +97,139 @@ add_filter( 'enter_title_here', 'dnte_open_role_title_placeholder', 10, 2 );
 
 // ── Open Role meta fields ─────────────────────────────────────────────────────
 
-if ( ! function_exists( 'dnte_open_role_type_options' ) ) :
+// ── Taxonomies ────────────────────────────────────────────────────────────────
+
+if ( ! function_exists( 'dnte_register_open_role_taxonomies' ) ) :
 	/**
-	 * Employment type choices, keyed by the value stored in meta.
+	 * Registers Job Type and Tags for open roles.
 	 *
-	 * @return array
+	 * Job Type is hierarchical so it presents the checkbox UI of a fixed
+	 * vocabulary (Clinical, Support Staff, Remote …) — it drives the filter
+	 * tabs and the "Clinical - 42 open" line on the role cards.
+	 *
+	 * Tags is flat and behaves like keywords; the shortcode's search matches
+	 * against it as well as the title.
+	 *
+	 * Neither has a public archive: open roles have no front-end views at all.
 	 */
-	function dnte_open_role_type_options() {
-		return array(
-			'full-time'   => __( 'Full Time', 'dentist-exchange' ),
-			'part-time'   => __( 'Part Time', 'dentist-exchange' ),
-			'hourly'      => __( 'Hourly', 'dentist-exchange' ),
-			'contractual' => __( 'Contractual', 'dentist-exchange' ),
-			'internship'  => __( 'Internship', 'dentist-exchange' ),
+	function dnte_register_open_role_taxonomies() {
+		register_taxonomy(
+			'dnte-job-type',
+			'open-role',
+			array(
+				'labels'            => array(
+					'name'              => _x( 'Job Types', 'taxonomy general name', 'dentist-exchange' ),
+					'singular_name'     => _x( 'Job Type', 'taxonomy singular name', 'dentist-exchange' ),
+					'menu_name'         => __( 'Job Types', 'dentist-exchange' ),
+					'all_items'         => __( 'All Job Types', 'dentist-exchange' ),
+					'edit_item'         => __( 'Edit Job Type', 'dentist-exchange' ),
+					'update_item'       => __( 'Update Job Type', 'dentist-exchange' ),
+					'add_new_item'      => __( 'Add New Job Type', 'dentist-exchange' ),
+					'new_item_name'     => __( 'New Job Type Name', 'dentist-exchange' ),
+					'search_items'      => __( 'Search Job Types', 'dentist-exchange' ),
+					'parent_item'       => __( 'Parent Job Type', 'dentist-exchange' ),
+					'parent_item_colon' => __( 'Parent Job Type:', 'dentist-exchange' ),
+					'not_found'         => __( 'No job types found.', 'dentist-exchange' ),
+				),
+				'hierarchical'      => true,
+				'public'            => false,
+				'publicly_queryable' => false,
+				'show_ui'           => true,
+				'show_in_menu'      => true,
+				'show_admin_column' => true,
+				'show_in_nav_menus' => false,
+				'show_in_rest'      => false,
+				'query_var'         => false,
+				'rewrite'           => false,
+			)
+		);
+
+		register_taxonomy(
+			'dnte-role-tag',
+			'open-role',
+			array(
+				'labels'            => array(
+					'name'                       => _x( 'Tags', 'taxonomy general name', 'dentist-exchange' ),
+					'singular_name'              => _x( 'Tag', 'taxonomy singular name', 'dentist-exchange' ),
+					'menu_name'                  => __( 'Tags', 'dentist-exchange' ),
+					'all_items'                  => __( 'All Tags', 'dentist-exchange' ),
+					'edit_item'                  => __( 'Edit Tag', 'dentist-exchange' ),
+					'add_new_item'               => __( 'Add New Tag', 'dentist-exchange' ),
+					'new_item_name'              => __( 'New Tag Name', 'dentist-exchange' ),
+					'search_items'               => __( 'Search Tags', 'dentist-exchange' ),
+					'separate_items_with_commas' => __( 'Separate keywords with commas', 'dentist-exchange' ),
+					'add_or_remove_items'        => __( 'Add or remove keywords', 'dentist-exchange' ),
+					'not_found'                  => __( 'No tags found.', 'dentist-exchange' ),
+				),
+				'hierarchical'      => false,
+				'public'            => false,
+				'publicly_queryable' => false,
+				'show_ui'           => true,
+				'show_in_menu'      => true,
+				'show_admin_column' => true,
+				'show_in_nav_menus' => false,
+				'show_in_rest'      => false,
+				'query_var'         => false,
+				'rewrite'           => false,
+			)
 		);
 	}
 endif;
+add_action( 'init', 'dnte_register_open_role_taxonomies' );
 
 
-if ( ! function_exists( 'dnte_open_role_nature_options' ) ) :
-	/**
-	 * Work arrangement choices, keyed by the value stored in meta.
-	 *
-	 * @return array
-	 */
-	function dnte_open_role_nature_options() {
-		return array(
-			'remote'   => __( 'Remote', 'dentist-exchange' ),
-			'in-house' => __( 'In House', 'dentist-exchange' ),
-			'hybrid'   => __( 'Hybrid', 'dentist-exchange' ),
-		);
-	}
-endif;
-
+// ── Meta ──────────────────────────────────────────────────────────────────────
 
 if ( ! function_exists( 'dnte_register_open_role_meta' ) ) :
 	/**
-	 * Registers the Open Role meta fields.
+	 * Registers the open role meta.
 	 *
-	 * `show_in_rest` exposes the fields through the REST API so they can be
-	 * bound to blocks in the editor and queried from custom templates.
+	 * Job type, salary, match rate and work arrangement used to live here;
+	 * job type is now a taxonomy and the others were dropped.
 	 */
 	function dnte_register_open_role_meta() {
 		$auth = function () {
 			return current_user_can( 'edit_posts' );
 		};
 
-		$text_fields = array(
-			'dnte_role_location'     => __( 'Where the role is based.', 'dentist-exchange' ),
-			'dnte_role_salary_range' => __( 'Advertised salary range for the role.', 'dentist-exchange' ),
-			'dnte_role_match_rate'   => __( 'Candidate match percentage, shown on role cards as "92% match".', 'dentist-exchange' ),
-		);
-
-		foreach ( $text_fields as $key => $description ) {
-			register_post_meta(
-				'open-role',
-				$key,
-				array(
-					'type'              => 'string',
-					'description'       => $description,
-					'single'            => true,
-					'default'           => '',
-					'sanitize_callback' => 'sanitize_text_field',
-					'auth_callback'     => $auth,
-					'show_in_rest'      => true,
-				)
-			);
-		}
-
 		register_post_meta(
 			'open-role',
-			'dnte_role_type',
+			'dnte_role_location',
 			array(
-				'type'              => 'string',
-				'description'       => __( 'Employment type of the role.', 'dentist-exchange' ),
 				'single'            => true,
-				'default'           => 'full-time',
-				'sanitize_callback' => 'dnte_sanitize_open_role_type',
+				'type'              => 'string',
+				'show_in_rest'      => false,
+				'description'       => __( 'City or postcode the role is based in.', 'dentist-exchange' ),
+				'sanitize_callback' => 'sanitize_text_field',
 				'auth_callback'     => $auth,
-				'show_in_rest'      => true,
 			)
 		);
 
 		register_post_meta(
 			'open-role',
-			'dnte_role_nature',
+			'dnte_role_vacancies',
 			array(
-				'type'              => 'string',
-				'description'       => __( 'Work arrangement for the role.', 'dentist-exchange' ),
 				'single'            => true,
-				'default'           => 'remote',
-				'sanitize_callback' => 'dnte_sanitize_open_role_nature',
+				'type'              => 'integer',
+				'show_in_rest'      => false,
+				'default'           => 0,
+				'description'       => __( 'How many positions are open for this role.', 'dentist-exchange' ),
+				'sanitize_callback' => 'absint',
 				'auth_callback'     => $auth,
-				'show_in_rest'      => true,
 			)
 		);
 
 		register_post_meta(
 			'open-role',
-			'dnte_role_active',
+			'dnte_role_icon',
 			array(
-				'type'          => 'boolean',
-				'description'   => __( 'Whether the role is currently open.', 'dentist-exchange' ),
-				'single'        => true,
-				'default'       => true,
-				'auth_callback' => $auth,
-				'show_in_rest'  => true,
+				'single'            => true,
+				'type'              => 'integer',
+				'show_in_rest'      => false,
+				'default'           => 0,
+				'description'       => __( 'Attachment ID of the symbolic icon.', 'dentist-exchange' ),
+				'sanitize_callback' => 'absint',
+				'auth_callback'     => $auth,
 			)
 		);
 
@@ -210,13 +237,26 @@ if ( ! function_exists( 'dnte_register_open_role_meta' ) ) :
 			'open-role',
 			'dnte_role_apply_link',
 			array(
-				'type'              => 'string',
-				'description'       => __( 'URL applicants are sent to.', 'dentist-exchange' ),
 				'single'            => true,
-				'default'           => '',
+				'type'              => 'string',
+				'show_in_rest'      => false,
+				'description'       => __( 'Where the Apply button sends candidates.', 'dentist-exchange' ),
 				'sanitize_callback' => 'sanitize_url',
 				'auth_callback'     => $auth,
-				'show_in_rest'      => true,
+			)
+		);
+
+		register_post_meta(
+			'open-role',
+			'dnte_role_active',
+			array(
+				'single'            => true,
+				'type'              => 'boolean',
+				'show_in_rest'      => false,
+				'default'           => true,
+				'description'       => __( 'Whether the role is listed by the shortcode.', 'dentist-exchange' ),
+				'sanitize_callback' => 'rest_sanitize_boolean',
+				'auth_callback'     => $auth,
 			)
 		);
 	}
@@ -224,35 +264,11 @@ endif;
 add_action( 'init', 'dnte_register_open_role_meta' );
 
 
-if ( ! function_exists( 'dnte_sanitize_open_role_type' ) ) :
-	/**
-	 * Falls back to the default when the value is not a known type.
-	 *
-	 * @param  string $value Submitted value.
-	 * @return string
-	 */
-	function dnte_sanitize_open_role_type( $value ) {
-		return array_key_exists( $value, dnte_open_role_type_options() ) ? $value : 'full-time';
-	}
-endif;
-
-
-if ( ! function_exists( 'dnte_sanitize_open_role_nature' ) ) :
-	/**
-	 * Falls back to the default when the value is not a known arrangement.
-	 *
-	 * @param  string $value Submitted value.
-	 * @return string
-	 */
-	function dnte_sanitize_open_role_nature( $value ) {
-		return array_key_exists( $value, dnte_open_role_nature_options() ) ? $value : 'remote';
-	}
-endif;
-
+// ── Edit screen ───────────────────────────────────────────────────────────────
 
 if ( ! function_exists( 'dnte_add_open_role_meta_box' ) ) :
 	/**
-	 * Adds the Role Details meta box to the Open Role editing screen.
+	 * Adds the open role details box.
 	 */
 	function dnte_add_open_role_meta_box() {
 		add_meta_box(
@@ -261,7 +277,7 @@ if ( ! function_exists( 'dnte_add_open_role_meta_box' ) ) :
 			'dnte_render_open_role_meta_box',
 			'open-role',
 			'normal',
-			'default'
+			'high'
 		);
 	}
 endif;
@@ -270,111 +286,88 @@ add_action( 'add_meta_boxes', 'dnte_add_open_role_meta_box' );
 
 if ( ! function_exists( 'dnte_render_open_role_meta_box' ) ) :
 	/**
-	 * Renders the Open Role fields inside the meta box.
+	 * Renders the open role fields.
 	 *
 	 * @param WP_Post $post Current post.
 	 */
 	function dnte_render_open_role_meta_box( $post ) {
+		wp_nonce_field( 'dnte_save_open_role', 'dnte_open_role_nonce' );
+
 		$location   = get_post_meta( $post->ID, 'dnte_role_location', true );
-		$salary     = get_post_meta( $post->ID, 'dnte_role_salary_range', true );
-		$type       = get_post_meta( $post->ID, 'dnte_role_type', true );
-		$nature     = get_post_meta( $post->ID, 'dnte_role_nature', true );
-		$match_rate = get_post_meta( $post->ID, 'dnte_role_match_rate', true );
+		$vacancies  = get_post_meta( $post->ID, 'dnte_role_vacancies', true );
+		$icon_id    = (int) get_post_meta( $post->ID, 'dnte_role_icon', true );
 		$apply_link = get_post_meta( $post->ID, 'dnte_role_apply_link', true );
 
-		// A post saved before these fields existed has no stored value, and
-		// register_post_meta defaults do not apply to an unsaved draft either.
-		$type   = $type ? $type : 'full-time';
-		$nature = $nature ? $nature : 'remote';
-
-		/*
-		 * The toggle defaults to on. `metadata_exists` distinguishes "never
-		 * saved" (default to active) from "saved as off" (an empty string,
-		 * which would otherwise look identical to a missing value).
-		 */
+		// A brand new draft has no meta row yet, and register_post_meta
+		// defaults do not apply to one, so active starts checked.
 		$active = metadata_exists( 'post', $post->ID, 'dnte_role_active' )
 			? (bool) get_post_meta( $post->ID, 'dnte_role_active', true )
 			: true;
 
-		wp_nonce_field( 'dnte_save_open_role_meta', 'dnte_open_role_meta_nonce' );
+		$icon_url = $icon_id ? wp_get_attachment_url( $icon_id ) : '';
 		?>
 		<p>
-			<label for="dnte-role-active">
-				<input
-					type="checkbox"
-					id="dnte-role-active"
-					name="dnte_role_active"
-					value="1"
-					<?php checked( $active ); ?>
-				/>
+			<label>
+				<input type="checkbox" name="dnte_role_active" value="1" <?php checked( $active ); ?> />
 				<strong><?php esc_html_e( 'Role is active', 'dentist-exchange' ); ?></strong>
 			</label>
-			<br />
-			<span class="description"><?php esc_html_e( 'Uncheck to close the role without deleting it.', 'dentist-exchange' ); ?></span>
+			<span class="description"><?php esc_html_e( 'Only active roles are listed by the shortcode.', 'dentist-exchange' ); ?></span>
 		</p>
+
 		<p>
-			<label for="dnte-role-location"><?php esc_html_e( 'Location', 'dentist-exchange' ); ?></label>
+			<label for="dnte-role-vacancies"><strong><?php esc_html_e( 'Vacancies', 'dentist-exchange' ); ?></strong></label><br />
+			<input
+				type="number"
+				id="dnte-role-vacancies"
+				name="dnte_role_vacancies"
+				class="small-text"
+				min="0"
+				step="1"
+				value="<?php echo esc_attr( '' === $vacancies ? '0' : (string) (int) $vacancies ); ?>"
+			/>
+			<span class="description"><?php esc_html_e( 'Shown on the card as "42 open".', 'dentist-exchange' ); ?></span>
+		</p>
+
+		<p>
+			<label for="dnte-role-location"><strong><?php esc_html_e( 'Location', 'dentist-exchange' ); ?></strong></label><br />
 			<input
 				type="text"
 				id="dnte-role-location"
 				name="dnte_role_location"
+				class="widefat"
 				value="<?php echo esc_attr( $location ); ?>"
-				class="widefat"
-				placeholder="<?php esc_attr_e( 'e.g. Glendale, CA', 'dentist-exchange' ); ?>"
+				placeholder="<?php esc_attr_e( 'City or postcode', 'dentist-exchange' ); ?>"
 			/>
+			<span class="description"><?php esc_html_e( 'Matched against the "City or postcode" search field.', 'dentist-exchange' ); ?></span>
 		</p>
+
 		<p>
-			<label for="dnte-role-salary-range"><?php esc_html_e( 'Salary Range', 'dentist-exchange' ); ?></label>
+			<strong><?php esc_html_e( 'Symbolic Icon', 'dentist-exchange' ); ?></strong><br />
+			<span class="dnte-role-icon-preview" style="display:inline-block;min-width:48px;min-height:48px;margin:6px 0;">
+				<?php if ( $icon_url ) : ?>
+					<img src="<?php echo esc_url( $icon_url ); ?>" alt="" style="max-width:48px;max-height:48px;" />
+				<?php endif; ?>
+			</span><br />
+			<input type="hidden" id="dnte-role-icon" name="dnte_role_icon" value="<?php echo esc_attr( (string) $icon_id ); ?>" />
+			<button type="button" class="button dnte-role-icon-select">
+				<?php echo $icon_id ? esc_html__( 'Replace Icon', 'dentist-exchange' ) : esc_html__( 'Upload Icon', 'dentist-exchange' ); ?>
+			</button>
+			<button type="button" class="button-link dnte-role-icon-remove" style="<?php echo $icon_id ? '' : 'display:none;'; ?>color:#b32d2e;">
+				<?php esc_html_e( 'Remove', 'dentist-exchange' ); ?>
+			</button>
+			<br />
+			<span class="description"><?php esc_html_e( 'An image or an SVG. SVG uploads are cleaned of scripts and event handlers first.', 'dentist-exchange' ); ?></span>
+		</p>
+
+		<p>
+			<label for="dnte-role-apply-link"><strong><?php esc_html_e( 'Apply Link', 'dentist-exchange' ); ?></strong></label><br />
 			<input
-				type="text"
-				id="dnte-role-salary-range"
-				name="dnte_role_salary_range"
-				value="<?php echo esc_attr( $salary ); ?>"
-				class="widefat"
-				placeholder="<?php esc_attr_e( 'e.g. $95,000 – $120,000', 'dentist-exchange' ); ?>"
-			/>
-		</p>
-		<p>
-			<label for="dnte-role-type"><?php esc_html_e( 'Type', 'dentist-exchange' ); ?></label>
-			<select id="dnte-role-type" name="dnte_role_type" class="widefat">
-				<?php foreach ( dnte_open_role_type_options() as $value => $label ) : ?>
-					<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $type, $value ); ?>>
-						<?php echo esc_html( $label ); ?>
-					</option>
-				<?php endforeach; ?>
-			</select>
-		</p>
-		<p>
-			<label for="dnte-role-nature"><?php esc_html_e( 'Nature', 'dentist-exchange' ); ?></label>
-			<select id="dnte-role-nature" name="dnte_role_nature" class="widefat">
-				<?php foreach ( dnte_open_role_nature_options() as $value => $label ) : ?>
-					<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $nature, $value ); ?>>
-						<?php echo esc_html( $label ); ?>
-					</option>
-				<?php endforeach; ?>
-			</select>
-		</p>
-		<p>
-			<label for="dnte-role-match-rate"><?php esc_html_e( 'Match Rate', 'dentist-exchange' ); ?></label>
-			<input
-				type="text"
-				id="dnte-role-match-rate"
-				name="dnte_role_match_rate"
-				value="<?php echo esc_attr( $match_rate ); ?>"
-				class="widefat"
-				placeholder="<?php esc_attr_e( 'e.g. 92', 'dentist-exchange' ); ?>"
-			/>
-		</p>
-		<p>
-			<label for="dnte-role-apply-link"><?php esc_html_e( 'Apply Link', 'dentist-exchange' ); ?></label>
-			<?php /* Deliberately type="text": type="url" makes the browser reject "#" and other scheme-less values. */ ?>
-			<input
-				type="text"
+				type="url"
 				id="dnte-role-apply-link"
 				name="dnte_role_apply_link"
-				value="<?php echo esc_url( $apply_link, array( 'http', 'https', 'mailto' ) ); ?>"
 				class="widefat"
-				placeholder="<?php esc_attr_e( 'https://example.com/apply, /careers/, or #apply', 'dentist-exchange' ); ?>"
+				value="<?php echo esc_attr( $apply_link ); ?>"
+				placeholder="https://"
 			/>
 		</p>
 		<?php
@@ -384,15 +377,16 @@ endif;
 
 if ( ! function_exists( 'dnte_save_open_role_meta' ) ) :
 	/**
-	 * Saves the Open Role meta fields.
+	 * Saves the open role fields.
 	 *
 	 * @param int $post_id Post ID.
 	 */
 	function dnte_save_open_role_meta( $post_id ) {
-		if (
-			! isset( $_POST['dnte_open_role_meta_nonce'] ) ||
-			! wp_verify_nonce( sanitize_key( $_POST['dnte_open_role_meta_nonce'] ), 'dnte_save_open_role_meta' )
-		) {
+		if ( ! isset( $_POST['dnte_open_role_nonce'] ) ) {
+			return;
+		}
+
+		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['dnte_open_role_nonce'] ) ), 'dnte_save_open_role' ) ) {
 			return;
 		}
 
@@ -404,31 +398,34 @@ if ( ! function_exists( 'dnte_save_open_role_meta' ) ) :
 			return;
 		}
 
-		$text_fields = array( 'dnte_role_location', 'dnte_role_salary_range', 'dnte_role_match_rate' );
+		update_post_meta(
+			$post_id,
+			'dnte_role_location',
+			isset( $_POST['dnte_role_location'] ) ? sanitize_text_field( wp_unslash( $_POST['dnte_role_location'] ) ) : ''
+		);
 
-		foreach ( $text_fields as $key ) {
-			if ( isset( $_POST[ $key ] ) ) {
-				update_post_meta( $post_id, $key, sanitize_text_field( wp_unslash( $_POST[ $key ] ) ) );
-			}
-		}
+		update_post_meta(
+			$post_id,
+			'dnte_role_vacancies',
+			isset( $_POST['dnte_role_vacancies'] ) ? absint( wp_unslash( $_POST['dnte_role_vacancies'] ) ) : 0
+		);
 
-		if ( isset( $_POST['dnte_role_type'] ) ) {
-			update_post_meta( $post_id, 'dnte_role_type', dnte_sanitize_open_role_type( sanitize_key( wp_unslash( $_POST['dnte_role_type'] ) ) ) );
-		}
+		update_post_meta(
+			$post_id,
+			'dnte_role_icon',
+			isset( $_POST['dnte_role_icon'] ) ? absint( wp_unslash( $_POST['dnte_role_icon'] ) ) : 0
+		);
 
-		if ( isset( $_POST['dnte_role_nature'] ) ) {
-			update_post_meta( $post_id, 'dnte_role_nature', dnte_sanitize_open_role_nature( sanitize_key( wp_unslash( $_POST['dnte_role_nature'] ) ) ) );
-		}
+		update_post_meta(
+			$post_id,
+			'dnte_role_apply_link',
+			isset( $_POST['dnte_role_apply_link'] ) ? sanitize_url( wp_unslash( $_POST['dnte_role_apply_link'] ) ) : ''
+		);
 
-		if ( isset( $_POST['dnte_role_apply_link'] ) ) {
-			update_post_meta( $post_id, 'dnte_role_apply_link', sanitize_url( wp_unslash( $_POST['dnte_role_apply_link'] ) ) );
-		}
-
-		// An unchecked checkbox posts nothing, so absence means off. The nonce
-		// check above guarantees this really is a submission of that form.
 		update_post_meta( $post_id, 'dnte_role_active', isset( $_POST['dnte_role_active'] ) );
 	}
 endif;
+
 add_action( 'save_post_open-role', 'dnte_save_open_role_meta' );
 
 
@@ -592,3 +589,179 @@ if ( ! function_exists( 'dnte_toggle_open_role_active_ajax' ) ) :
 	}
 endif;
 add_action( 'wp_ajax_dnte_toggle_open_role_active', 'dnte_toggle_open_role_active_ajax' );
+
+
+// =============================================================================
+// Testimonials
+// =============================================================================
+
+if ( ! function_exists( 'dnte_register_testimonial_post_type' ) ) :
+	/**
+	 * Registers the Testimonial post type.
+	 *
+	 * A testimonial is three fields: the reviewer's name (the post title), a
+	 * designation and a review message. It is only ever shown through the
+	 * [dnte_testimonials] shortcode, so like Open Roles it has no front-end
+	 * single view — `public`, `publicly_queryable`, `query_var`, `rewrite` and
+	 * `has_archive` are all off.
+	 *
+	 * `show_in_rest` is false so WordPress falls back to the classic editor
+	 * screen. With only `title` support the block editor would present an
+	 * empty canvas, whereas the classic screen puts the title and the two meta
+	 * fields together on one page.
+	 */
+	function dnte_register_testimonial_post_type() {
+		$labels = array(
+			'name'                  => _x( 'Testimonials', 'post type general name', 'dentist-exchange' ),
+			'singular_name'         => _x( 'Testimonial', 'post type singular name', 'dentist-exchange' ),
+			'menu_name'             => _x( 'Testimonials', 'admin menu', 'dentist-exchange' ),
+			'name_admin_bar'        => _x( 'Testimonial', 'add new on admin bar', 'dentist-exchange' ),
+			'add_new'               => __( 'Add Testimonial', 'dentist-exchange' ),
+			'add_new_item'          => __( 'Add New Testimonial', 'dentist-exchange' ),
+			'new_item'              => __( 'New Testimonial', 'dentist-exchange' ),
+			'edit_item'             => __( 'Edit Testimonial', 'dentist-exchange' ),
+			'view_item'             => __( 'View Testimonial', 'dentist-exchange' ),
+			'all_items'             => __( 'All Testimonials', 'dentist-exchange' ),
+			'search_items'          => __( 'Search Testimonials', 'dentist-exchange' ),
+			'not_found'             => __( 'No testimonials found.', 'dentist-exchange' ),
+			'not_found_in_trash'    => __( 'No testimonials found in Trash.', 'dentist-exchange' ),
+			'filter_items_list'     => __( 'Filter testimonials list', 'dentist-exchange' ),
+			'items_list_navigation' => __( 'Testimonials list navigation', 'dentist-exchange' ),
+			'items_list'            => __( 'Testimonials list', 'dentist-exchange' ),
+			'item_published'        => __( 'Testimonial published.', 'dentist-exchange' ),
+			'item_updated'          => __( 'Testimonial updated.', 'dentist-exchange' ),
+		);
+
+		$args = array(
+			'labels'              => $labels,
+			'description'         => __( 'Reviews shown through the testimonials shortcode.', 'dentist-exchange' ),
+			'public'              => false,
+			'publicly_queryable'  => false,
+			'exclude_from_search' => true,
+			'show_ui'             => true,
+			'show_in_menu'        => true,
+			'show_in_nav_menus'   => false,
+			'show_in_admin_bar'   => true,
+			'show_in_rest'        => false,
+			'query_var'           => false,
+			'rewrite'             => false,
+			'has_archive'         => false,
+			'hierarchical'        => false,
+			'menu_position'       => 21,
+			'menu_icon'           => 'dashicons-format-quote',
+			'capability_type'     => 'post',
+			'supports'            => array( 'title', 'page-attributes' ),
+		);
+
+		register_post_type( 'dnte-testimonial', $args );
+	}
+endif;
+add_action( 'init', 'dnte_register_testimonial_post_type' );
+
+
+// =============================================================================
+// Open Role — icon picker & SVG uploads
+// =============================================================================
+
+if ( ! function_exists( 'dnte_open_role_icon_assets' ) ) :
+	/**
+	 * Loads the media frame and the icon picker on the open role edit screen.
+	 *
+	 * @param string $hook Current admin page.
+	 */
+	function dnte_open_role_icon_assets( $hook ) {
+		if ( ! in_array( $hook, array( 'post.php', 'post-new.php' ), true ) ) {
+			return;
+		}
+
+		if ( 'open-role' !== get_post_type() ) {
+			return;
+		}
+
+		wp_enqueue_media();
+
+		wp_enqueue_script(
+			'dnte-open-role-icon',
+			get_theme_file_uri( 'assets/js/open-role-icon.js' ),
+			array( 'jquery' ),
+			wp_get_theme()->get( 'Version' ),
+			true
+		);
+	}
+endif;
+add_action( 'admin_enqueue_scripts', 'dnte_open_role_icon_assets' );
+
+
+if ( ! function_exists( 'dnte_allow_svg_upload' ) ) :
+	/**
+	 * Permits SVG uploads for users who can already publish unfiltered markup.
+	 *
+	 * WordPress blocks image/svg+xml because an SVG is a script carrier. The
+	 * capability check plus the sanitiser below are what make this safe: the
+	 * file is rewritten on upload with scripts, event handlers and external
+	 * references removed.
+	 *
+	 * @param array $mimes Allowed mime types.
+	 * @return array Filtered mime types.
+	 */
+	function dnte_allow_svg_upload( $mimes ) {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return $mimes;
+		}
+
+		$mimes['svg']  = 'image/svg+xml';
+		$mimes['svgz'] = 'image/svg+xml';
+
+		return $mimes;
+	}
+endif;
+add_filter( 'upload_mimes', 'dnte_allow_svg_upload' );
+
+
+if ( ! function_exists( 'dnte_sanitize_svg_upload' ) ) :
+	/**
+	 * Rewrites an uploaded SVG through the theme's sanitiser before it lands
+	 * in the media library.
+	 *
+	 * Runs on every upload, so an SVG that slips past `upload_mimes` — through
+	 * a plugin, say — is still cleaned. Reuses dnte_sanitize_svg_markup() from
+	 * inc/my-icons.php, which strips scripts, event handlers and external
+	 * references. An unparseable file is rejected outright.
+	 *
+	 * @param array $file Upload array.
+	 * @return array Possibly rejected upload array.
+	 */
+	function dnte_sanitize_svg_upload( $file ) {
+		if ( empty( $file['tmp_name'] ) || empty( $file['type'] ) ) {
+			return $file;
+		}
+
+		if ( 'image/svg+xml' !== $file['type'] ) {
+			return $file;
+		}
+
+		if ( ! function_exists( 'dnte_sanitize_svg_markup' ) ) {
+			$file['error'] = __( 'SVG uploads are unavailable: the sanitiser is missing.', 'dentist-exchange' );
+			return $file;
+		}
+
+		$raw = file_get_contents( $file['tmp_name'] ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- Local temp file.
+
+		if ( false === $raw ) {
+			$file['error'] = __( 'The SVG could not be read.', 'dentist-exchange' );
+			return $file;
+		}
+
+		$clean = dnte_sanitize_svg_markup( $raw );
+
+		if ( '' === $clean ) {
+			$file['error'] = __( 'That SVG could not be sanitised, so it was not uploaded.', 'dentist-exchange' );
+			return $file;
+		}
+
+		file_put_contents( $file['tmp_name'], $clean ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_put_contents -- Local temp file.
+
+		return $file;
+	}
+endif;
+add_filter( 'wp_handle_upload_prefilter', 'dnte_sanitize_svg_upload' );

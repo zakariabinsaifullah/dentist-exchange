@@ -6,6 +6,7 @@ import './style.scss';
  */
 import Edit from './edit';
 import save from './save';
+import deprecated from './deprecated';
 import metadata from './block.json';
 
 const inlineIcon = (
@@ -25,5 +26,10 @@ registerBlockType(metadata.name, {
     /**
      * @see ./save.js
      */
-    save
+    save,
+
+    /**
+     * @see ./deprecated.js
+     */
+    deprecated
 });

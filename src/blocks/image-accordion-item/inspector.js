@@ -30,33 +30,66 @@ const allowOnlyLineBreaks = value => (value || '').replace(/<\/?(?!br\b)[a-zA-Z]
 
 const BR_HELP = __('Use <br> for a line break. Other HTML is removed.', 'dentist-exchange');
 
+const EMPTY_IMAGE = { id: '', url: '', alt: '' };
+
+/**
+ * One image slot: preview, upload/replace and remove.
+ *
+ * @param {Object}   props
+ * @param {string}   props.label    Field label.
+ * @param {Object}   props.value    Current image ({id, url, alt}).
+ * @param {Function} props.onChange Receives the new image object.
+ * @param {string}   props.help     Optional help text.
+ */
+const ImageField = ({ label, value, onChange, help }) => (
+    <div className="dnte-accordion-image">
+        <p className="dnte-accordion-image__label">{label}</p>
+        {value?.url && <img src={value.url} alt="" />}
+        <MediaUploadCheck>
+            <MediaUpload
+                onSelect={media => onChange({ id: media.id, url: media.url, alt: media.alt })}
+                allowedTypes={['image']}
+                value={value?.id}
+                render={({ open }) => (
+                    <Button variant="secondary" onClick={open}>
+                        {value?.url ? __('Replace Image', 'dentist-exchange') : __('Upload Image', 'dentist-exchange')}
+                    </Button>
+                )}
+            />
+        </MediaUploadCheck>
+        {value?.url && (
+            <Button variant="link" isDestructive onClick={() => onChange({ ...EMPTY_IMAGE })}>
+                {__('Remove Image', 'dentist-exchange')}
+            </Button>
+        )}
+        {help && <p className="dnte-accordion-image__help">{help}</p>}
+    </div>
+);
+
 const Inspector = props => {
     const { attributes, setAttributes } = props;
-    const { image, showTitle, title, showDesc, description, showBtn, btnLabel, href, linkTarget } = attributes;
+    const { image, imageTablet, imageMobile, showTitle, title, showDesc, description, showBtn, btnLabel, href, linkTarget } = attributes;
 
     return (
         <InspectorControls>
             <PanelBody title={__('Content', 'dentist-exchange')} initialOpen={true}>
-                <div className="dnte-accordion-image">
-                    {image?.url && <img src={image.url} alt="" />}
-                    <MediaUploadCheck>
-                        <MediaUpload
-                            onSelect={media => setAttributes({ image: { id: media.id, url: media.url, alt: media.alt } })}
-                            allowedTypes={['image']}
-                            value={image?.id}
-                            render={({ open }) => (
-                                <Button variant="secondary" onClick={open}>
-                                    {image?.url ? __('Replace Image', 'dentist-exchange') : __('Upload Image', 'dentist-exchange')}
-                                </Button>
-                            )}
-                        />
-                    </MediaUploadCheck>
-                    {image?.url && (
-                        <Button variant="link" isDestructive onClick={() => setAttributes({ image: { id: '', url: '', alt: '' } })}>
-                            {__('Remove Image', 'dentist-exchange')}
-                        </Button>
-                    )}
-                </div>
+                <ImageField
+                    label={__('Image (Desktop)', 'dentist-exchange')}
+                    value={image}
+                    onChange={value => setAttributes({ image: value })}
+                />
+                <ImageField
+                    label={__('Image (Tablet)', 'dentist-exchange')}
+                    value={imageTablet}
+                    onChange={value => setAttributes({ imageTablet: value })}
+                    help={__('Used up to 781px. Falls back to the desktop image.', 'dentist-exchange')}
+                />
+                <ImageField
+                    label={__('Image (Mobile)', 'dentist-exchange')}
+                    value={imageMobile}
+                    onChange={value => setAttributes({ imageMobile: value })}
+                    help={__('Used up to 599px. Falls back to tablet, then desktop.', 'dentist-exchange')}
+                />
                 {showTitle && (
                     <NativeTextControl
                         label={__('Heading', 'dentist-exchange')}

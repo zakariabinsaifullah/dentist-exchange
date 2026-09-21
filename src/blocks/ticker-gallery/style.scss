@@ -1,0 +1,158 @@
+/**
+ * Ticker Gallery — a continuously scrolling row of tilted images.
+ *
+ * Measured from the reference design: the tiles alternate between shorter and
+ * tilted, and taller and near-upright, on a four step cycle, and they all sit
+ * on the same baseline. Gap 44px, radius 24px, tall tiles ~304px high with
+ * the short ones about 88% of that.
+ *
+ * Every one of those is a custom property, so the rhythm can be dialled in
+ * without touching this file.
+ */
+
+.wp-block-dnte-ticker-gallery {
+    /* Cycle of four tilts. The design hand-jitters these; these are its means. */
+    --dnte-ticker-tilt-1: 5deg;
+    --dnte-ticker-tilt-2: 2deg;
+    --dnte-ticker-tilt-3: -8deg;
+    --dnte-ticker-tilt-4: -2deg;
+
+    /*
+     * Rotating a rectangle drops its lower corner below the baseline by about
+     * half its width times sin(tilt), so without this the tilted tiles hang
+     * lower than the upright ones — 14px apart on the reference images, where
+     * the design keeps them within 4px. Each lift is that drop, calculated for
+     * a roughly square tile. Widen the images a lot and these want raising to
+     * match.
+     */
+    --dnte-ticker-lift-1: 12px;
+    --dnte-ticker-lift-2: 5px;
+    --dnte-ticker-lift-3: 19px;
+    --dnte-ticker-lift-4: 5px;
+
+    --dnte-ticker-height: 304px;
+    --dnte-ticker-short: 0.88;
+    --dnte-ticker-gap: 44px;
+    --dnte-ticker-radius: 24px;
+    --dnte-ticker-speed: 40s;
+
+    /*
+     * The tilted tiles poke outside the row on both axes, so the viewport
+     * cannot clip vertically — only horizontally, which is what the mask
+     * below handles.
+     */
+    overflow: hidden;
+    padding-block: 24px;
+}
+
+.dnte-ticker__track {
+    display: flex;
+
+    /* What puts every tile on the same baseline. */
+    align-items: flex-end;
+
+    gap: var(--dnte-ticker-gap);
+    width: max-content;
+    will-change: transform;
+    animation: dnte-ticker-scroll var(--dnte-ticker-speed) linear infinite;
+}
+
+.wp-block-dnte-ticker-gallery.is-direction-right .dnte-ticker__track {
+    animation-direction: reverse;
+}
+
+.wp-block-dnte-ticker-gallery.is-pause-on-hover:hover .dnte-ticker__track,
+.dnte-ticker__track:focus-within {
+    animation-play-state: paused;
+}
+
+/*
+ * The track holds the images twice over, so translating exactly half its
+ * width lands the second copy where the first began — seamless regardless of
+ * how many images there are.
+ */
+@keyframes dnte-ticker-scroll {
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+.dnte-ticker__item {
+    flex: none;
+    height: calc(var(--dnte-ticker-height) * var(--dnte-ticker-short));
+
+    /*
+     * Pivot at the bottom, not the centre, so each tile stays seated on the
+     * shared baseline as it tilts. A rotated rectangle still drops its lower
+     * corner below that line by roughly half its width times sin(tilt) —
+     * which is why the design's bottoms vary by a few pixels too, rather than
+     * being dead level.
+     */
+    transform-origin: bottom center;
+    transform: rotate(var(--dnte-ticker-tilt, 0deg));
+
+    /* Raises the tile by its own corner drop, so all four sit level. */
+    margin-bottom: var(--dnte-ticker-lift, 0px);
+}
+
+.dnte-ticker__item img {
+    display: block;
+    width: auto;
+    height: 100%;
+    max-width: none;
+    border-radius: var(--dnte-ticker-radius);
+    object-fit: cover;
+}
+
+/*
+ * The four step cycle. Odd tiles are shorter and clearly tilted, even tiles
+ * taller and close to upright.
+ *
+ * Driven by an explicit class rather than :nth-child, because the track holds
+ * the images twice and both copies have to be styled identically for the loop
+ * to be seamless — :nth-child would keep counting into the second copy. See
+ * the note in save.js.
+ */
+.dnte-ticker__item.is-v1 {
+    --dnte-ticker-tilt: var(--dnte-ticker-tilt-1);
+    --dnte-ticker-lift: var(--dnte-ticker-lift-1);
+}
+
+.dnte-ticker__item.is-v2 {
+    --dnte-ticker-tilt: var(--dnte-ticker-tilt-2);
+    --dnte-ticker-lift: var(--dnte-ticker-lift-2);
+    height: var(--dnte-ticker-height);
+}
+
+.dnte-ticker__item.is-v3 {
+    --dnte-ticker-tilt: var(--dnte-ticker-tilt-3);
+    --dnte-ticker-lift: var(--dnte-ticker-lift-3);
+}
+
+.dnte-ticker__item.is-v4 {
+    --dnte-ticker-tilt: var(--dnte-ticker-tilt-4);
+    --dnte-ticker-lift: var(--dnte-ticker-lift-4);
+    height: var(--dnte-ticker-height);
+}
+
+@media (max-width: 781px) {
+    .wp-block-dnte-ticker-gallery {
+        --dnte-ticker-height: 220px;
+        --dnte-ticker-gap: 24px;
+        --dnte-ticker-radius: 16px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    /*
+     * A row that never stops moving is exactly what this setting is for. The
+     * gallery stays, it simply holds still and can be scrolled by hand.
+     */
+    .dnte-ticker__track {
+        animation: none;
+    }
+
+    .wp-block-dnte-ticker-gallery {
+        overflow-x: auto;
+    }
+}

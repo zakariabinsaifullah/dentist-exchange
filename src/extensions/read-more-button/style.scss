@@ -1,0 +1,70 @@
+/**
+ * core/read-more — styled as the theme's default button.
+ *
+ * The visual identity is not duplicated here. dnte_render_read_more_button()
+ * adds the `wp-element-button` class, which is the selector theme.json's
+ * `styles.elements.button` compiles to — so the block picks up the theme
+ * button's background, radius, padding, typography, hover and focus, and
+ * follows any future change to them.
+ *
+ * What is left for this file is the layout the button class does not cover,
+ * and the optional arrow.
+ */
+
+.wp-block-read-more.wp-element-button {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--dnte-read-more-gap, 8px);
+    width: fit-content;
+
+    /*
+     * Core styles the block as a link, including an underline, and the
+     * theme's global link rules apply to it too. As a button it wants
+     * neither.
+     */
+    text-decoration: none;
+}
+
+.wp-block-read-more.wp-element-button:hover,
+.wp-block-read-more.wp-element-button:focus {
+    text-decoration: none;
+}
+
+/*
+ * The same arrow the theme's own arrow buttons use, masked and tinted with
+ * currentColor so it follows the label's colour on every button variation —
+ * without PHP having to inject markup, and with the editor rendering it from
+ * this same rule.
+ *
+ * The box is derived from the artwork's 28x18 viewBox rather than being
+ * square, so the arrow keeps its proportions instead of being letterboxed
+ * inside a 1em square.
+ */
+.wp-block-read-more.dnte-has-arrow::after {
+    --dnte-read-more-arrow-height: 0.72em;
+
+    content: '';
+    flex: none;
+    height: var(--dnte-read-more-arrow-height);
+    width: calc(var(--dnte-read-more-arrow-height) * 28 / 18);
+
+    background-color: currentColor;
+    mask: var(--dnte-read-more-arrow) no-repeat center / contain;
+    -webkit-mask: var(--dnte-read-more-arrow) no-repeat center / contain;
+
+    transition: transform 0.2s ease;
+}
+
+.wp-block-read-more.dnte-has-arrow:hover::after {
+    transform: translateX(3px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .wp-block-read-more.dnte-has-arrow::after {
+        transition: none;
+    }
+
+    .wp-block-read-more.dnte-has-arrow:hover::after {
+        transform: none;
+    }
+}

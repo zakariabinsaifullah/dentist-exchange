@@ -2,6 +2,10 @@
     margin: 0 !important;
 }
 
+.wp-block-post-excerpt__excerpt p {
+    color: #fff !important;
+}
+
 .wp-block-group {
     overflow: clip;
 }
@@ -107,12 +111,6 @@ header.wp-block-kadence-rowlayout::before {
 }
 
 /* Kadence Codes */
-.wp-block-kadence-listitem + .wp-block-kadence-listitem {
-    border-top: 1px solid #e8e9ec;
-    padding-top: 16px !important;
-    margin-top: 16px !important;
-}
-
 .kb-table-container {
     border-radius: 20px;
 }
@@ -207,16 +205,124 @@ header.wp-block-kadence-rowlayout::before {
 
 /* Kadence Table */
 th.kb-table-data {
-    border-bottom: 2px solid #551C25;
+    border-bottom: 2px solid #551c25;
 }
 
 th.kb-table-data p {
-	color: #551C25 !important;
+    color: #551c25 !important;
 }
 
 @media (max-width: 600px) {
     .kb-table {
         table-layout: auto !important;
         min-width: 600px !important;
+    }
+}
+
+/*
+ * Core Tabs — tab list
+ *
+ * One pill: a #FAF9F6 track behind a #E3E3E5 hairline, holding a filled pill
+ * for the selected tab. The fill, text colour, and type all come from
+ * theme.json presets, so the bar follows the palette rather than restating it.
+ *
+ * `!important` appears on exactly the three properties the block's own Colour,
+ * Border, and Dimensions controls write as inline styles onto each tab button
+ * — inline would otherwise beat any selector here. Clearing those controls in
+ * the editor would let the flags go, but keeping them means the bar renders the
+ * same whatever an editor sets per tab.
+ *
+ * Loaded via `enqueue_block_assets` (inc/enqueue.php), so the editor canvas
+ * gets these rules too. The editor markup differs only in that the track
+ * carries `role="document"` rather than `role="tablist"`, so the track is
+ * matched by class and the buttons by `[role="tab"]` — both shared.
+ */
+.wp-block-tabs .wp-block-tab-list {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    max-width: 100%;
+    margin-inline: auto;
+    gap: 6px;
+    padding: 3px !important;
+    background-color: #faf9f6;
+    border: 1px solid #e3e3e5;
+    border-radius: 999px;
+}
+
+.wp-block-tabs .wp-block-tab-list > [role='tab'] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 0 20px !important;
+    border: 0 !important;
+    border-radius: 999px;
+    background-color: transparent !important;
+    color: var(--wp--preset--color--dnte-neutral-950);
+    font-family: var(--wp--preset--font-family--inter);
+    font-size: var(--wp--preset--font-size--dnte-extra-small);
+    font-weight: 400;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.wp-block-tabs .wp-block-tab-list > [role='tab']:hover {
+    color: var(--wp--preset--color--dnte-primary-800);
+}
+
+.wp-block-tabs .wp-block-tab-list > [role='tab'][aria-selected='true'],
+.wp-block-tabs .wp-block-tab-list > [role='tab'][aria-selected='true']:hover {
+    background-color: var(--wp--preset--color--dnte-primary-800) !important;
+    color: var(--wp--preset--color--dnte-white);
+}
+
+/*
+ * Core marks the selected tab with an underline it draws as a pseudo-element
+ * (`wp-includes/blocks/tab-list/style.css`):
+ *
+ *   :where(.wp-block-tab-list button)[aria-selected=true]::before {
+ *       content: ""; position: absolute; bottom: 0; left: 0; width: 100%;
+ *       border-bottom: 2px solid currentColor;
+ *   }
+ *
+ * Pinned to `bottom: 0` at full width, it runs corner to corner straight
+ * through the pill's rounded bottom — in `currentColor`, so white on the blue
+ * fill — and reads as the pill having its bottom sliced off. The fill is the
+ * selected state in this design, so the underline just goes. `border: 0` on
+ * the button above does not reach a pseudo-element; only `content` removes it.
+ */
+.wp-block-tabs .wp-block-tab-list > [role='tab']::before {
+    content: none;
+}
+
+/*
+ * Keyboard focus only. Mirrors `styles.elements.button[":focus"]` in
+ * theme.json. Switching tabs by mouse moves focus to the tab that was clicked,
+ * and the selected pill already shows which one that is — a ring on top of it
+ * is noise. `:focus-visible` alone covers this in Chrome, but browsers differ
+ * on whether a click counts, so the pointer case is denied outright.
+ */
+.wp-block-tabs .wp-block-tab-list > [role='tab']:focus:not(:focus-visible) {
+    outline: none;
+}
+
+.wp-block-tabs .wp-block-tab-list > [role='tab']:focus-visible {
+    outline: 1px solid var(--wp--preset--color--dnte-neutral-800);
+    outline-offset: 2px;
+}
+
+/*
+ * Narrower than the track's natural width there is no room for a single row,
+ * so it wraps. A 999px radius on a two-row box bulges into an oval, so the
+ * radius drops to something that still reads as the same component.
+ */
+@media (max-width: 600px) {
+    .wp-block-tabs .wp-block-tab-list {
+        flex-wrap: wrap;
+        justify-content: center;
+        border-radius: 24px;
     }
 }

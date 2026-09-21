@@ -18,7 +18,8 @@ import classNames from 'classnames';
 // block save function
 const save = props => {
     const { attributes } = props;
-    const { image, showTitle, title, titleTag, showDesc, description, showBtn, btnLabel, href, linkTarget, linkRel } = attributes;
+    const { image, itemStyle, showTitle, title, titleTag, showDesc, description, showBtn, btnLabel, href, linkTarget, linkRel } =
+        attributes;
 
     const borderProps = getBorderClassesAndStyles(attributes);
     const colorProps = getColorClassesAndStyles(attributes);
@@ -37,15 +38,15 @@ const save = props => {
 
     return (
         <div {...blockProps}>
-            <div className="img">
-                {image?.url && (
-                    <img
-                        src={image.url}
-                        alt={image.alt || ''}
-                        className={classNames('img-cover', { [`wp-image-${image.id}`]: image.id })}
-                    />
-                )}
-            </div>
+            {/*
+             * Painted as a background rather than an <img> so the tablet and
+             * mobile variants swap by media query — see style.scss. An <img>
+             * carries its own accessible name, so where one was described the
+             * role/label pair stands in for it; an undescribed image stays
+             * decorative, as an empty alt would have been.
+             */}
+            <div className="img" style={itemStyle} {...(image?.alt ? { role: 'img', 'aria-label': image.alt } : {})} />
+
             <div className="info">
                 <div className="top-content">
                     {showTitle && <RichText.Content tagName={titleTag || 'h4'} value={title} className="heading" />}

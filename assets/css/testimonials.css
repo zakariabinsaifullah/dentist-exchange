@@ -1,0 +1,219 @@
+/**
+ * Testimonials carousel — [dnte_testimonials]
+ *
+ * Three card colours, cycled by position in PHP: white, black, blue. Every
+ * colour a card needs is derived from two custom properties, so a card's
+ * quote badge, text and shadow all follow from its variant class and no
+ * per-colour artwork is required.
+ *
+ * Values sampled from the reference design: page background #f9f9f9, blue
+ * #2234b0 (the theme's dnte-primary-800), cards tilted about 4 degrees.
+ */
+
+.dnte-testimonials {
+    /* Tilt and lift, alternating by position — see the nth-child rules below. */
+    --dnte-testimonial-tilt: 4deg;
+    --dnte-testimonial-lift: 16px;
+
+    --dnte-testimonial-radius: 12px;
+    --dnte-testimonial-padding: 24px;
+    --dnte-testimonial-width: 340px;
+
+    /* theme.json's "Default Shadow" preset — 0 0 11.5px 0 #8FA4B7. */
+    --dnte-testimonial-shadow: var(--wp--preset--shadow--dnte-shadow, 0 0 11.5px 0 #8fa4b7);
+
+    position: relative;
+    padding: 40px 0 16px;
+}
+
+/* ── Card ──────────────────────────────────────────────────────────────── */
+
+.dnte-testimonial {
+    width: var(--dnte-testimonial-width);
+    height: auto;
+
+    /*
+     * Vertical room only; the horizontal overlap is set by Swiper. This keeps
+     * the tilt, the lift on even cards and the shadow from being cropped.
+     */
+    padding: 28px 0 28px;
+}
+
+.dnte-testimonial__card {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
+    margin: 0;
+    padding: var(--dnte-testimonial-padding);
+    border-radius: var(--dnte-testimonial-radius);
+
+    /*
+     * `--card` is the surface, `--ink` the text on it. Everything else — the
+     * quote disc, the glyph, the muted designation — is derived from these.
+     */
+    background: var(--card);
+    color: var(--ink);
+
+    box-shadow: var(--dnte-testimonial-shadow);
+    transition: transform 0.4s ease;
+}
+
+.dnte-testimonial.is-white .dnte-testimonial__card {
+    --card: #ffffff;
+    --ink: #0b0d17;
+}
+
+.dnte-testimonial.is-black .dnte-testimonial__card {
+    --card: #000000;
+    --ink: #ffffff;
+}
+
+.dnte-testimonial.is-blue .dnte-testimonial__card {
+    --card: var(--wp--preset--color--dnte-primary-800, #2234b0);
+    --ink: #ffffff;
+}
+
+/*
+ * The deck alternates on a two-step rhythm, independent of the three-step
+ * colour cycle: odd cards tilt right and sit low, even cards tilt left and
+ * sit a little higher.
+ */
+.dnte-testimonial:nth-child(odd) .dnte-testimonial__card {
+    transform: rotate(var(--dnte-testimonial-tilt));
+}
+
+.dnte-testimonial:nth-child(even) .dnte-testimonial__card {
+    transform: translateY(calc(var(--dnte-testimonial-lift) * -1)) rotate(calc(var(--dnte-testimonial-tilt) * -1));
+}
+
+/* ── Quote badge ───────────────────────────────────────────────────────── */
+
+/*
+ * A disc that contrasts the card, with the glyph in the card's own colour —
+ * white card gets a black disc, dark cards get a white disc. Measured from
+ * the design, and the reason a single glyph mask covers all three variants
+ * instead of one icon file per colour.
+ */
+.dnte-testimonial__quote {
+    display: block;
+    flex: none;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: var(--ink);
+}
+
+.dnte-testimonial__quote::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+
+    /* URL supplied by dnte_enqueue_testimonial_assets(). */
+    mask-image: var(--dnte-testimonial-quote);
+    -webkit-mask-image: var(--dnte-testimonial-quote);
+    mask-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
+    mask-position: center;
+    -webkit-mask-position: center;
+    /*
+     * `contain`, not a percentage. The glyph file is already the full badge
+     * canvas with the marks sized inside it — 27px of ink in a 55px square,
+     * the 49% the artwork uses. Scaling the image to 49% would scale that
+     * ratio again and render the marks at about a quarter of the disc.
+     */
+    mask-size: contain;
+    -webkit-mask-size: contain;
+
+    background-color: var(--card);
+}
+
+/* ── Text ──────────────────────────────────────────────────────────────── */
+
+.dnte-testimonial__message {
+    flex: 1 1 auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 17px;
+    line-height: 1.5;
+    quotes: none;
+}
+
+.dnte-testimonial__author {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.dnte-testimonial__name {
+    font-weight: 700;
+    font-size: 17px;
+    line-height: 1.3;
+}
+
+.dnte-testimonial__designation {
+    font-size: 13px;
+    line-height: 1.3;
+
+    /*
+     * Slightly recessed against whichever surface it sits on, without needing
+     * a third colour per variant.
+     */
+    opacity: 0.75;
+}
+
+/* ── Carousel ──────────────────────────────────────────────────────────── */
+
+.dnte-testimonials__swiper {
+    /*
+     * The tilted cards and their shadows overflow the track, so the usual
+     * `overflow: hidden` would clip their corners.
+     */
+    overflow: visible;
+}
+
+.dnte-testimonials__pagination.swiper-pagination {
+    position: static;
+
+    /*
+     * Clears the cards' tilt and their shadow, which both extend past the
+     * bottom of the track.
+     */
+    margin-top: 72px;
+
+    /* Sits above the overlapping cards so the bullets stay clickable. */
+    position: relative;
+    z-index: 2;
+}
+
+.dnte-testimonials .swiper-pagination-bullet {
+    width: 9px;
+    height: 9px;
+    background: #c7c9d4;
+    opacity: 1;
+}
+
+.dnte-testimonials .swiper-pagination-bullet-active {
+    background: var(--wp--preset--color--dnte-primary-600, #334df8);
+}
+
+@media (max-width: 599px) {
+    .dnte-testimonials {
+        /* Tilted cards waste horizontal room when there is little of it. */
+        --dnte-testimonial-tilt: 0deg;
+        --dnte-testimonial-lift: 0px;
+        --dnte-testimonial-width: 280px;
+    }
+
+    .dnte-testimonial__card {
+        gap: 16px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dnte-testimonial__card {
+        transition: none;
+    }
+}

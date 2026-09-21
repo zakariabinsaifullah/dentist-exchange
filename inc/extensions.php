@@ -1720,3 +1720,148 @@ if ( ! function_exists( 'dnte_render_kadence_row_divider' ) ) :
 	}
 endif;
 add_filter( 'render_block', 'dnte_render_kadence_row_divider', 10, 2 );
+
+
+// =============================================================================
+// core/read-more — Theme Button Styling Extension
+// =============================================================================
+
+if ( ! function_exists( 'dnte_enqueue_read_more_button_editor_assets' ) ) :
+	/**
+	 * Enqueues the read-more-button extension script.
+	 * Runs on `enqueue_block_editor_assets` (editor only).
+	 */
+	function dnte_enqueue_read_more_button_editor_assets() {
+		$asset_file = get_theme_file_path( 'build/extensions/read-more-button/index.asset.php' );
+
+		if ( ! file_exists( $asset_file ) ) {
+			return;
+		}
+
+		$assets = require $asset_file;
+
+		wp_enqueue_script(
+			'dnte-read-more-button-extension',
+			get_theme_file_uri( 'build/extensions/read-more-button/index.js' ),
+			$assets['dependencies'],
+			wp_get_theme()->get( 'Version' ),
+			true
+		);
+	}
+endif;
+add_action( 'enqueue_block_editor_assets', 'dnte_enqueue_read_more_button_editor_assets' );
+
+
+if ( ! function_exists( 'dnte_enqueue_read_more_button_assets' ) ) :
+	/**
+	 * Enqueues the read-more-button stylesheet and the arrow it draws with.
+	 *
+	 * The arrow is the same artwork the theme's own arrow buttons use — it was
+	 * lifted from the custom SVG the iconic-button extension carries on those
+	 * buttons and stored as a shared asset, so the two cannot drift apart. The
+	 * URL arrives on a custom property; the stylesheet masks it with
+	 * currentColor so it follows the label's colour.
+	 *
+	 * Runs on `enqueue_block_assets` (editor + front end).
+	 */
+	function dnte_enqueue_read_more_button_assets() {
+		$style_file = get_theme_file_path( 'build/extensions/read-more-button/style-index.css' );
+
+		if ( ! file_exists( $style_file ) ) {
+			return;
+		}
+
+		wp_enqueue_style(
+			'dnte-read-more-button-extension-style',
+			get_theme_file_uri( 'build/extensions/read-more-button/style-index.css' ),
+			array(),
+			wp_get_theme()->get( 'Version' )
+		);
+
+		$arrow = get_theme_file_path( 'assets/svg/button-arrow.svg' );
+
+		if ( ! file_exists( $arrow ) ) {
+			return;
+		}
+
+		wp_add_inline_style(
+			'dnte-read-more-button-extension-style',
+			':root{--dnte-read-more-arrow:url("' . esc_url_raw( get_theme_file_uri( 'assets/svg/button-arrow.svg' ) ) . '");}'
+		);
+	}
+endif;
+add_action( 'enqueue_block_assets', 'dnte_enqueue_read_more_button_assets' );
+
+
+if ( ! function_exists( 'dnte_render_read_more_button' ) ) :
+	/**
+	 * Styles core/read-more as the theme's default button.
+	 *
+	 * `wp-element-button` is the selector theme.json's `styles.elements.button`
+	 * compiles to, so adding it makes the block the theme button by
+	 * construction rather than a copy of its styles — it tracks any later
+	 * change to them. `dnte-has-arrow` turns on the trailing arrow.
+	 *
+	 * The editor applies the same classes through the JS
+	 * `editor.BlockListBlock` filter, which has no effect on rendered markup.
+	 *
+	 * @param string $block_content The rendered block HTML.
+	 * @param array  $block         The block data including attributes.
+	 * @return string Modified block HTML.
+	 */
+	function dnte_render_read_more_button( $block_content, $block ) {
+		if ( 'core/read-more' !== ( $block['blockName'] ?? '' ) || empty( $block_content ) ) {
+			return $block_content;
+		}
+
+		$processor = new WP_HTML_Tag_Processor( $block_content );
+
+		if ( ! $processor->next_tag() ) {
+			return $block_content;
+		}
+
+		$processor->add_class( 'wp-element-button' );
+
+		if ( ! empty( $block['attrs']['showArrow'] ) ) {
+			$processor->add_class( 'dnte-has-arrow' );
+		}
+
+		return $processor->get_updated_html();
+	}
+endif;
+add_filter( 'render_block', 'dnte_render_read_more_button', 10, 2 );
+
+
+if ( ! function_exists( 'dnte_register_read_more_arrow_attribute' ) ) :
+	/**
+	 * Registers `showArrow` on core/read-more server side as well.
+	 *
+	 * The JS `blocks.registerBlockType` filter only runs in the editor, which
+	 * leaves the attribute absent from the block's server schema. The render
+	 * filter happens to read the raw parsed block and so sees it anyway, but
+	 * declaring it here keeps the two definitions in step and means anything
+	 * that works from the registered schema sees it too.
+	 *
+	 * @param array  $args Block type registration arguments.
+	 * @param string $name Block name.
+	 * @return array Modified arguments.
+	 */
+	function dnte_register_read_more_arrow_attribute( $args, $name ) {
+		if ( 'core/read-more' !== $name ) {
+			return $args;
+		}
+
+		$args['attributes'] = array_merge(
+			isset( $args['attributes'] ) && is_array( $args['attributes'] ) ? $args['attributes'] : array(),
+			array(
+				'showArrow' => array(
+					'type'    => 'boolean',
+					'default' => false,
+				),
+			)
+		);
+
+		return $args;
+	}
+endif;
+add_filter( 'register_block_type_args', 'dnte_register_read_more_arrow_attribute', 10, 2 );

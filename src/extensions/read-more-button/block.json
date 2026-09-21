@@ -1,0 +1,8 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "dnte/read-more-button-extension",
+    "title": "Read More Button Extension",
+    "editorScript": "file:./index.js",
+    "style": "file:./style-index.css"
+}
