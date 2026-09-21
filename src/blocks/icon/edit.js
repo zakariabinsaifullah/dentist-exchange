@@ -48,6 +48,20 @@ import { RenderIcon } from '../../helpers';
 
 import './editor.scss';
 
+/*
+ * The theme ships Inter at 300-700, so those are the weights offered. "Default"
+ * writes nothing, leaving the title at whatever its tag gives it — bold for a
+ * heading, regular for a paragraph.
+ */
+const TITLE_FONT_WEIGHTS = [
+    { label: __('Default', 'dentist-exchange'), value: '' },
+    { label: __('Light (300)', 'dentist-exchange'), value: '300' },
+    { label: __('Regular (400)', 'dentist-exchange'), value: '400' },
+    { label: __('Medium (500)', 'dentist-exchange'), value: '500' },
+    { label: __('Semi Bold (600)', 'dentist-exchange'), value: '600' },
+    { label: __('Bold (700)', 'dentist-exchange'), value: '700' }
+];
+
 export default function Edit(props) {
     const { attributes, setAttributes, className } = props;
     const {
@@ -69,6 +83,7 @@ export default function Edit(props) {
         titleColor,
         titleSize,
         titleFontFamily,
+        titleFontWeight,
         titleMarginBottom,
         showDesc,
         description,
@@ -150,6 +165,7 @@ export default function Edit(props) {
         ...(titleColor && { '--title-color': titleColor }),
         ...(titleSize && { '--title-size': `${titleSize}` }),
         ...(titleFontFamily && { '--title-font-family': titleFontFamily }),
+        ...(titleFontWeight && { '--title-font-weight': titleFontWeight }),
         ...(titleMarginBottom && { '--title-margin-bottom': `${titleMarginBottom}` }),
         ...(descColor && { '--desc-color': descColor }),
         ...(descSize && { '--desc-size': `${descSize}` }),
@@ -167,6 +183,7 @@ export default function Edit(props) {
         titleColor,
         titleSize,
         titleFontFamily,
+        titleFontWeight,
         titleMarginBottom,
         descColor,
         descSize,
@@ -187,7 +204,8 @@ export default function Edit(props) {
         style: cssCustomProperties,
         className: classNames(className, {
             [`is-${iconType}`]: iconType,
-            [`justify-${justifyContent}`]: justifyContent
+            [`justify-${justifyContent}`]: justifyContent,
+            'has-title-weight': !!titleFontWeight
         })
     });
 
@@ -444,6 +462,7 @@ export default function Edit(props) {
                                 titleSize: undefined,
                                 titleColor: undefined,
                                 titleFontFamily: undefined,
+                                titleFontWeight: undefined,
                                 titleMarginBottom: undefined
                             })
                         }
@@ -502,6 +521,24 @@ export default function Edit(props) {
                                 value={titleFontFamily}
                                 onChange={value => setAttributes({ titleFontFamily: value })}
                                 options={fontFamilyOptions}
+                            />
+                        </ToolsPanelItem>
+
+                        <ToolsPanelItem
+                            hasValue={() => !!titleFontWeight}
+                            label={__('Weight', 'dentist-exchange')}
+                            onDeselect={() => {
+                                setAttributes({
+                                    titleFontWeight: undefined
+                                });
+                            }}
+                            onSelect={() => {}}
+                        >
+                            <NativeSelectControl
+                                label={__('Weight', 'dentist-exchange')}
+                                value={titleFontWeight}
+                                onChange={value => setAttributes({ titleFontWeight: value })}
+                                options={TITLE_FONT_WEIGHTS}
                             />
                         </ToolsPanelItem>
 

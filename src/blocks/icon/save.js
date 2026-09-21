@@ -43,6 +43,7 @@ export default function save({ attributes, className }) {
         showTitle,
         heading,
         headingTag,
+        titleFontWeight,
         showDesc,
         description,
         descTag,
@@ -102,7 +103,10 @@ export default function save({ attributes, className }) {
         style: blockStyle,
         className: classNames(className, {
             [`is-${iconType}`]: iconType,
-            [`justify-${justifyContent}`]: justifyContent
+            [`justify-${justifyContent}`]: justifyContent,
+            // Absent unless a weight is chosen, so blocks saved before this
+            // existed keep exactly the markup they had.
+            'has-title-weight': !!titleFontWeight
         })
     });
 

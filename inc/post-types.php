@@ -241,7 +241,14 @@ if ( ! function_exists( 'dnte_register_open_role_meta' ) ) :
 				'type'              => 'string',
 				'show_in_rest'      => false,
 				'description'       => __( 'Where the Apply button sends candidates.', 'dentist-exchange' ),
-				'sanitize_callback' => 'sanitize_url',
+
+				/*
+				 * Stored as plain text, not run through sanitize_url, so a
+				 * relative path, an anchor or a mailto: can be entered without
+				 * being silently emptied. Escaping still happens on output,
+				 * where esc_url() drops anything dangerous.
+				 */
+				'sanitize_callback' => 'sanitize_text_field',
 				'auth_callback'     => $auth,
 			)
 		);
@@ -361,8 +368,9 @@ if ( ! function_exists( 'dnte_render_open_role_meta_box' ) ) :
 
 		<p>
 			<label for="dnte-role-apply-link"><strong><?php esc_html_e( 'Apply Link', 'dentist-exchange' ); ?></strong></label><br />
+			<?php // `text`, not `url`, so the browser does not refuse to save a relative path or an anchor. ?>
 			<input
-				type="url"
+				type="text"
 				id="dnte-role-apply-link"
 				name="dnte_role_apply_link"
 				class="widefat"
@@ -419,7 +427,7 @@ if ( ! function_exists( 'dnte_save_open_role_meta' ) ) :
 		update_post_meta(
 			$post_id,
 			'dnte_role_apply_link',
-			isset( $_POST['dnte_role_apply_link'] ) ? sanitize_url( wp_unslash( $_POST['dnte_role_apply_link'] ) ) : ''
+			isset( $_POST['dnte_role_apply_link'] ) ? sanitize_text_field( wp_unslash( $_POST['dnte_role_apply_link'] ) ) : ''
 		);
 
 		update_post_meta( $post_id, 'dnte_role_active', isset( $_POST['dnte_role_active'] ) );

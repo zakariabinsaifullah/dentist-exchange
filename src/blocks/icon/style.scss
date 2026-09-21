@@ -67,6 +67,18 @@
     }
 
     /* Heading */
+    /*
+     * Gated on the class rather than written unconditionally with a fallback.
+     * `.icon-heading` sets no weight of its own, so the title takes whatever
+     * its tag gives it — bold for a heading, regular for a paragraph. A
+     * `font-weight: var(--title-font-weight, …)` here would replace that for
+     * every block, and an unset custom property computes as `inherit` on an
+     * inherited property, which would strip a heading's bold.
+     */
+    &.has-title-weight .icon-heading {
+        font-weight: var(--title-font-weight);
+    }
+
     .icon-heading {
         color: var(--title-color);
         font-size: var(--title-size);

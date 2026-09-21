@@ -148,14 +148,24 @@ if ( ! function_exists( 'dnte_roles_render_card' ) ) :
 		// Keywords the search matches on, beyond the title.
 		$keywords = implode( ' ', array_merge( wp_list_pluck( $tags, 'name' ), $type_names ) );
 
-		$tag = $apply ? 'a' : 'div';
+		/*
+		 * A role with no Apply Link is a plain card, not an empty link.
+		 *
+		 * The escaping decides the tag, rather than the raw value: esc_url()
+		 * returns '' for anything it will not allow through, so checking the
+		 * raw string instead would render `<a href="">` — a link that looks
+		 * clickable and reloads the page.
+		 */
+		$apply_url = '' !== $apply ? esc_url( $apply ) : '';
+		$tag       = '' !== $apply_url ? 'a' : 'div';
 
 		ob_start();
 		?>
 		<<?php echo esc_html( $tag ); ?>
 			class="dnte-job"
-			<?php if ( $apply ) : ?>
-				href="<?php echo esc_url( $apply ); ?>"
+			<?php if ( '' !== $apply_url ) : ?>
+				<?php // Already escaped above. ?>
+				href="<?php echo $apply_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>"
 			<?php endif; ?>
 			data-types="<?php echo esc_attr( implode( ' ', $type_slugs ) ); ?>"
 			data-keywords="<?php echo esc_attr( strtolower( $title . ' ' . $keywords ) ); ?>"

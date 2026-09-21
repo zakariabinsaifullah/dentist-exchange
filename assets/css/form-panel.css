@@ -46,7 +46,7 @@
 /* ── Header ──────────────────────────────────────────────────────────────────── */
 
 .dnte-form-panel__header {
-    background: var(--wp--preset--color--dnte-primary-600, #334DF8);
+    background: var(--wp--preset--color--dnte-primary-600, #334df8);
     color: #ffffff;
     display: flex;
     align-items: center;
@@ -123,7 +123,7 @@
     font-size: 14px;
     font-weight: 500;
     line-height: 1.2;
-    color: #2A3136;
+    color: #2a3136;
     min-height: 42px;
     cursor: pointer;
     transition:
@@ -134,7 +134,7 @@
 }
 
 .dnte-form-panel__tab:hover {
-    color: #2A3136;
+    color: #2a3136;
 }
 
 .dnte-form-panel__tab:focus-visible {
@@ -145,7 +145,7 @@
 .dnte-form-panel__tab.is-active {
     background: #ffffff;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-    color: #2A3136;
+    color: #2a3136;
 }
 
 /* ── Tab panels ─────────────────────────────────────────────────────────────── */
@@ -271,26 +271,205 @@ body.dnte-panel-open {
 .gform_body input:focus,
 .gform_body textarea:focus,
 .gform_body select:focus {
-    border-color: #2A3136 !important;
+    border-color: #2a3136 !important;
     outline-color: rgba(37, 57, 89, 0.15) !important;
 }
 
+/* ── Submit button ──────────────────────────────────────────────────────────
+
+   Matches the theme's default button. A block button gets that look from the
+   `wp-element-button` class, which is what theme.json's `styles.elements.button`
+   compiles to — but Gravity Forms renders the submit as an `<input>` we cannot
+   add a class to, so the values are restated here. They are read from the same
+   presets theme.json uses, so a change to the palette or type scale still
+   reaches this button.
+
+   Kept in step with theme.json > styles.elements.button. */
 .gform_button.button {
-    background: var(--wp--preset--color--dnte-primary-600, #334DF8) !important;
-    color: #ffffff !important;
-    padding: 12px 24px !important;
-    border: none !important;
+    background-color: var(--wp--preset--color--dnte-primary-800, #2234b0) !important;
+    color: var(--wp--preset--color--dnte-white, #ffffff) !important;
+    padding: 10px 20px !important;
+    border: 0 !important;
     border-radius: 100px !important;
-    font-size: 16px !important;
-    font-weight: 400 !important;
+    font-family: var(--wp--preset--font-family--inter, Inter, sans-serif) !important;
+    font-size: var(--wp--preset--font-size--dnte-medium, 16px) !important;
+    font-style: normal !important;
+    font-weight: 500 !important;
+    line-height: 1.5 !important;
     width: auto !important;
+    cursor: pointer;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 /* Repeats the resting colour to override Gravity Forms' own hover background. */
-.gform_button.button:hover {
-    background: var(--wp--preset--color--dnte-primary-600, #334DF8) !important;
-    color: #ffffff !important;
+.gform_button.button:hover,
+.gform_button.button:focus {
+    background-color: var(--wp--preset--color--dnte-primary-900, #24338b) !important;
+    color: var(--wp--preset--color--dnte-white, #ffffff) !important;
+}
+
+.gform_button.button:focus-visible {
+    outline: 2px solid var(--wp--preset--color--dnte-neutral-800, #2a3136) !important;
+    outline-offset: 2px !important;
+}
+
+/* The trailing arrow.
+
+   An `<input>` cannot carry a pseudo-element, so the arrow is a background
+   image rather than an `::after` — the same artwork the theme's own arrow
+   buttons use, which already ships white and so needs no tinting. The right
+   padding is the button's own 20px plus room for the arrow and its gap. */
+.gform_button.button {
+    background-image: url('../svg/button-arrow.svg') !important;
+    background-repeat: no-repeat !important;
+    background-position: right 20px center !important;
+    background-size: 20px auto !important;
+    padding-right: 52px !important;
+}
+
+/* ── Radio choices ──────────────────────────────────────────────────────────
+
+   The design draws each choice as a pill with a square tick box, so `.gchoice`
+   becomes the pill and the input is restyled into the box. `:has()` is what
+   lets the pill react to its own input being checked — Gravity Forms adds no
+   class for the selected state. */
+
+/* The orbital theme lays choices out as a grid of equal columns, which both
+   stretches every pill to the widest one and wraps the longest label onto two
+   lines. These undo that, and need !important because that grid is declared at
+   a higher specificity in a stylesheet that loads after this one. */
+.gform_wrapper .gfield_radio {
+    display: flex !important;
+
+    /* Gravity Forms stacks radio choices with `flex-direction: column`, so
+       simply switching the container back to flex left them one per line, each
+       stretched across the row by the cross-axis stretch. The row direction is
+       what actually puts the pills side by side; `wrap` then only comes into
+       play in a container too narrow to hold all three. */
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 12px !important;
+    grid-template-columns: none !important;
+}
+
+.gform_wrapper .gfield_radio .gchoice {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 10px !important;
+    grid-template-columns: none !important;
+
+    /* Sized by its own label, as in the design, rather than stretching to the
+       row. `width` alone is not enough — as a flex item it would still grow. */
+    flex: 0 0 auto !important;
+    width: auto !important;
+    padding: 12px 20px;
+    border: 1px solid #d1d4db;
+    border-radius: 100px;
+    background: #ffffff;
+    cursor: pointer;
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.gform_wrapper .gfield_radio .gchoice:hover {
+    border-color: var(--wp--preset--color--dnte-primary-800, #2234b0);
+}
+
+.gform_wrapper .gfield_radio .gchoice:has(input:checked) {
+    border-color: var(--wp--preset--color--dnte-primary-800, #2234b0);
+    background: #edf5ff;
+}
+
+.gform_wrapper .gfield_radio .gchoice:has(input:focus-visible) {
+    outline: 2px solid var(--wp--preset--color--dnte-primary-800, #2234b0);
+    outline-offset: 2px;
+}
+
+/* The radio, redrawn as the design's rounded square. */
+.gform_wrapper .gfield_radio .gchoice input[type='radio'] {
+    appearance: none;
+    -webkit-appearance: none;
+    flex: none;
+    width: 20px;
+    height: 20px;
+    margin: 0 !important;
+    padding: 0;
+    border: 1.5px solid #c9ccd4;
+    border-radius: 5px;
+    cursor: pointer;
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease;
+
+    /* The generic field rule above sets `border-color` and `background-color`
+       with !important on every input, so the box has to answer in kind. */
+    border-color: #c9ccd4 !important;
+    background-color: #ffffff !important;
+}
+
+/* The mark inside the box is Gravity Forms' own `::before`, which it centres in
+   the control and leaves transparent. Reshaped from GF's dot into a white
+   check: two borders on a rotated rectangle, so the tick costs no image and
+   scales with nothing but these numbers. */
+.gform_wrapper .gfield_radio .gchoice input[type='radio']::before {
+    width: 5px;
+    height: 9px;
+    border-radius: 0;
+    background-color: transparent !important;
+    border: solid #ffffff;
+    border-width: 0 2px 2px 0;
+
+    /* The rotation pivots around the centre, which leaves the tick sitting low
+       and right of it; the translate puts it back. */
+    transform: rotate(45deg) translate(-1px, -1px);
+}
+
+.gform_wrapper .gfield_radio .gchoice input[type='radio']:checked {
+    border-color: var(--wp--preset--color--dnte-primary-800, #2234b0) !important;
+    background-color: var(--wp--preset--color--dnte-primary-800, #2234b0) !important;
+}
+
+.gform_wrapper .gfield_radio .gchoice label {
+    margin: 0 !important;
+    padding: 0 !important;
+    color: var(--wp--preset--color--dnte-neutral-900, #0b0d17);
+    font-size: 16px;
+    line-height: 1.3;
+    cursor: pointer;
+    transition: color 0.2s ease;
+
+    /* One line per pill, as drawn. Without this the longest choice breaks and
+       that pill grows taller than its neighbours. */
+    white-space: nowrap;
+}
+
+.gform_wrapper .gfield_radio .gchoice:has(input:checked) label {
+    color: var(--wp--preset--color--dnte-primary-800, #2234b0);
+}
+
+/* The pills keep their labels on one line, so on a narrow phone the longest
+   choice would otherwise be wider than the screen and push the page sideways.
+   Scaling the type and padding down keeps it inside a 320px viewport; the
+   choices still stack one per row there, which is what the layout wants. */
+@media (max-width: 600px) {
+    .gform_wrapper .gfield_radio {
+        gap: 8px !important;
+    }
+
+    .gform_wrapper .gfield_radio .gchoice {
+        padding: 10px 16px;
+        gap: 8px !important;
+    }
+
+    .gform_wrapper .gfield_radio .gchoice input[type='radio'] {
+        width: 18px;
+        height: 18px;
+    }
+
+    .gform_wrapper .gfield_radio .gchoice label {
+        font-size: 14px;
+    }
 }
 
 label.gfield_label.gform-field-label {
@@ -299,4 +478,87 @@ label.gfield_label.gform-field-label {
 
 p.gform_required_legend {
     display: none !important;
+}
+
+/* ── Inline subscribe form ──────────────────────────────────────────────────
+
+   The one-line "Enter your email → Subscribe" bar: a pill-shaped field with a
+   transparent fill sitting on the same row as the button.
+
+   Matched structurally rather than by form id, so any Gravity Form whose only
+   field is an email address gets the inline treatment and a second one needs no
+   new CSS. A form with more fields — the full subscription form above — keeps
+   the stacked layout.
+
+   Both the border and the placeholder derive from the inherited text colour, so
+   the bar reads correctly on a dark section (white on black, as drawn) and on a
+   light one without being told which it is on. `--dnte-subscribe-border`
+   overrides the border alone where a section wants it stronger or softer. */
+
+.gform_wrapper:has(.gform_fields > .gfield--type-email:only-child) {
+    /* Gravity Forms derives control height and radius from these, so the field
+       is sized through its own API rather than by overriding it afterwards. */
+    --gf-ctrl-size: 52px;
+    --gf-ctrl-size-md: 52px;
+    --gf-ctrl-line-height: 52px;
+    --gf-ctrl-radius: 100px;
+    --gf-ctrl-padding-x: 20px;
+}
+
+.gform_wrapper form:has(.gform_fields > .gfield--type-email:only-child) {
+    display: flex;
+    align-items: stretch;
+    gap: 12px;
+
+    /* Only ever relevant when Gravity Forms prepends a validation summary,
+       which then takes a row of its own rather than squeezing the bar. */
+    flex-wrap: wrap;
+}
+
+.gform_wrapper form:has(.gform_fields > .gfield--type-email:only-child) .gform_validation_errors {
+    flex: 0 0 100%;
+}
+
+/* The field takes the free space; 260px is the narrowest it stays usable at,
+   below which the button drops to its own line. */
+.gform_wrapper form:has(.gform_fields > .gfield--type-email:only-child) .gform-body {
+    flex: 1 1 260px;
+    margin: 0;
+}
+
+.gform_wrapper form:has(.gform_fields > .gfield--type-email:only-child) .gform-footer {
+    flex: 0 0 auto;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.gform_wrapper form:has(.gform_fields > .gfield--type-email:only-child) input[type='email'] {
+    height: 52px;
+    border-radius: 100px !important;
+    color: inherit !important;
+
+    /* Both answer !important rules on every field earlier in this file. */
+    background-color: transparent !important;
+    border: 1px solid var(--dnte-subscribe-border, color-mix(in srgb, currentColor 70%, transparent)) !important;
+}
+
+.gform_wrapper form:has(.gform_fields > .gfield--type-email:only-child) input[type='email']::placeholder {
+    color: inherit !important;
+    opacity: 0.7;
+}
+
+.gform_wrapper form:has(.gform_fields > .gfield--type-email:only-child) input[type='email']:focus {
+    border-color: currentColor !important;
+}
+
+/* Too narrow for the two to share a row: the button goes full width beneath
+   the field rather than shrinking to a stub. */
+@media (max-width: 600px) {
+    .gform_wrapper form:has(.gform_fields > .gfield--type-email:only-child) {
+        flex-direction: column;
+    }
+
+    .gform_wrapper form:has(.gform_fields > .gfield--type-email:only-child) .gform_button.button {
+        width: 100% !important;
+    }
 }
