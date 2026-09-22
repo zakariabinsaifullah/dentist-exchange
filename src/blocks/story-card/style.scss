@@ -77,6 +77,33 @@
     max-width: none;
 }
 
+/* ── Narrow screens ─────────────────────────────────────────────────────────
+   The cards run full width here, so the desktop badge — 75px hanging 51px past
+   the corner — would be chopped by the viewport. Smaller disc, and an overhang
+   of only 12px, which any edge padding of 15px or more absorbs entirely. */
+@media (max-width: 900px) {
+    .dnte-story-card__badge {
+        width: var(--dnte-badge-size-m, 56px);
+        height: var(--dnte-badge-size-m, 56px);
+        top: var(--dnte-badge-offset-m, -12px);
+        padding: 8px;
+    }
+
+    .dnte-story-card.has-badge-left .dnte-story-card__badge {
+        left: var(--dnte-badge-offset-m, -12px);
+    }
+
+    .dnte-story-card.has-badge-right .dnte-story-card__badge {
+        right: var(--dnte-badge-offset-m, -12px);
+    }
+
+    .dnte-story-card__badge img,
+    .dnte-story-card__badge svg {
+        width: 34px;
+        height: 34px;
+    }
+}
+
 /* ── Content ────────────────────────────────────────────────────────────── */
 
 .dnte-story-card__media {
