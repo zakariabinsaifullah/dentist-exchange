@@ -15,6 +15,7 @@ const Inspector = props => {
     const {
         cardWidth,
         laneGap,
+        mobileGap,
         animate,
         revealStagger,
         trailingArrow,
