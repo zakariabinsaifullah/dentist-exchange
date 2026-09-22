@@ -1,0 +1,91 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "dnte/story-card",
+    "version": "0.7.0",
+    "title": "Story Card",
+    "category": "dnte",
+    "icon": "index-card",
+    "description": "One card in a Story Cards section: badge icon, image, heading, description and the hand-drawn arrow leading to the next card.",
+    "parent": ["dnte/story-cards"],
+    "supports": {
+        "anchor": true,
+        "html": false,
+        "align": false,
+        "reusable": false,
+        "spacing": {
+            "margin": false,
+            "padding": false
+        }
+    },
+    "attributes": {
+        "icon": {
+            "type": "object",
+            "default": {}
+        },
+        "badgeSide": {
+            "type": "string",
+            "default": "left"
+        },
+        "image": {
+            "type": "object",
+            "default": {}
+        },
+        "heading": {
+            "type": "string",
+            "default": ""
+        },
+        "headingTag": {
+            "type": "string",
+            "default": "h3"
+        },
+        "description": {
+            "type": "string",
+            "default": ""
+        },
+        "lane": {
+            "type": "string",
+            "default": "auto"
+        },
+        "offsetY": {
+            "type": "number"
+        },
+        "arrow": {
+            "type": "string",
+            "default": ""
+        },
+        "arrowTop": {
+            "type": "number",
+            "default": 0
+        },
+        "arrowLeft": {
+            "type": "number",
+            "default": 100
+        },
+        "arrowWidth": {
+            "type": "number",
+            "default": 45
+        },
+        "arrowRotate": {
+            "type": "number",
+            "default": 0
+        },
+        "arrowFlipX": {
+            "type": "boolean",
+            "default": false
+        },
+        "arrowDelay": {
+            "type": "number",
+            "default": 180
+        },
+        "arrowMobile": {
+            "type": "string",
+            "default": "auto"
+        }
+    },
+    "textdomain": "dentist-exchange",
+    "editorScript": "file:./index.js",
+    "editorStyle": "file:./index.css",
+    "style": "file:./style-index.css",
+    "render": "file:./render.php"
+}

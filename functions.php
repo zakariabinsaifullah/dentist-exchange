@@ -25,6 +25,7 @@ require_once get_theme_file_path( 'inc/blocks.php' );        // Custom block reg
 require_once get_theme_file_path( 'inc/block-styles.php' );  // Core block style variations
 require_once get_theme_file_path( 'inc/extensions.php' );    // Block editor extensions
 require_once get_theme_file_path( 'inc/annotations.php' );   // Hand-drawn heading annotations
+require_once get_theme_file_path( 'inc/arrows.php' );        // Story card connector artwork
 
 // ── Icon library ───────────────────────────────────────────────────────────────
 require_once get_theme_file_path( 'inc/my-icons.php' );      // Site-wide saved SVG icons

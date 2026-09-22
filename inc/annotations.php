@@ -212,7 +212,13 @@ if ( ! function_exists( 'dnte_render_annotation' ) ) :
 	 * @return string Modified block HTML.
 	 */
 	function dnte_render_annotation( $block_content, $block ) {
-		if ( empty( $block_content ) || ( $block['blockName'] ?? '' ) !== 'core/heading' ) {
+		// Blocks whose text can carry an annotation. The scanner below is
+		// block-agnostic — it only looks for the annotation span — so adding a
+		// block here is all it takes. Mirrors SUPPORTED_BLOCKS in
+		// src/extensions/annotation/index.js, which gates the toolbar button.
+		$supported = array( 'core/heading', 'dnte/story-card' );
+
+		if ( empty( $block_content ) || ! in_array( $block['blockName'] ?? '', $supported, true ) ) {
 			return $block_content;
 		}
 

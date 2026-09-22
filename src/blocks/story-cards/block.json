@@ -1,0 +1,76 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "dnte/story-cards",
+    "version": "0.7.0",
+    "title": "Story Cards",
+    "category": "dnte",
+    "icon": "excerpt-view",
+    "description": "A staggered two-lane run of cards joined by hand-drawn arrows, each revealing on scroll.",
+    "example": {},
+    "supports": {
+        "anchor": true,
+        "html": false,
+        "align": ["wide", "full"],
+        "spacing": {
+            "margin": true,
+            "padding": true,
+            "__experimentalDefaultControls": {
+                "margin": false,
+                "padding": false
+            }
+        }
+    },
+    "attributes": {
+        "cardWidth": {
+            "type": "number",
+            "default": 43
+        },
+        "laneGap": {
+            "type": "number",
+            "default": 0
+        },
+        "mobileGap": {
+            "type": "number",
+            "default": 70
+        },
+        "animate": {
+            "type": "boolean",
+            "default": true
+        },
+        "revealStagger": {
+            "type": "number",
+            "default": 120
+        },
+        "trailingArrow": {
+            "type": "string",
+            "default": ""
+        },
+        "trailingLeft": {
+            "type": "number",
+            "default": 41.3
+        },
+        "trailingOffset": {
+            "type": "number",
+            "default": -13.3
+        },
+        "trailingWidth": {
+            "type": "number",
+            "default": 19.7
+        },
+        "trailingDelay": {
+            "type": "number",
+            "default": 180
+        },
+        "trailingFlipX": {
+            "type": "boolean",
+            "default": false
+        }
+    },
+    "textdomain": "dentist-exchange",
+    "editorScript": "file:./index.js",
+    "editorStyle": "file:./index.css",
+    "style": "file:./style-index.css",
+    "viewScript": "file:./view.js",
+    "render": "file:./render.php"
+}

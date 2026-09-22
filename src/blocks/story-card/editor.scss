@@ -1,0 +1,40 @@
+/**
+ * Story Card — editor-only affordances.
+ *
+ * Layout is deliberately *not* touched here: the card keeps its lane and its
+ * vertical offset in the canvas, so the Vertical Offset control visibly does
+ * something while it is being dragged.
+ */
+
+.dnte-story-card__icon-preview {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    margin-bottom: 12px;
+    padding: 8px;
+    border: 1px dashed #c3c4c7;
+    border-radius: 8px;
+    background: repeating-conic-gradient(#f0f0f1 0% 25%, #ffffff 0% 50%) 0 0 / 16px 16px;
+
+    img {
+        max-width: 100%;
+        max-height: 100%;
+        display: block;
+    }
+}
+
+.dnte-story-card__icon-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+/* The connector is decorative and carries no pointer events, but it can sit
+ * over a neighbouring card's text and confuse the eye while editing. Dimmed
+ * rather than hidden — authors still have to place it. */
+.editor-styles-wrapper .dnte-story-card__connector {
+    opacity: 0.75;
+}

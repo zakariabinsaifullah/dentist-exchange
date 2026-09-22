@@ -1,0 +1,17 @@
+/**
+ * Story Cards — editor-only affordances.
+ *
+ * The lane layout needs nothing here: the block list gives each card the same
+ * element that carries the lane class on the frontend, so style.scss already
+ * applies. The reveal never runs in the canvas either — view.js is a frontend
+ * script — so authors always see the finished section.
+ */
+
+.editor-styles-wrapper .dnte-story-cards {
+    /* The block inserter's appender is a flex child like the cards, and would
+     * otherwise stretch to a full lane's width at the end of the section. */
+    > .block-list-appender {
+        width: auto;
+        align-self: flex-start;
+    }
+}

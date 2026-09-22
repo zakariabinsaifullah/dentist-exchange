@@ -221,7 +221,8 @@ export default function Edit(props) {
                         })
                     }
                 />
-                <ToolbarButton
+
+                {/* <ToolbarButton
                     ref={setPopoverAnchor}
                     name="link"
                     icon={link}
@@ -262,7 +263,7 @@ export default function Edit(props) {
                             }
                         />
                     </Popover>
-                )}
+                )} */}
             </BlockControls>
             <InspectorControls>
                 <PanelBody title={__('Settings', 'dentist-exchange')}>
@@ -657,6 +658,7 @@ export default function Edit(props) {
                                     onChange={value => setAttributes({ heading: value })}
                                     placeholder={__('List title...', 'dentist-exchange')}
                                     className="icon-heading"
+                                    withoutInteractiveFormatting
                                 />
                             )}
                             {showDesc && (
@@ -666,6 +668,7 @@ export default function Edit(props) {
                                     onChange={value => setAttributes({ description: value })}
                                     placeholder={__('Description...', 'dentist-exchange')}
                                     className="icon-description"
+                                    withoutInteractiveFormatting
                                 />
                             )}
                             {/* No href in the editor, so clicking it cannot navigate away. */}
@@ -677,6 +680,7 @@ export default function Edit(props) {
                                         onChange={value => setAttributes({ buttonText: value })}
                                         placeholder={__('Learn more', 'dentist-exchange')}
                                         className="icon-button__text"
+                                        withoutInteractiveFormatting
                                     />
                                     {hasButtonIcon && (
                                         <span className={classNames('icon-button__icon', `is-${buttonIconType}`)}>

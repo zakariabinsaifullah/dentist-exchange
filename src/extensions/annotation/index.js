@@ -37,7 +37,7 @@ const COLOR_VARIABLE = '--dnte-annotation-color';
 
 // Format types have no native per-block restriction, so the toolbar button
 // opts out for anything else.
-const SUPPORTED_BLOCKS = ['core/heading'];
+const SUPPORTED_BLOCKS = ['core/heading', 'dnte/story-card'];
 
 const annotationIcon = (
     <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">

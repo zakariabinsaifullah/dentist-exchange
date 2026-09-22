@@ -1,0 +1,281 @@
+/**
+ * Story Cards — lane layout and the scroll reveal.
+ *
+ * Two lanes rather than a grid: each card is a block in one column that pulls
+ * itself to the left or right edge. Grid would force cards into shared rows,
+ * and the design has consecutive cards in the same lane, which rows cannot
+ * express without leaving holes.
+ *
+ * The stagger is carried entirely by each card's own negative margin, set as a
+ * percentage — percentage margins resolve against the container's width, so
+ * the whole composition scales with the section rather than drifting apart at
+ * other widths.
+ */
+
+/* The wipe's animated gradient stop. Registration is what makes the custom
+ * property interpolable; without it the value still applies, it just cannot
+ * transition. */
+@property --dnte-wipe {
+    syntax: '<percentage>';
+    inherits: false;
+
+    /* Not 0%: cssnano minifies 0% to 0, which is invalid for <percentage> and
+     * silently voids the whole registration — and with it the animation. Both
+     * states set the value explicitly, so the initial never actually shows. */
+    initial-value: 100%;
+}
+
+.dnte-story-cards {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--dnte-lane-gap, 0);
+
+    /* Arrows hang past the cards, and two past the section itself — nothing in
+     * this subtree may clip. */
+    overflow: visible;
+}
+
+.dnte-story-cards > .dnte-story-card {
+    width: var(--dnte-card-width, 43%);
+}
+
+/* Lane assignment. The design leads with the right-hand card, so `auto`
+ * alternates right, left, right, left. An explicit lane on a card wins, which
+ * is what consecutive same-lane cards need.
+ *
+ * Every rule here names the card rather than `> *`: the section's trailing
+ * arrow is a child too, and it sizes and places itself. */
+.dnte-story-cards > .dnte-story-card:nth-child(odd) {
+    align-self: flex-end;
+}
+
+.dnte-story-cards > .dnte-story-card:nth-child(even) {
+    align-self: flex-start;
+}
+
+/* Written with the card class as well, so these out-specify the :nth-child
+ * rules above — otherwise a lane set by hand would lose to the alternation,
+ * and two cards in the same lane would be impossible to express. */
+.dnte-story-cards > .dnte-story-card.is-lane-left {
+    align-self: flex-start;
+}
+
+.dnte-story-cards > .dnte-story-card.is-lane-right {
+    align-self: flex-end;
+}
+
+/* ── Positioned layout ──────────────────────────────────────────────────────
+   The design's vertical rhythm is absolute: each card's top is a fixed share
+   of the section's width, measured off the artwork, independent of how tall
+   any other card happens to render. view.js adds `.is-positioned`, takes each
+   card out of the flow, and sets the section's height to the lowest card.
+
+   The top itself is the card's `--dnte-card-top` percentage — applied as
+   margin-top because percentage margins resolve against the container's
+   *width*, which is the design's own coordinate system. A card without the
+   variable is placed by view.js just below the card before it.
+
+   Without JavaScript the class never appears and the section renders as the
+   flex column above — every card visible, stacked in its lane. */
+
+.dnte-story-cards.is-positioned {
+    display: block;
+}
+
+.dnte-story-cards.is-positioned > .dnte-story-card {
+    position: absolute;
+    top: 0;
+    margin-top: var(--dnte-card-top, 0%);
+}
+
+.dnte-story-cards.is-positioned > .dnte-story-card:nth-child(odd) {
+    right: 0;
+}
+
+.dnte-story-cards.is-positioned > .dnte-story-card:nth-child(even) {
+    left: 0;
+}
+
+.dnte-story-cards.is-positioned > .dnte-story-card.is-lane-left {
+    left: 0;
+    right: auto;
+}
+
+.dnte-story-cards.is-positioned > .dnte-story-card.is-lane-right {
+    right: 0;
+    left: auto;
+}
+
+/* ── The section's trailing arrow ───────────────────────────────────────────
+   The long curve running out of the bottom of the design. It belongs to the
+   section, not to the last card — which carries its own connector — and being
+   anchored here is what lets the phone breakpoint keep this one and drop the
+   rest. */
+
+.dnte-story-cards__trailing {
+    position: absolute;
+    top: 100%;
+    left: var(--dnte-trailing-left, 41%);
+    width: var(--dnte-trailing-width, 20%);
+
+    /* Percentage margin against the section's width, so the trailer holds its
+     * place in the composition however tall the cards run. */
+    margin-top: var(--dnte-trailing-offset, -13%);
+
+    color: var(--wp--preset--color--dnte-primary-800, #2234b0);
+    pointer-events: none;
+
+    /* Mirrors the curve for compositions that run the other way. The wipe is
+     * unaffected: the mask angle applies inside the flipped box, so the draw
+     * still travels tail to head. */
+    transform: scaleX(var(--dnte-trailing-flip, 1));
+    transform-origin: center;
+}
+
+/* ── Scroll reveal ──────────────────────────────────────────────────────────
+
+   The initial state is applied only under `.is-animated`, which view.js adds
+   the moment it runs. If the script is blocked or fails, the section renders
+   exactly as it does now — visible. Nothing is hidden by default, ever. */
+
+.dnte-story-cards.is-animated > .dnte-story-card {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+        opacity 450ms cubic-bezier(0.16, 1, 0.3, 1),
+        transform 450ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+}
+
+.dnte-story-cards.is-animated > .dnte-story-card.is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* The badge stamps in a beat after its card: a small scale overshoot, like a
+ * sticker being pressed on. Runs off the same .is-revealed flag, so it can
+ * never fire without the card. */
+.dnte-story-cards.is-animated .dnte-story-card__badge {
+    opacity: 0;
+    transform: scale(0.5);
+    transition:
+        opacity 350ms cubic-bezier(0.34, 1.56, 0.64, 1) 150ms,
+        transform 350ms cubic-bezier(0.34, 1.56, 0.64, 1) 150ms;
+}
+
+.dnte-story-cards.is-animated .dnte-story-card.is-revealed .dnte-story-card__badge {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* The trailing curve is by far the longest stroke; at the shared 500ms it
+ * sweeps visibly faster than the small arrows. A longer duration keeps the
+ * drawing speed consistent. */
+.dnte-story-cards.is-animated .dnte-story-cards__trailing .dnte-story-card__connector-art {
+    transition-duration: 700ms;
+}
+
+/* The arrow wipe.
+ *
+ * The artwork is a filled brush silhouette, not a stroked line, so there is no
+ * centreline for stroke-dasharray to run along. Instead a soft-edged gradient
+ * mask sweeps along the arrow's own direction — `--dnte-arrow-angle`, set per
+ * arrow in inc/arrows.php — from tail to head.
+ *
+ * The sweep animates the gradient's own stop position (a registered
+ * @property), not mask-position: a translated oversized mask only reveals for
+ * angles whose black corner happens to land under the element, which is why a
+ * position-based wipe silently blanked some arrows. Moving the stop from 0% to
+ * past 100% covers every angle by construction. Browsers without @property
+ * cannot transition the stop and jump straight to the drawn arrow — visible,
+ * just not animated. */
+.dnte-story-cards.is-animated .dnte-story-card__connector-art {
+    --dnte-wipe: 0%;
+
+    -webkit-mask-image: linear-gradient(var(--dnte-arrow-angle, 180deg), #000 calc(var(--dnte-wipe) - 18%), transparent var(--dnte-wipe));
+    mask-image: linear-gradient(var(--dnte-arrow-angle, 180deg), #000 calc(var(--dnte-wipe) - 18%), transparent var(--dnte-wipe));
+    transition: --dnte-wipe 500ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dnte-story-cards.is-animated .dnte-story-card.is-revealed .dnte-story-card__connector-art,
+.dnte-story-cards.is-animated.is-trailing-revealed .dnte-story-cards__trailing .dnte-story-card__connector-art {
+    /* Past 100%, so the 18% soft edge has fully left the box. */
+    --dnte-wipe: 120%;
+}
+
+/* ── Narrow screens ─────────────────────────────────────────────────────────
+   One column, no stagger. The card arrows are placed for two lanes and would
+   land on top of card text here, so they go — the section's trailing curve
+   stays, since it sits below everything either way. */
+
+@media (max-width: 900px) {
+    .dnte-story-cards {
+        align-items: stretch;
+
+        /* The desktop lane gap is usually 0 — the offsets carry the rhythm
+         * there. Stacked in one column the cards need real spacing of their
+         * own. */
+        gap: var(--dnte-mobile-gap, 70px);
+    }
+
+    /* Each of these has to out-specify a rule above it: the lane rules carry a
+     * class of their own, and the card's offset is set on `.dnte-story-card`
+     * in the child block's stylesheet, which loads after this one. */
+    .dnte-story-cards > .dnte-story-card,
+    .dnte-story-cards > .dnte-story-card.is-lane-left,
+    .dnte-story-cards > .dnte-story-card.is-lane-right {
+        width: 100%;
+        align-self: stretch;
+
+        /* Offsets exist to overlap two lanes; in one column they only tangle
+         * the cards. */
+        margin-top: 0;
+    }
+
+    /* view.js drops `.is-positioned` at this width, but the flow styles are
+     * also forced here so a stale class between resize events cannot leave the
+     * cards stacked on top of each other. */
+    .dnte-story-cards.is-positioned > .dnte-story-card {
+        position: static;
+        margin-top: 0;
+    }
+
+    .dnte-story-card__connector {
+        display: none;
+    }
+
+    .dnte-story-card__connector.is-mobile-visible {
+        display: block;
+    }
+
+    .dnte-story-card__connector.is-mobile-hidden {
+        display: none;
+    }
+}
+
+/* ── Reduced motion ─────────────────────────────────────────────────────────
+   Everything final and still. view.js still marks cards revealed, so state
+   stays consistent with the animated path. */
+
+@media (prefers-reduced-motion: reduce) {
+    .dnte-story-cards.is-animated > .dnte-story-card,
+    .dnte-story-cards.is-animated > .dnte-story-card.is-revealed {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    .dnte-story-cards.is-animated .dnte-story-card__connector-art {
+        -webkit-mask-image: none;
+        mask-image: none;
+        transition: none;
+    }
+
+    .dnte-story-cards.is-animated .dnte-story-card__badge {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}

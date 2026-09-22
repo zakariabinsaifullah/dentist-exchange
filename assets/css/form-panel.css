@@ -293,6 +293,7 @@ body.dnte-panel-open {
         border-color 0.2s ease,
         box-shadow 0.2s ease;
     box-sizing: border-box;
+    border-radius: 12px !important;
 }
 
 /* A select ignores the control line-height GF gives inputs, so its text sits
@@ -418,6 +419,7 @@ body.dnte-panel-open {
     background-position: right 20px center !important;
     background-size: 20px auto !important;
     padding-right: 52px !important;
+    max-height: fit-content;
 }
 
 /* ── Radio choices ──────────────────────────────────────────────────────────
@@ -628,11 +630,11 @@ p.gform_required_legend {
 .gform_wrapper form:has(.gform_fields > .gfield--type-email:only-child) input[type='email'] {
     height: 52px;
     border-radius: 100px !important;
-    color: inherit !important;
+    color: #fff !important;
 
     /* Both answer !important rules on every field earlier in this file. */
     background-color: transparent !important;
-    border: 1px solid var(--dnte-subscribe-border, color-mix(in srgb, currentColor 70%, transparent)) !important;
+    border: 1px solid var(--dnte-subscribe-border, #fff) !important;
 }
 
 .gform_wrapper form:has(.gform_fields > .gfield--type-email:only-child) input[type='email']::placeholder {
@@ -653,5 +655,13 @@ p.gform_required_legend {
 
     .gform_wrapper form:has(.gform_fields > .gfield--type-email:only-child) .gform_button.button {
         width: 100% !important;
+    }
+
+    .gform_wrapper form:has(.gform_fields > .gfield--type-email:only-child) .gform-body {
+        flex: auto !important;
+    }
+    .gform_wrapper form:has(.gform_fields > .gfield--type-email:only-child) .gform-footer {
+        gap: 0 !important;
+        line-height: 0 !important;
     }
 }

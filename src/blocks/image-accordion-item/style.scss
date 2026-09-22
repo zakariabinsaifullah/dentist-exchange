@@ -70,10 +70,33 @@
         margin-top: auto;
 
         max-width: var(--content-max-width, none);
-        transition: margin-top 0.4s ease;
+
+        /*
+         * The description is revealed by animating its own grid row from
+         * `0fr` up to its content height, rather than from a guessed
+         * `max-height`. Any cap clips the moment a description runs long,
+         * which is exactly what happened to stacked items on a phone — the
+         * item is narrow there, so the same text wraps to two or three times
+         * as many lines. `1fr` in an auto-height grid resolves to the row's
+         * content height, so there is nothing left to outgrow.
+         *
+         * Rows are placed explicitly so the description stays in row 2 even
+         * when the title is switched off and it is the only child.
+         *
+         * The row itself is transitioned, so the description still slides
+         * open rather than snapping — `0fr` to `1fr` interpolates, and since
+         * `1fr` resolves to the content height the animation lands exactly on
+         * it at every width.
+         */
+        display: grid;
+        grid-template-rows: auto 0fr;
+        transition:
+            margin-top 0.4s ease,
+            grid-template-rows 0.4s ease;
     }
 
     .heading {
+        grid-row: 1;
         margin: 0;
         font-weight: 700;
         font-size: var(--title-size, 22px);
@@ -85,13 +108,20 @@
     }
 
     .description {
+        grid-row: 2;
         margin: 0;
-        max-height: 0;
+
+        // A grid item's automatic minimum size would hold the row open at the
+        // text's height, defeating the `0fr` collapse.
+        min-height: 0;
+
         opacity: 0;
         overflow: hidden;
         color: #fff;
         font-size: 17px;
-        transition: all 0.35s ease;
+        transition:
+            opacity 0.35s ease,
+            margin-top 0.35s ease;
     }
 
     .btn {
@@ -134,6 +164,7 @@
 
         .top-content {
             margin-top: 0;
+            grid-template-rows: auto 1fr;
         }
 
         .heading {
@@ -142,7 +173,6 @@
         }
 
         .description {
-            max-height: 300px;
             opacity: 1;
             margin-top: var(--dnte-content-margin);
         }
@@ -165,12 +195,37 @@
             background-image: var(--timg, var(--dimg, none));
         }
 
+        /*
+         * Stacked items are sized by their content, not to a fixed height.
+         *
+         * Side by side the item is wide and 701px tall, so the text always
+         * fit and `.info` could stay absolutely positioned — out of flow, it
+         * contributes nothing to the item's height, which is why the height
+         * had to be declared. Stacked, the item is the full width of a phone
+         * instead of a fifth of a desktop, so the same description wraps to
+         * far more lines than any fixed height allows and `overflow: hidden`
+         * cut it off.
+         *
+         * So here `.info` joins the flow and becomes what gives the item its
+         * height, and the declared height turns into a floor (`min-height`)
+         * rather than a ceiling. `.img` stays absolute and fills whatever
+         * height that works out to.
+         */
         width: 100%;
-        height: 300px;
+        height: auto;
+        min-height: 300px;
         flex-shrink: 0;
-        transition: height 0.6s ease;
+        display: flex;
+        flex-direction: column;
+        transition: min-height 0.6s ease;
 
         .info {
+            position: relative;
+
+            // Fills the item so `.top-content`'s `margin-top: auto` still has
+            // room to push a collapsed item's title down to the bottom.
+            flex: 1 1 auto;
+
             padding: 32px 24px;
         }
 
@@ -184,10 +239,9 @@
 
         &.active {
             width: 100%;
-            // A fixed height keeps the expand animatable — `auto` would not
-            // transition, and `.info` is absolutely positioned so it never
-            // contributes to the item's own height anyway.
-            height: 440px;
+            // A floor, so a short item still opens to a readable size. Longer
+            // content pushes past it instead of being clipped.
+            min-height: 440px;
 
             // Stacked items are much shorter, so the padding tightens up. The
             // vertical position itself comes from the shared rule above, which
@@ -199,10 +253,6 @@
 
             .heading {
                 font-size: var(--title-size-mobile, 36px);
-            }
-
-            .description {
-                max-height: 200px;
             }
         }
     }
