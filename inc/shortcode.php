@@ -37,9 +37,23 @@ endif;
 // Helpers
 // =============================================================================
 
+if ( ! function_exists( 'dnte_posts_grid_arrow_svg' ) ) :
+	/**
+	 * The theme's button arrow, drawn in the current text colour.
+	 *
+	 * Same artwork as assets/svg/button-arrow.svg, inlined because this markup
+	 * also travels over AJAX, where a background-image on a stylesheet class
+	 * would be the only alternative.
+	 */
+	function dnte_posts_grid_arrow_svg() {
+		return '<svg class="ipg-card__button-arrow" width="20" height="13" viewBox="0 0 28 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M16.1091 7.2829C15.2473 6.71473 14.379 6.158 13.5238 5.57838C12.5622 4.92374 11.5683 4.30364 10.6753 3.55942C9.82349 2.84947 9.67578 1.89259 10.2646 0.92927C10.8724 -0.0585588 11.7969 -0.186572 12.8006 0.207684C13.3369 0.419859 13.834 0.736366 14.3373 1.02853C17.8595 3.08052 21.3708 5.1516 24.9016 7.18832C27.7336 8.8235 27.9734 10.7682 25.2493 12.4461C22.215 14.3138 18.9895 15.8736 15.8091 17.4828C14.8296 17.9782 13.7214 18.1004 13.0112 16.8931C12.4135 15.8789 12.7864 15.0285 14.2172 14.0822C14.9148 13.6203 15.6294 13.1861 16.8626 12.4093C15.7126 12.1965 15.1235 12.0018 14.5328 11.9918C11.2521 11.9262 7.97074 11.9061 4.68891 11.8602C3.72639 11.8463 2.7445 11.9153 1.80578 11.7398C0.806918 11.5545 -0.0420513 10.9506 0.0015718 9.77751C0.0524664 8.4407 0.959801 7.97434 2.17058 7.96048C5.74004 7.92283 9.30655 7.88597 12.876 7.84832C13.9055 7.83775 14.9363 7.82036 15.965 7.80678C16.014 7.63189 16.0631 7.45699 16.1091 7.2829Z" fill="currentColor"/></svg>';
+	}
+endif;
+
+
 if ( ! function_exists( 'dnte_posts_grid_render_post_item' ) ) :
 	/**
-	 * Renders a single post card: image → meta (category, date + reading time) → title → excerpt → read more.
+	 * Renders a single post card: image → meta (category, date) → title → excerpt → Learn More.
 	 *
 	 * @param int    $post_id  Post ID.
 	 * @param string $taxonomy Taxonomy used for the category label.
@@ -50,14 +64,11 @@ if ( ! function_exists( 'dnte_posts_grid_render_post_item' ) ) :
 			return '';
 		}
 
-		$permalink   = get_permalink( $post_id );
-		$title       = get_the_title( $post_id );
-		$excerpt     = get_the_excerpt( $post_id );
-		$date        = get_the_date( 'F j, Y', $post_id );
-		$author_id   = (int) $post->post_author;
-		$author_name = get_the_author_meta( 'display_name', $author_id );
-		$avatar      = get_avatar( $author_id, 32, '', esc_attr( $author_name ), array( 'class' => 'ipg-card__avatar-img' ) );
-		$thumbnail   = has_post_thumbnail( $post_id )
+		$permalink = get_permalink( $post_id );
+		$title     = get_the_title( $post_id );
+		$excerpt   = get_the_excerpt( $post_id );
+		$date      = get_the_date( 'M j, Y', $post_id );
+		$thumbnail = has_post_thumbnail( $post_id )
 			? get_the_post_thumbnail( $post_id, 'medium_large', array( 'loading' => 'lazy' ) )
 			: '';
 
@@ -65,11 +76,7 @@ if ( ! function_exists( 'dnte_posts_grid_render_post_item' ) ) :
 		$terms    = get_the_terms( $post_id, $taxonomy );
 		$cat_name = ( $terms && ! is_wp_error( $terms ) ) ? $terms[0]->name : '';
 
-		// Reading time: word count / 200 wpm, rounded up to at least 1 minute.
-		$word_count   = str_word_count( wp_strip_all_tags( $post->post_content ) );
-		$reading_time = max( 1, (int) ceil( $word_count / 200 ) );
-
-		$html  = '<div class="ipg-card">';
+		$html = '<div class="ipg-card">';
 
 		if ( $thumbnail ) {
 			$html .= '<a href="' . esc_url( $permalink ) . '" class="ipg-card__image" tabindex="-1" aria-hidden="true">';
@@ -79,18 +86,15 @@ if ( ! function_exists( 'dnte_posts_grid_render_post_item' ) ) :
 
 		$html .= '<div class="ipg-card__body">';
 
-		// Meta row: category | date + reading time.
-		$html .= '<div class="ipg-card__meta-row">';
-		if ( $cat_name ) {
-			$html .= '<span class="ipg-card__category">' . esc_html( $cat_name ) . '</span>';
+		// Meta row: category pill, then date.
+		if ( $cat_name || $date ) {
+			$html .= '<div class="ipg-card__meta-row">';
+			if ( $cat_name ) {
+				$html .= '<span class="ipg-card__category">' . esc_html( $cat_name ) . '</span>';
+			}
+			$html .= '<span class="ipg-card__date">' . esc_html( $date ) . '</span>';
+			$html .= '</div>';
 		}
-		$html .= '<span class="ipg-card__meta">';
-		$html .= '<span class="ipg-card__date">' . esc_html( $date ) . '</span>';
-		$html .= '<span class="ipg-card__sep" aria-hidden="true">&middot;</span>';
-		/* translators: %d: reading time in minutes. */
-		$html .= '<span class="ipg-card__read-time">' . sprintf( esc_html__( '%d min read', 'dentist-exchange' ), $reading_time ) . '</span>';
-		$html .= '</span>';
-		$html .= '</div>';
 
 		$html .= '<h2 class="ipg-card__title"><a href="' . esc_url( $permalink ) . '">' . esc_html( $title ) . '</a></h2>';
 
@@ -98,12 +102,15 @@ if ( ! function_exists( 'dnte_posts_grid_render_post_item' ) ) :
 			$html .= '<p class="ipg-card__excerpt">' . esc_html( $excerpt ) . '</p>';
 		}
 
-		// Read more button.
-		$arrow_svg = '<svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M.75 5.417h9.333m-4.666 4.666 4.666-4.666L5.417.75" stroke="url(#dnte-arrow-grad)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="dnte-arrow-grad" x1="12.12" y1=".71" x2="-.53" y2="1.894" gradientUnits="userSpaceOnUse"><stop offset=".184" stop-color="#886066"/><stop offset=".918" stop-color="#551c25"/></linearGradient></defs></svg>';
-		$html    .= '<a class="ipg-card__read-more" href="' . esc_url( $permalink ) . '">';
-		$html    .= '<span>' . esc_html__( 'Read More', 'dentist-exchange' ) . '</span>';
-		$html    .= $arrow_svg;
-		$html    .= '</a>';
+		/*
+		 * `wp-element-button` is the selector theme.json's styles.elements.button
+		 * compiles to, so this is the theme's default button by construction
+		 * rather than a copy of its current look.
+		 */
+		$html .= '<a class="wp-element-button ipg-card__button" href="' . esc_url( $permalink ) . '">';
+		$html .= '<span>' . esc_html__( 'Learn More', 'dentist-exchange' ) . '</span>';
+		$html .= dnte_posts_grid_arrow_svg();
+		$html .= '</a>';
 
 		$html .= '</div>';
 		$html .= '</div>';

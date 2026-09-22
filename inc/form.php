@@ -7,6 +7,7 @@
  *   dnte_form_shortcode      – Form Shortcode
  *   dnte_form_title          – Panel heading
  *   dnte_form_description    – Panel description paragraph
+ *   dnte_book_call_link      – Booking URL behind the panel's "Book a call" tab
  *
  * @package Dentist_Exchange
  */
@@ -47,6 +48,7 @@ function dnte_form_panel_html() {
 	$shortcode   = get_option( 'dnte_form_shortcode', '' );
 	$title       = get_option( 'dnte_form_title', 'Contact us' );
 	$description = get_option( 'dnte_form_description', '' );
+	$book_link   = get_option( 'dnte_book_call_link', '' );
 
 	// Don't render the panel if neither option is set.
 	if ( ! $phone && ! $shortcode ) {
@@ -83,6 +85,46 @@ function dnte_form_panel_html() {
 		</div>
 
 		<div class="dnte-form-panel__body">
+			<?php
+			/*
+			 * The two tabs only make sense as a pair: with no booking URL set
+			 * there is nowhere for the second one to go, and a lone "Message
+			 * us" tab above the form it already describes says nothing. So the
+			 * whole row is dropped and the panel opens straight onto the title.
+			 */
+			if ( $book_link ) :
+				?>
+				<nav class="dnte-form-panel__tabs" aria-label="<?php esc_attr_e( 'Contact options', 'dentist-exchange' ); ?>">
+					<span class="dnte-form-panel__tab is-active" aria-current="true">
+						<svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+							<rect x="1.75" y="3.75" width="16.5" height="12.5" rx="2" stroke="currentColor" stroke-width="1.6"/>
+							<path d="M2.5 5L10 10.5L17.5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+						</svg>
+						<?php esc_html_e( 'Message us', 'dentist-exchange' ); ?>
+					</span>
+
+					<?php
+					/*
+					 * A scheduling page belongs in its own tab; an on-page
+					 * target does not — opening #book in a new tab would just
+					 * reload the site there.
+					 */
+					$book_in_new_tab = 0 !== strpos( $book_link, '#' );
+					?>
+					<a
+						class="dnte-form-panel__tab"
+						href="<?php echo esc_url( $book_link ); ?>"
+						<?php echo $book_in_new_tab ? 'target="_blank" rel="noopener"' : ''; ?>
+					>
+						<svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+							<rect x="2.75" y="3.75" width="14.5" height="13.5" rx="2" stroke="currentColor" stroke-width="1.6"/>
+							<path d="M2.75 8H17.25M6.5 2.5V5M13.5 2.5V5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+						</svg>
+						<?php esc_html_e( 'Book a call', 'dentist-exchange' ); ?>
+					</a>
+				</nav>
+			<?php endif; ?>
+
 			<?php if ( $title ) : ?>
 				<h2 class="dnte-form-panel__title"><?php echo esc_html( $title ); ?></h2>
 			<?php endif; ?>
@@ -126,6 +168,14 @@ function dnte_form_register_settings() {
 		'dnte_form_group',
 		'dnte_form_description',
 		array( 'type' => 'string', 'sanitize_callback' => 'sanitize_textarea_field', 'default' => '' )
+	);
+
+	// Stored as plain text rather than run through esc_url_raw, so a fragment
+	// such as #book — or any other non-absolute target — survives saving.
+	register_setting(
+		'dnte_form_group',
+		'dnte_book_call_link',
+		array( 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field', 'default' => '' )
 	);
 }
 
@@ -279,6 +329,27 @@ function dnte_form_render_page() {
 						><?php echo esc_textarea( get_option( 'dnte_form_description', '' ) ); ?></textarea>
 						<p class="description">
 							<?php esc_html_e( 'Short paragraph shown below the title inside the panel.', 'dentist-exchange' ); ?>
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">
+						<label for="dnte_book_call_link">
+							<?php esc_html_e( 'Book a Call Link', 'dentist-exchange' ); ?>
+						</label>
+					</th>
+					<td>
+						<?php /* Deliberately not type="url": that would have the browser reject an on-page target like #book. */ ?>
+						<input
+							type="text"
+							id="dnte_book_call_link"
+							name="dnte_book_call_link"
+							value="<?php echo esc_attr( get_option( 'dnte_book_call_link', '' ) ); ?>"
+							class="regular-text"
+							placeholder="https://calendly.com/your-link"
+						/>
+						<p class="description">
+							<?php esc_html_e( 'Destination for the panel\'s "Book a call" tab — a scheduling page, or an on-page target such as #book. Leave this empty and the panel shows no tabs at all.', 'dentist-exchange' ); ?>
 						</p>
 					</td>
 				</tr>

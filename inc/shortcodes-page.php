@@ -57,6 +57,61 @@ if ( ! function_exists( 'dnte_get_shortcodes' ) ) :
 				),
 			),
 			array(
+				'title'       => __( 'Posts Grid', 'dentist-exchange' ),
+				'tag'         => 'dnte_posts_grid',
+				'description' => __( 'Renders posts as a three-column grid of cards: featured image, a category pill beside the date, the title, the excerpt and a Learn More button. Category tabs and pagination filter the grid in place, without reloading the page. The card text is white, so place this on a dark section.', 'dentist-exchange' ),
+				'examples'    => array(
+					array(
+						'label' => __( 'Basic usage', 'dentist-exchange' ),
+						'note'  => __( 'Every attribute is optional — this shows the 6 newest posts with tabs for every category that has posts in it.', 'dentist-exchange' ),
+						'code'  => '[dnte_posts_grid]',
+					),
+					array(
+						'label' => __( 'Only certain categories', 'dentist-exchange' ),
+						'note'  => __( 'Limits both the posts and the tabs to the categories you name, by slug or by ID.', 'dentist-exchange' ),
+						'code'  => '[dnte_posts_grid per_page="9" categories="buying-a-practice,valuation"]',
+					),
+					array(
+						'label' => __( 'Tabs somewhere else on the page', 'dentist-exchange' ),
+						'note'  => __( 'Give the grid an <code>id</code> and it renders without tabs; a separate [dnte_posts_tabs] block with a matching <code>for</code> then drives it. Useful when the tabs belong in their own row above a full-width grid.', 'dentist-exchange' ),
+						'code'  => '[dnte_posts_grid id="blog" per_page="6"]',
+					),
+					array(
+						'label' => __( 'All optional attributes', 'dentist-exchange' ),
+						'note'  => __( 'Each attribute shown at its default value.', 'dentist-exchange' ),
+						'code'  => '[dnte_posts_grid per_page="6" post_type="post" categories="" id=""]',
+					),
+				),
+				'attrs'       => array(
+					array( 'name' => 'per_page',   'default' => '6',    'desc' => __( 'Posts per page, up to 50. Anything beyond that count is reached through the pagination beneath the grid.', 'dentist-exchange' ) ),
+					array( 'name' => 'post_type',  'default' => 'post', 'desc' => __( 'Which post type to list. The tabs follow that type&rsquo;s own hierarchical taxonomy.', 'dentist-exchange' ) ),
+					array( 'name' => 'categories', 'default' => '',     'desc' => __( 'Comma-separated term slugs or IDs. Leave empty for every category that has posts in it.', 'dentist-exchange' ) ),
+					array( 'name' => 'id',         'default' => '',     'desc' => __( 'Set this to move the tabs out of the grid and into a [dnte_posts_tabs] block with the same value in its <code>for</code> attribute.', 'dentist-exchange' ) ),
+				),
+			),
+			array(
+				'title'       => __( 'Posts Tabs', 'dentist-exchange' ),
+				'tag'         => 'dnte_posts_tabs',
+				'description' => __( 'The category tabs on their own, for driving a [dnte_posts_grid] placed elsewhere on the page. Only needed when the two have to sit in separate blocks &mdash; a grid without an <code>id</code> already draws its own tabs.', 'dentist-exchange' ),
+				'examples'    => array(
+					array(
+						'label' => __( 'Paired with a grid', 'dentist-exchange' ),
+						'note'  => __( 'The <code>for</code> here must match the <code>id</code> on the grid, and <code>categories</code> and <code>post_type</code> must match what the grid was given.', 'dentist-exchange' ),
+						'code'  => '[dnte_posts_tabs for="blog"]',
+					),
+					array(
+						'label' => __( 'All optional attributes', 'dentist-exchange' ),
+						'note'  => __( 'Only <code>for</code> is required — without it nothing renders.', 'dentist-exchange' ),
+						'code'  => '[dnte_posts_tabs for="blog" post_type="post" categories=""]',
+					),
+				),
+				'attrs'       => array(
+					array( 'name' => 'for',        'default' => '',     'desc' => __( 'Required. The <code>id</code> of the grid these tabs control.', 'dentist-exchange' ) ),
+					array( 'name' => 'post_type',  'default' => 'post', 'desc' => __( 'Must match the grid&rsquo;s <code>post_type</code>.', 'dentist-exchange' ) ),
+					array( 'name' => 'categories', 'default' => '',     'desc' => __( 'Must match the grid&rsquo;s <code>categories</code>, so both show the same set of tabs.', 'dentist-exchange' ) ),
+				),
+			),
+			array(
 				'title'       => __( 'Testimonials', 'dentist-exchange' ),
 				'tag'         => 'dnte_testimonials',
 				'description' => __( 'Renders published testimonials as a swipeable deck of tilted cards, each showing the quote icon, the review message, the reviewer name and their designation. Add entries under <code>Testimonials</code> in the admin menu. Autoplay, speed, loop and pagination default to whatever is set in <code>Testimonials &rarr; Settings</code>; the attributes below override them per shortcode.', 'dentist-exchange' ),

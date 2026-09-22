@@ -29,7 +29,10 @@
     bottom: 0;
     width: 100%;
     max-width: 720px;
-    background: #ffffff;
+
+    /* Off-white, as drawn — the fields are white and read as raised against
+       it, which they would not on a white panel. */
+    background: #f9fafb;
     z-index: 99999;
     transform: translateX(100%);
     transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
@@ -46,12 +49,16 @@
 /* ── Header ──────────────────────────────────────────────────────────────────── */
 
 .dnte-form-panel__header {
-    background: var(--wp--preset--color--dnte-primary-600, #334df8);
+    background: var(--wp--preset--color--dnte-primary-800, #2234b0);
     color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px 24px;
+
+    /* A fixed 56px bar with the contents centred in it, rather than a height
+       that follows whichever of the phone link or close button is taller. */
+    min-height: 56px;
+    padding: 0 28px;
     flex-shrink: 0;
 }
 
@@ -97,55 +104,68 @@
 .dnte-form-panel__body {
     flex: 1;
     overflow-y: auto;
-    padding: 40px 32px 52px;
+
+    /* 80px sides put the content in a 560px column inside the 720px panel, as
+       drawn. Far too generous on a phone, where the panel is the whole screen
+       — see the narrow-screen block at the end of this section. */
+    padding: 40px 80px 52px;
     -webkit-overflow-scrolling: touch;
 }
 
 /* ── Tab nav ────────────────────────────────────────────────────────────────── */
 
+/* Two equal tabs over a hairline, the current one marked by a thick rule that
+   sits on top of that hairline. Only "Message us" is ever current: the other is
+   a plain link out to the booking page, so there is nothing to switch between
+   and no script behind this. */
+
 .dnte-form-panel__tabs {
     display: flex;
-    justify-content: center;
-    background: #f2f2f2;
-    border-radius: 50px;
-    padding: 8px;
-    margin: 0 auto 30px;
-    max-width: 360px;
-    gap: 4px;
+    border-bottom: 1px solid #9ca3af;
+    margin: 0 0 40px;
 }
 
 .dnte-form-panel__tab {
     flex: 1;
-    background: transparent;
-    border: none;
-    padding: 10px 16px;
-    border-radius: 50px;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 1.2;
-    color: #2a3136;
-    min-height: 42px;
-    cursor: pointer;
-    transition:
-        background 0.2s ease,
-        color 0.2s ease,
-        box-shadow 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 8px 12px;
     font-family: inherit;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.3;
+    color: #9ca3af;
+    text-decoration: none;
+
+    /* Pulls the tab's own rule down over the row's hairline so the two occupy
+       the same line rather than stacking into 5px of border. */
+    margin-bottom: -1px;
+    border-bottom: 4px solid transparent;
+    transition:
+        color 0.2s ease,
+        border-color 0.2s ease;
 }
 
-.dnte-form-panel__tab:hover {
-    color: #2a3136;
+.dnte-form-panel__tab svg {
+    flex-shrink: 0;
+}
+
+.dnte-form-panel__tab:hover,
+.dnte-form-panel__tab:focus {
+    color: var(--wp--preset--color--dnte-primary-800, #2234b0);
+    text-decoration: none;
 }
 
 .dnte-form-panel__tab:focus-visible {
-    outline: 2px solid #8fa4b7;
-    outline-offset: 2px;
+    outline: 2px solid var(--wp--preset--color--dnte-primary-800, #2234b0);
+    outline-offset: -2px;
 }
 
 .dnte-form-panel__tab.is-active {
-    background: #ffffff;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-    color: #2a3136;
+    color: var(--wp--preset--color--dnte-primary-800, #2234b0);
+    border-bottom-color: var(--wp--preset--color--dnte-primary-800, #2234b0);
 }
 
 /* ── Tab panels ─────────────────────────────────────────────────────────────── */
@@ -164,18 +184,45 @@
 }
 
 .dnte-form-panel__title {
-    font-size: clamp(24px, 6vw, 40px);
+    font-size: clamp(22px, 5vw, 25px);
     font-weight: 400;
-    line-height: 1.2;
-    color: #515353;
+    line-height: 1.3;
+
+    /* The drawn title sits tighter than Inter's default tracking at this
+       size; without this it runs about 6% wider than the artwork. */
+    letter-spacing: -0.02em;
+    color: var(--wp--preset--color--dnte-neutral-900, #0b0d17);
+    text-align: center;
     margin: 0 0 16px;
 }
 
 .dnte-form-panel__desc {
     font-size: 16px;
-    color: #838484;
-    line-height: 1.2;
-    margin: 0 0 20px;
+    color: #4b5563;
+    line-height: 1.5;
+    text-align: center;
+
+    /* Holds the three-line measure of the design instead of running the full
+       width of the column. */
+    max-width: 540px;
+    margin: 0 auto 40px;
+}
+
+/* On a phone the panel is the whole screen, so the 80px column of the design
+   would leave the fields barely half the width. */
+@media (max-width: 600px) {
+    .dnte-form-panel__header {
+        padding: 0 20px;
+    }
+
+    .dnte-form-panel__body {
+        padding: 28px 20px 40px;
+    }
+
+    .dnte-form-panel__tab {
+        font-size: 14px;
+        gap: 8px;
+    }
 }
 
 /* ── Body scroll lock ────────────────────────────────────────────────────────── */
@@ -273,6 +320,52 @@ body.dnte-panel-open {
 .gform_body select:focus {
     border-color: #2a3136 !important;
     outline-color: rgba(37, 57, 89, 0.15) !important;
+}
+
+/* ── Panel fields ───────────────────────────────────────────────────────────
+
+   The slide-in panel draws its fields differently from the forms sitting in
+   page content: taller boxes, a rounder corner, a firmer border and bold black
+   labels above them. All of it is scoped to the panel body so the subscription
+   forms on the page keep the metrics set above.
+
+   Each selector here carries one class more than the rule it overrides, which
+   is what lets it win — several of those rules are !important. */
+
+.dnte-form-panel__body .gform_wrapper.gform-theme--framework {
+    --gf-ctrl-size: 56px;
+    --gf-ctrl-size-md: 56px;
+    --gf-ctrl-line-height: 56px;
+    --gf-ctrl-radius: 8px;
+
+    /* GF caps the radius of taller controls separately, so without this the
+       textarea would stay at the smaller corner. */
+    --gf-ctrl-radius-max-lg: 8px;
+}
+
+.dnte-form-panel__body .gform-theme--foundation .gform_fields {
+    row-gap: 28px !important;
+}
+
+.dnte-form-panel__body .gform-body.gform_body input,
+.dnte-form-panel__body .gform-body.gform_body textarea,
+.dnte-form-panel__body .gform-body.gform_body select {
+    border-color: #9ca3af !important;
+}
+
+.dnte-form-panel__body .gfield_label {
+    display: block;
+    color: var(--wp--preset--color--dnte-neutral-900, #111827) !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    line-height: 1.3;
+    margin: 0 0 8px !important;
+}
+
+/* No asterisks in the design. Required fields still announce themselves —
+   Gravity Forms puts aria-required on the input, not on this mark. */
+.dnte-form-panel__body .gfield_required {
+    display: none;
 }
 
 /* ── Submit button ──────────────────────────────────────────────────────────

@@ -16,42 +16,49 @@
    Filter Nav
    ============================================================================= */
 
+/* Tabs read as plain text until selected, when one takes the theme's blue
+   pill. The grid is designed to sit on a dark section, so the resting colour
+   is white rather than the page's text colour. */
+
 .ipg-nav {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 8px;
-    margin-bottom: 50px;
+    margin-bottom: 48px;
     justify-content: center;
 }
 
 .ipg-filter-btn {
     cursor: pointer;
     background: transparent;
-    border: 1px solid #551c25;
-    font-size: 18px;
+    border: 0;
+    font-family: inherit;
+    font-size: 16px;
     font-weight: 400;
-    color: #000000;
+    color: #ffffff;
     padding: 10px 24px;
     border-radius: 100px;
-    transition: all 0.25s ease;
-    line-height: 1.2;
+    line-height: 1.5;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
 }
 
 .ipg-filter-btn:hover {
-    background: #551c25;
+    background: rgba(255, 255, 255, 0.12);
     color: #ffffff;
 }
 
-.ipg-filter-btn.active {
-    background: #551c25;
-    color: #ffffff;
-    font-weight: 400;
-}
-
+.ipg-filter-btn.active,
 .ipg-filter-btn.active:hover {
-    background: #551c25;
-    color: #ffffff !important;
+    background: var(--wp--preset--color--dnte-primary-800, #2234b0);
+    color: #ffffff;
+}
+
+.ipg-filter-btn:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
 }
 
 /* =============================================================================
@@ -62,7 +69,7 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     column-gap: 24px;
-    row-gap: 24px;
+    row-gap: 60px;
 }
 
 @media (max-width: 900px) {
@@ -74,6 +81,7 @@
 @media (max-width: 560px) {
     .ipg-grid {
         grid-template-columns: 1fr;
+        row-gap: 40px;
     }
 
     .ipg-nav {
@@ -88,7 +96,7 @@
 }
 
 .ipg-no-posts {
-    color: #838484;
+    color: #ffffff;
     font-size: 15px;
 }
 
@@ -96,41 +104,19 @@
    Post Card
    ============================================================================= */
 
+/* No frame around the card: the image, the meta row and the text sit directly
+   on the section background. */
 .ipg-card {
     display: flex;
     flex-direction: column;
-    border: 1px solid #e8ecf0;
-    border-radius: 20px;
-    padding: 16px;
-    position: relative;
-    transition: border-color 0.2s ease;
-}
-
-/* Gradient-one border ring on hover (masked ::before, same as kadence section). */
-.ipg-card:hover::before {
-    content: '';
-    position: absolute;
-    inset: -2px;
-    padding: 2px;
-    border-radius: inherit;
-    background: var(--wp--preset--gradient--dnte-gradient-one);
-    -webkit-mask:
-        linear-gradient(#fff 0 0) content-box,
-        linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask:
-        linear-gradient(#fff 0 0) content-box,
-        linear-gradient(#fff 0 0);
-    mask-composite: exclude;
-    pointer-events: none;
 }
 
 .ipg-card__image {
     display: block;
     overflow: hidden;
     border-radius: 12px;
-    aspect-ratio: 4 / 3;
-    margin-bottom: 16px;
+    aspect-ratio: 7 / 5;
+    margin-bottom: 24px;
 }
 
 .ipg-card__image img {
@@ -151,102 +137,81 @@
     flex: 1;
 }
 
-/* Meta row: category · date + reading time */
+/* Meta row: category pill, then date */
 .ipg-card__meta-row {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
     gap: 12px;
-    margin-bottom: 16px;
+    margin-bottom: 24px;
 }
 
 .ipg-card__category {
+    padding: 5px 14px;
+    border-radius: 100px;
+    background: #374151;
+    color: #ffffff;
     font-size: 14px;
-    font-weight: 500;
-    color: #551c25;
     line-height: 1.4;
 }
 
-.ipg-card__meta {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.ipg-card__date,
-.ipg-card__read-time {
-    font-size: 14px;
-    color: #838484;
-}
-
-.ipg-card__sep {
-    font-size: 14px;
-    color: #838484;
+.ipg-card__date {
+    font-size: 12px;
+    color: #ffffff;
 }
 
 .ipg-card__title {
-    margin: 0 0 16px;
+    margin: 0 0 20px;
     font-size: 20px;
-    color: #080046;
+    font-weight: 700;
+    line-height: 1.35;
+    color: #ffffff;
 }
 
 .ipg-card__title a {
     text-decoration: none;
     color: inherit;
-    transition: color 0.2s ease;
+    transition: opacity 0.2s ease;
 }
 
 .ipg-card__title a:hover {
-    color: #551c25;
+    opacity: 0.8;
 }
 
 .ipg-card__excerpt {
-    margin: 0 0 16px;
+    margin: 0 0 24px;
+    font-size: 16px;
+    line-height: 1.5;
+
+    /* !important because the grid usually sits inside post content, where
+       theme.json's paragraph colour is written at a specificity this rule
+       cannot otherwise beat. */
+    color: #ffffff !important;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
 
-/* Read more button */
-.ipg-card__read-more {
+/* Learn More: the theme's default button, which `wp-element-button` on the
+   anchor already supplies. Only the arrow and its spacing belong here — and
+   `margin-top: auto` so the buttons line up across a row of uneven cards. */
+.ipg-card__button {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    margin-top: auto;
-    font-size: 14px;
-    font-weight: 500;
-    color: #551c25;
-    text-decoration: none;
-    transition: color 0.2s ease, gap 0.2s ease;
+    gap: 10px;
     align-self: flex-start;
+    margin-top: auto;
+    text-decoration: none;
 }
 
-.ipg-card__read-more svg {
+.ipg-card__button-arrow {
     flex-shrink: 0;
     transition: transform 0.2s ease;
 }
 
-.ipg-card__read-more:hover {
-    color: #551c25;
-    gap: 12px;
-}
-
-.ipg-card__read-more:hover svg {
-    transform: translateX(2px);
-}
-
-.ipg-card__avatar {
-    flex-shrink: 0;
-    line-height: 0;
-}
-
-.ipg-card__avatar-img {
-    width: 32px !important;
-    height: 32px !important;
-    border-radius: 50%;
-    object-fit: cover;
-    display: block;
+.ipg-card__button:hover .ipg-card__button-arrow {
+    transform: translateX(3px);
 }
 
 /* =============================================================================
@@ -283,14 +248,17 @@
     transition: all 0.2s ease;
 }
 
+/* primary-800 rather than the brighter primary-600: it is the same blue as the
+   Learn More button and the selected tab, so the grid keeps one accent, and it
+   holds white text at 9.6:1 against primary-600's 5.9:1. */
 .ipg-page-btn:hover:not(:disabled) {
-    border-color: #551c25;
-    color: #551c25;
+    border-color: var(--wp--preset--color--dnte-primary-800, #2234b0);
+    color: var(--wp--preset--color--dnte-primary-800, #2234b0);
 }
 
 .ipg-page-btn.active {
-    background: #551c25;
-    border-color: #551c25;
+    background: var(--wp--preset--color--dnte-primary-800, #2234b0);
+    border-color: var(--wp--preset--color--dnte-primary-800, #2234b0);
     color: #ffffff;
 }
 
